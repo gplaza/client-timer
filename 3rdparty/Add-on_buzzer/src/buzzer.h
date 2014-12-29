@@ -16,7 +16,7 @@ public:
 
             if (!m_Instance)
             {
-                m_Instance = new Buzzer;
+                m_Instance = new Buzzer; //new buzzer instance
                 wiringPiSetup();
                 pinMode(1, OUTPUT);
             }
