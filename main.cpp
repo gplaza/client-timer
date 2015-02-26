@@ -102,23 +102,23 @@ int main(int argc, char *argv[])
 
     //Physical Access object :
     Credencial credencial;
-    Fingerprint fingerprint("/dev/ttyAMA0");
+    //Fingerprint fingerprint("/dev/ttyAMA0");
 
-    QObject::connect(&fingerprint, &Fingerprint::setTypeEvent, &serviceAccess, &ServiceAccess::setTypeEvent);
+    //QObject::connect(&fingerprint, &Fingerprint::setTypeEvent, &serviceAccess, &ServiceAccess::setTypeEvent);
 
     // Manage fingerPrintReader
-    QObject::connect(&fingerprint, &Fingerprint::fingerDetected, &fingerprint, &Fingerprint::processDataFingerprint);
+    //QObject::connect(&fingerprint, &Fingerprint::fingerDetected, &fingerprint, &Fingerprint::processDataFingerprint);
 
     // Manage screen message
     QObject::connect(&credencial, &Credencial::sendToScreen, &screen, &Screen::showMessage);
     QObject::connect(&serviceAccess, &ServiceAccess::sendToScreen, &screen, &Screen::showMessage);
-    QObject::connect(&fingerprint, &Fingerprint::sendToScreen, &screen, &Screen::showMessage);
+    //QObject::connect(&fingerprint, &Fingerprint::sendToScreen, &screen, &Screen::showMessage);
 
     // End device reading
     QObject::connect(&credencial, &Credencial::endReadRFID, &serviceAccess, &ServiceAccess::check);
-    QObject::connect(&fingerprint, &Fingerprint::endReadFingerprint, &serviceAccess, &ServiceAccess::check);
-    QObject::connect(&fingerprint, &Fingerprint::finished, &credencial, &Credencial::WaitForTag);
-    QObject::connect(&fingerprint, &Fingerprint::finished, &screen, &Screen::showTime);
+    //QObject::connect(&fingerprint, &Fingerprint::endReadFingerprint, &serviceAccess, &ServiceAccess::check);
+    //QObject::connect(&fingerprint, &Fingerprint::finished, &credencial, &Credencial::WaitForTag);
+    //QObject::connect(&fingerprint, &Fingerprint::finished, &screen, &Screen::showTime);
 
     // Syncro process
     QObject::connect(&serviceAccess, &ServiceAccess::onLine, &screen, &Screen::onLine);
