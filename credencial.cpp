@@ -16,7 +16,7 @@ void Credencial::getInfoTag(MifareTag *tags)
         char* cardId = freefare_get_tag_uid(tag);
         QString uuid = QString::fromLocal8Bit(cardId).toUpper();
 
-        uuid = "A0A1A2A3";
+        //uuid = "A0A1A2A3";
         qDebug() << "UUID : " << uuid;
 
         Persona persona;

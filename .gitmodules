@@ -1,0 +1,15 @@
+[submodule "addon-rfid-qt"]
+	path = addon-rfid-qt
+	url = git@gitlab.development:root/addon-rfid-qt.git
+[submodule "addon-logger-qt"]
+	path = addon-logger-qt
+	url = git@gitlab.development:root/addon-logger-qt.git
+[submodule "addon-buzzer-qt"]
+	path = addon-buzzer-qt
+	url = git@gitlab.development:root/addon-buzzer-qt.git
+[submodule "addon-fingerprint-qt"]
+	path = addon-fingerprint-qt
+	url = git@gitlab.development:root/addon-fingerprint-qt.git
+[submodule "addon-configurator-qt"]
+	path = addon-configurator-qt
+	url = git@gitlab.development:root/addon-configurator-qt.git

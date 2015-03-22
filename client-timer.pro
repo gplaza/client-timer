@@ -22,14 +22,16 @@ INCLUDEPATH += .
 
 include(3rdparty/Add-on_display/src/display.pri)
 include(3rdparty/Add-on_soap/src/soap.pri)
-include(3rdparty/Add-on_mifare/src/mifare.pri)
-include(3rdparty/Add-on_logger/src/logger.pri)
-include(3rdparty/Add-on_buzzer/src/buzzer.pri)
 include(3rdparty/Add-on_serial/src/serial.pri)
 include(3rdparty/Add-on_printer/src/printer.pri)
 include(3rdparty/Add-on_protector/src/protector.pri)
-include(3rdparty/Add-on_configurator/src/configurator.pri)
-include(3rdparty/Add-on_fingerprint/src/fingerprint.pri)
+include(addon-rfid-qt/rfid.pri)
+include(addon-buzzer-qt/buzzer.pri)
+include(addon-logger-qt/logger.pri)
+include(addon-fingerprint-qt/fingerprint.pri)
+include(addon-configurator-qt/configurator.pri)
+include(3rdparty/Add-on_protector/src/protector.pri)
+
 
 INCLUDEPATH += /mnt/rasp-pi-rootfs/usr/local/qt5pi/include/ /mnt/rasp-pi-rootfs/usr/local/include/
 
