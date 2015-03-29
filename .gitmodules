@@ -13,3 +13,9 @@
 [submodule "addon-configurator-qt"]
 	path = addon-configurator-qt
 	url = git@gitlab.development:root/addon-configurator-qt.git
+[submodule "addon-display-qt"]
+	path = addon-display-qt
+	url = git@gitlab.development:root/addon-display-qt.git
+[submodule "addon-protector-qt"]
+	path = addon-protector-qt
+	url = git@gitlab.development:root/addon-protector-qt.git

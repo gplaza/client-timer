@@ -20,11 +20,13 @@ INSTALLS += target
 DEPENDPATH += .
 INCLUDEPATH += .
 
-include(3rdparty/Add-on_display/src/display.pri)
+
 include(3rdparty/Add-on_soap/src/soap.pri)
 include(3rdparty/Add-on_serial/src/serial.pri)
 include(3rdparty/Add-on_printer/src/printer.pri)
-include(3rdparty/Add-on_protector/src/protector.pri)
+
+include(addon-protector-qt/protector.pri)
+include(addon-display-qt/display.pri)
 include(addon-rfid-qt/rfid.pri)
 include(addon-buzzer-qt/buzzer.pri)
 include(addon-logger-qt/logger.pri)
