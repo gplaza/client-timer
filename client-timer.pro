@@ -30,8 +30,6 @@ include(addon-buzzer-qt/buzzer.pri)
 include(addon-logger-qt/logger.pri)
 include(addon-fingerprint-qt/fingerprint.pri)
 include(addon-configurator-qt/configurator.pri)
-include(3rdparty/Add-on_protector/src/protector.pri)
-
 
 INCLUDEPATH += /mnt/rasp-pi-rootfs/usr/local/qt5pi/include/ /mnt/rasp-pi-rootfs/usr/local/include/
 

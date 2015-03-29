@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     consoleAppender->setDetailsLevel("debug");
     Logger::registerAppender(consoleAppender);
 
-    Configurator::instance()->setDB("/usr/share/nginx/www/protected/data/config.db");
+    Configurator::instance()->setDB("/usr/share/nginx/www/protected/data/config.db",true);
 
     QSet<QString> confs;
     confs << "timeout";
