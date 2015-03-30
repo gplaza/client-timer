@@ -4,14 +4,13 @@
 #
 #-------------------------------------------------
 
-QT       += core sql network
-QT       -= gui
+QT += quick gui core sql network
 
 TARGET = client-timer
 target.path = /home/pi/client-timer
 
-CONFIG   += console qtestlib
-CONFIG   -= app_bundle
+#CONFIG   += qtestlib
+#CONFIG   -= app_bundle
 
 TEMPLATE = app
 TARGET = client-timer
@@ -34,6 +33,8 @@ include(addon-fingerprint-qt/fingerprint.pri)
 include(addon-configurator-qt/configurator.pri)
 
 INCLUDEPATH += /mnt/rasp-pi-rootfs/usr/local/qt5pi/include/ /mnt/rasp-pi-rootfs/usr/local/include/
+qml_folder.source = qml
+DEPLOYMENTFOLDERS = qml_folder
 
 SOURCES += main.cpp \
     credencial.cpp \
@@ -60,16 +61,16 @@ HEADERS += \
 #-------------
 # Test Class
 #-------------
+#
+#SOURCES += \
+#    test/testserviceaccess.cpp \
+#    test/testfingerprint.cpp \
+#    test/testbdd.cpp
 
-SOURCES += \
-    test/testserviceaccess.cpp \
-    test/testfingerprint.cpp \
-    test/testbdd.cpp
-
-HEADERS += \
-    test/testfingerprint.h \
-    test/testserviceaccess.h \
-    test/testbdd.h
+#HEADERS += \
+#    test/testfingerprint.h \
+#    test/testserviceaccess.h \
+#    test/testbdd.h
 
 for(deploymentfolder, DEPLOYMENTFOLDERS) {
     item = item$${deploymentfolder}
