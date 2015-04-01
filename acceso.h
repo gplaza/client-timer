@@ -11,9 +11,7 @@ class Acceso : public QObject
     Q_PROPERTY(QString rut READ rut WRITE setRut)
     Q_PROPERTY(QString dv READ dv WRITE setDv)
     Q_PROPERTY(QString name READ name WRITE setName)
-    Q_PROPERTY(QString event READ event WRITE setEvent)
     Q_PROPERTY(QString hash READ hash WRITE setHash)
-    Q_PROPERTY(EventPrint eventPrint READ eventPrint WRITE setEventPrint)
     Q_ENUMS(EventPrint)
 
 public:
@@ -36,15 +34,8 @@ public:
     void setDv(const QString &);
     QString uuid() const;
     void setUuid(const QString &);
-    QString event() const;
-    void setEvent(const QString &);
     QString hash() const;
     void setHash(const QString &);
-
-    enum EventPrint{
-        Printed = 0,
-        Noprinted = -1
-    };
 
     /*
     0;registro correcto;rut; fecha;Datos personales; Entrada|salida|evento ;
@@ -73,14 +64,6 @@ public:
         PERSON_EXPIRED = 7
     };
 
-    enum MarcaType{
-        MARCA_FINGER = 1,
-        MARCA_RFID = 2,
-        MARCA_INFO = 4
-    };
-
-    void setEventPrint(EventPrint eventPrint);
-    EventPrint eventPrint() const;
     QString complete_rut() const;
 
 private:
@@ -91,9 +74,7 @@ private:
     QString m_dv;
     QString m_uuid;
     QString m_name;
-    QString m_event;
     QString m_hash;
-    EventPrint m_print;
 };
 
 #endif // ACCESO_H

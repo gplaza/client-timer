@@ -71,7 +71,7 @@ void Fingerprint::processDataFingerprint()
         persona.setRut(fingerprint.value("rut").toString());
         persona.setDv(fingerprint.value("dv").toString());
         persona.setUuid(fingerprint.value("hash").toString());
-        persona.setTipoMarca(1);
+        persona.setTipoMarca(Persona::MARCA_FINGER);
 
         emit endReadFingerprint(&persona);
         endProcess();

@@ -2,6 +2,102 @@ import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import "../qml"
 
+Flipable {
+    id: myFlip
+    x:60
+    y:50
+    width: 800
+    height: 430
+
+    function toggle() {
+        if(rot.angle ==0)
+            rot.angle = 180;
+        else
+            rot.angle = 0;
+    }
+
+    function showFront() {
+        rot.angle=0;
+    }
+
+    function showBack() {
+        rot.angle=180;
+    }
+
+    transform: Rotation {
+        id: rot
+        origin.x: 400;
+        origin.y: 100;
+        axis.x:0; axis.y:1; axis.z:0
+        angle:0
+
+        Behavior on angle { PropertyAnimation{} }
+    }
+
+    front: Item {
+        Rectangle {
+            id: base
+            width: 800
+            height: 430
+            color:"white"
+            border.color: "yellowgreen"
+            border.width: 3
+            radius: 15
+            smooth: true
+        }
+
+        Text {
+            x: 0
+            y:200
+            text: "Bienvenido"
+        }
+
+        Image {
+            id: saver
+            anchors.verticalCenter: base.verticalCenter
+            anchors.horizontalCenter: base.horizontalCenter
+            width: 378
+            height: 284
+            source: "images/saver_alt.jpg"
+        }
+    }
+
+    back: Item {
+
+        transform:Rotation {
+            origin.x: 400;
+            origin.y:100;
+            axis.x:0; axis.y:1; axis.z:0
+            angle:180
+        }
+
+        Rectangle {
+            width: 800
+            height: 430
+            color:"white"
+            border.color: "black"
+            border.width: 1
+            radius: 15
+        }
+
+        Text {
+            x: 0
+            y:200
+            text: "My super cool red view"
+        }
+
+        Image {
+            id: foto_estudiante
+            x: 5
+            y: 20
+            width: 300
+            height: 300
+            source: "images/seba.jpg"
+        }
+    }
+}
+
+/*
 Item {
 
     id: root
@@ -15,93 +111,6 @@ Item {
         height: 50
     }
 
-    GridView {
-        id: grid_view1
-        x: 473
-        y: 180
-        width: 800
-        height: 441
-        cellWidth: 250
-        model: ListModel {
-            ListElement {
-                name: "Grey"
-                // colorCode: "grey"
-            }
-            ListElement {
-                name: "Grey"
-                // colorCode: "grey"
-            }
-            ListElement {
-                name: "Grey"
-                // colorCode: "grey"
-            }
-            ListElement {
-                name: "Grey"
-                // colorCode: "grey"
-            }
-            ListElement {
-                name: "Grey"
-                // colorCode: "grey"
-            }
-            ListElement {
-                name: "Grey"
-                // colorCode: "grey"
-            }
-            ListElement {
-                name: "Grey"
-                // colorCode: "grey"
-            }
-            ListElement {
-                name: "Grey"
-                // colorCode: "grey"
-            }
-
-            ListElement {
-                name: "Grey"
-                // colorCode: "grey"
-            }
-
-            ListElement {
-                name: "Red"
-                // colorCode: "red"
-            }
-
-            ListElement {
-                name: "Blue"
-                // colorCode: "blue"
-            }
-
-            ListElement {
-                name: "Green"
-                // colorCode: "green"
-            }
-        }
-        delegate: Item {
-            x: 5
-            height: 30
-            Column {
-                spacing: 3
-
-                Image {
-                    width: 200
-                    height: 30
-                    source : "images/consum.png"
-                    anchors.horizontalCenter: parent.horizontalCenter
-
-                }
-
-                Text {
-                    x: 0
-                    text: name
-
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    font.bold: true
-                }
-            }
-        }
-        cellHeight: 40
-    }
-
     Image {
         id: logo_federico
         x: 50
@@ -111,14 +120,6 @@ Item {
         source: "images/logo_federico.jpeg"
     }
 
-    Image {
-        id: foto_estudiante
-        x: 50
-        y: 250
-        width: 300
-        height: 300
-        source: "images/seba.jpg"
-    }
 
     Text {
         id: rut_label
@@ -159,3 +160,4 @@ Item {
     }
 }
 
+*/

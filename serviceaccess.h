@@ -17,14 +17,7 @@ class ServiceAccess : public QObject
     Q_OBJECT
 
 public:
-    ServiceAccess(SoapClient *soapClient, QObject *parent = 0);
-
-    enum TipoEvento{
-        INFO_FINGERPRINT = 0,
-        ACCESS_FINGERPRINT = 1,
-        RECORD_FINGERPRINT = 2,
-        ACCESS_CARD = 3
-    };
+    ServiceAccess(SoapClient *soapClient, QObject *objectView, QObject *parent = 0);
 
 signals:
     void sendToScreen(const QString &m);
@@ -36,7 +29,6 @@ signals:
     void hashResponse(Acceso &acceso);
 
 public slots:
-    void setTypeEvent(int event);
     void check(QObject *object);
 
 private:
@@ -44,10 +36,9 @@ private:
     void on_online();
     void on_offline();
     SoapClient *soapClient;
+    QObject *objectView;
     QTcpSocket service;
     Persona persona;
-    int event;
-
 };
 
 #endif // SERVICEACCESS_H

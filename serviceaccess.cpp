@@ -1,9 +1,11 @@
 #include "serviceaccess.h"
 #include "credencial.h"
 
-ServiceAccess::ServiceAccess(SoapClient *soapClient, QObject *parent) : QObject(parent)
+ServiceAccess::ServiceAccess(SoapClient *soapClient,QObject *objectView, QObject *parent) : QObject(parent)
 {
     this->soapClient = soapClient;
+    this->objectView = objectView;
+
     connect(this, &ServiceAccess::onLine,this, &ServiceAccess::on_online);
     connect(this, &ServiceAccess::offLine,this, &ServiceAccess::on_offline);
 }
@@ -18,14 +20,9 @@ void ServiceAccess::check(QObject *object)
     persona.setFingerprintID(perso->fingerprintID());
     persona.setFoto(perso->foto());
 
-    if(event == INFO_FINGERPRINT)
-        persona.setTipoMarca(4);
-    if(event == RECORD_FINGERPRINT)
-        persona.setTipoMarca(1);
-
-    if(event != RECORD_FINGERPRINT)
+    if(persona.tipoMarca() == Persona::MARCA_RFID)
         LOG_INFO("Intento Acceso     : " + persona.rut() + "-" + persona.dv() + " ID tarjeta : " + persona.uuid() + " Tipo marca : " + QString::number(persona.tipoMarca()));
-    else
+    if(persona.tipoMarca() == Persona::MARCA_FINGER)
         LOG_INFO("Intento Acceso     : " + persona.rut() + "-" + persona.dv() + " Hash size : " + QString::number(persona.uuid().size()) + " Tipo marca : " + QString::number(persona.tipoMarca()));
 
     bool result  = soapClient->init();
@@ -41,7 +38,7 @@ void ServiceAccess::on_online()
     qDebug() << "Online WebService";
 
     Acceso acceso;
-    soapClient->action(&persona,acceso);
+    soapClient->actionValidarCasino(&persona,acceso);
 
     if(acceso.idAuth() == -1)
     {
@@ -54,18 +51,7 @@ void ServiceAccess::on_online()
         emit synchroniseOnLine(acceso,persona);
     }
 
-    if(event == ServiceAccess::INFO_FINGERPRINT)
-    {
-        qDebug() << "Send response web service to fingerprint Manager";
-
-        emit hashResponse(acceso);
-
-        if(acceso.textAuth() == " Persona valida")
-            finalizeResponse(acceso);
-
-    } else {
-        finalizeResponse(acceso);
-    }
+    finalizeResponse(acceso);
 }
 
 void ServiceAccess::on_offline()
@@ -84,7 +70,6 @@ void ServiceAccess::on_offline()
 
         acceso.setIdAuth(Acceso::PERSON_NO_EXIST);
         acceso.setName("No existe");
-        acceso.setEventPrint(Acceso::Noprinted);
 
     } else {
 
@@ -96,7 +81,6 @@ void ServiceAccess::on_offline()
 
         acceso.setIdAuth(autorizado);
         acceso.setName(nombre);
-        acceso.setEventPrint(Acceso::Printed);
     }
 
     acceso.setTextAuth(Bdd::textAuthentication(acceso));
@@ -107,18 +91,17 @@ void ServiceAccess::on_offline()
 
 void ServiceAccess::finalizeResponse(Acceso &acceso)
 {
+
     LOG_INFO("Resultado Acceso   : " + acceso.toString());
     emit sendToScreen(acceso.textAuth());
 
-    if(acceso.eventPrint() == Acceso::Printed)
+    if(acceso.idAuth() == Acceso::PERSON_OK)
     {
         QString formatedDate = acceso.dateFormated("dd/MM/yy - hh:mm:ss");
         QString name = acceso.name();
-        QString evento = acceso.event().toUpper();
 
         Printer printer("1d90","2060");
         printer.setLine("  U T F S M  ");
-        printer.setLine(" * * " + evento + " * * ");
         printer.setLine("Fecha   : " + formatedDate);
         printer.setLine("Nombre  : " + name.leftJustified(32, ' ', true));
         printer.setLine("RUT     : " + acceso.rut() + "-" + acceso.dv());
@@ -131,10 +114,9 @@ void ServiceAccess::finalizeResponse(Acceso &acceso)
     connect(timer, &QTimer::timeout, this, &ServiceAccess::finished);
     connect(this, &ServiceAccess::finished, timer, &QTimer::deleteLater);
     timer->start(1500);
+
+    QMetaObject::invokeMethod(objectView,"toggle");
+
+
 }
 
-void ServiceAccess::setTypeEvent(int event)
-{
-    qDebug() << "Set tipo event to : " << event;
-    this->event = event;
-}

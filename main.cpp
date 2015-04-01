@@ -16,6 +16,8 @@
 #include <bdd.h>
 #include <configurator.h>
 
+#include <stdsoap2.h>
+
 //#include <QtTest/QTest>
 //#include <test/testbdd.h>
 //#include <test/testserviceaccess.h>
@@ -34,13 +36,13 @@ int main(int argc, char *argv[])
     consoleAppender->setDetailsLevel("debug");
     Logger::registerAppender(consoleAppender);
 
-
     Configurator::instance()->setDB("/usr/share/nginx/www/protected/data/config.db",true);
 
     QSet<QString> confs;
     confs << "timeout";
-    confs << "soapAction";
-    confs << "endPoint";
+    confs << "endPointCasino";
+    confs << "soapActionCasinoValidar";
+    confs << "soapActionCasinoTransaction";
     confs << "usm";
     confs << "serial";
     confs << "logLevel";
@@ -48,23 +50,23 @@ int main(int argc, char *argv[])
 
     QMap<QString,QString> config = Configurator::instance()->getConfigs(confs);
 
-    QString timeout = config["timeout"];
-    QString endPoint = config["endPoint"];
-    QString soapAction = config["soapAction"];
-    QString usm = config["usm"];
-    QString serial = config["serial"];
-    QString logLevel = config["logLevel"];
-
-    consoleAppender->setDetailsLevel(logLevel);
+    consoleAppender->setDetailsLevel(config["logLevel"]);
 
     qDebug() << "Init parameters : ";
-    qDebug() << "LogLevel        : " << logLevel;
-    qDebug() << "EndPoint        : " << endPoint;
-    qDebug() << "SoapAction      : " << soapAction;
-    qDebug() << "Usm             : " << usm;
-    qDebug() << "Timeout         : " << timeout;
 
-    Protector licence(serial);
+    QMapIterator<QString,QString> i(config);
+    while (i.hasNext()) {
+        i.next();
+        qDebug() << i.key().leftJustified(30,' ') + " : " << i.value();
+    }
+
+    view.setSource(QUrl(QCoreApplication::applicationDirPath() + "/qml/main.qml"));
+    view.show();
+
+    QObject *objectView = view.rootObject();
+
+
+    Protector licence(config["serial"]);
 
     if(!licence.isValid())
     {
@@ -74,7 +76,7 @@ int main(int argc, char *argv[])
     }
 
     SoapClient *soapClient = new SoapClient();
-    ServiceAccess serviceAccess(soapClient);
+    ServiceAccess serviceAccess(soapClient,objectView);
     Synchroniser sync(soapClient);
     Screen display;
     Bdd bdd;
@@ -109,11 +111,9 @@ int main(int argc, char *argv[])
     QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOnLine, &sync, &Synchroniser::onLine);
 
     // End reading web service response
-    //QObject::connect(&serviceAccess, &ServiceAccess::hashResponse, &fingerprint, &Fingerprint::registerNewUser);
     QObject::connect(&serviceAccess, &ServiceAccess::finished, &credencial, &Credencial::WaitForTag);
 
-    view.setSource(QUrl(QCoreApplication::applicationDirPath() + "/qml/main.qml"));
-    view.show();
+
 
     return app.exec();
 

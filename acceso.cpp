@@ -2,11 +2,19 @@
 
 Acceso::Acceso(QObject *parent) : QObject(parent)
 {
+    QDateTime now = QDateTime::currentDateTime();
+
+    this->m_idAuth = -1;
+    this->m_uuid = "-";
+    this->m_textAuth = "WebService Error";
+    this->m_date = now;
+    this->m_name = "-";
+    this->m_hash = ";";
 }
 
 QString Acceso::toString() const
 {
-    return QString::number(m_idAuth) + ";" + textAuth() + ";" + m_rut + "-" + m_dv + ";" + m_date.toString("ddd MMM dd hh:mm:ss yyyy") + ";" + m_name + ";" + m_event;
+    return QString::number(m_idAuth) + ";" + textAuth() + ";" + m_rut + "-" + m_dv + ";" + m_date.toString("ddd MMM dd hh:mm:ss yyyy") + ";" + m_name;
 }
 
 QDateTime Acceso::date() const
@@ -84,16 +92,6 @@ void Acceso::setUuid(const QString &u)
     m_uuid = u;
 }
 
-QString Acceso::event() const
-{
-    return m_event;
-}
-
-void Acceso::setEvent(const QString &e)
-{
-    m_event = e;
-}
-
 QString Acceso::hash() const
 {
     return m_hash;
@@ -102,16 +100,6 @@ QString Acceso::hash() const
 void Acceso::setHash(const QString &h)
 {
     m_hash = h;
-}
-
-Acceso::EventPrint Acceso::eventPrint() const
-{
-    return m_print;
-}
-
-void Acceso::setEventPrint(EventPrint eventprint)
-{
-    m_print = eventprint;
 }
 
 QString Acceso::complete_rut() const

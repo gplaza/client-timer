@@ -294,7 +294,6 @@ Acceso* Bdd::syncAccess()
         QString dv = access.value("dv").toString();
 
         acceso->setDate(date);
-        acceso->setEvent(tipoMarca);
         acceso->setUuid(uuid);
         acceso->setRut(rut);
         acceso->setDv(dv);

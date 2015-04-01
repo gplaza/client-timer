@@ -36,6 +36,11 @@ public:
     friend QTextStream & operator<<(QTextStream &stream, const Persona& persona);
     friend QTextStream & operator>>(QTextStream &stream, Persona& persona);
 
+    enum MarcaType{
+        MARCA_FINGER = 1,
+        MARCA_RFID = 2
+    };
+
 private:
     QString m_rut;
     QString m_dv;

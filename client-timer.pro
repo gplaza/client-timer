@@ -59,6 +59,29 @@ HEADERS += \
     fingerprint.h
 
 #-------------
+# Web Service
+#-------------
+
+SOURCES += \
+    web-service/casino/casinoC.cpp \
+    web-service/casino/casinoClient.cpp \
+    web-service/foto/fotoC.cpp \
+    web-service/foto/fotoClient.cpp \
+    web-service/global/envC.cpp
+
+HEADERS += \
+    web-service/casino/casinoH.h \
+    web-service/casino/casinoStub.h \
+    web-service/foto/fotoH.h \
+    web-service/foto/fotoStub.h \
+    web-service/global/envH.h \
+    web-service/global/envStub.h
+
+OTHER_FILES += web-service/foto/foto.nsmap \
+               web-service/casino/casino.nsmap \
+               web-service/global/soap.nsmap
+
+#-------------
 # Test Class
 #-------------
 #
