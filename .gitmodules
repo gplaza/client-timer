@@ -19,3 +19,6 @@
 [submodule "addon-protector-qt"]
 	path = addon-protector-qt
 	url = git@gitlab.development:root/addon-protector-qt.git
+[submodule "addon-soap-qt"]
+	path = addon-soap-qt
+	url = git@gitlab.development:root/addon-soap-qt.git

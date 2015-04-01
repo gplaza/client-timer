@@ -19,18 +19,18 @@ INSTALLS += target
 DEPENDPATH += .
 INCLUDEPATH += .
 
-
-include(3rdparty/Add-on_soap/src/soap.pri)
 include(3rdparty/Add-on_serial/src/serial.pri)
 include(3rdparty/Add-on_printer/src/printer.pri)
 
 include(addon-protector-qt/protector.pri)
 include(addon-display-qt/display.pri)
 include(addon-rfid-qt/rfid.pri)
+include(addon-soap-qt/soap.pri)
 include(addon-buzzer-qt/buzzer.pri)
 include(addon-logger-qt/logger.pri)
 include(addon-fingerprint-qt/fingerprint.pri)
 include(addon-configurator-qt/configurator.pri)
+
 
 INCLUDEPATH += /mnt/rasp-pi-rootfs/usr/local/qt5pi/include/ /mnt/rasp-pi-rootfs/usr/local/include/
 qml_folder.source = qml
@@ -66,20 +66,16 @@ SOURCES += \
     web-service/casino/casinoC.cpp \
     web-service/casino/casinoClient.cpp \
     web-service/foto/fotoC.cpp \
-    web-service/foto/fotoClient.cpp \
-    web-service/global/envC.cpp
+    web-service/foto/fotoClient.cpp
 
 HEADERS += \
     web-service/casino/casinoH.h \
     web-service/casino/casinoStub.h \
     web-service/foto/fotoH.h \
-    web-service/foto/fotoStub.h \
-    web-service/global/envH.h \
-    web-service/global/envStub.h
+    web-service/foto/fotoStub.h
 
 OTHER_FILES += web-service/foto/foto.nsmap \
-               web-service/casino/casino.nsmap \
-               web-service/global/soap.nsmap
+               web-service/casino/casino.nsmap
 
 #-------------
 # Test Class

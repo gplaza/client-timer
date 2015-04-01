@@ -11,7 +11,7 @@
 #include <QTcpSocket>
 #include <web-service/casino/casinoH.h>
 #include <web-service/foto/fotoH.h>
-#include <web-service/global/envH.h>
+#include <envH.h>
 
 class SoapClient : public QObject
 {

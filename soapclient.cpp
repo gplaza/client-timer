@@ -1,7 +1,7 @@
 #include <soapclient.h>
 #include "web-service/casino/casino.nsmap"
 #include "web-service/foto/foto.nsmap"
-#include "web-service/global/soap.nsmap"
+#include "soap.nsmap"
 
 SoapClient::SoapClient(QObject *parent) : QObject(parent)
 {
@@ -165,7 +165,6 @@ void SoapClient::error(struct soap *soap)
 
     } else if (soap->error) {
 
-        /*
         const char **fault;
         const char *subCodeFault = NULL;
         const char *reasonFault;
@@ -187,9 +186,6 @@ void SoapClient::error(struct soap *soap)
         qCritical() << "subcode : [" << (subCodeFault ? QString::fromStdString(subCodeFault) : "no subcode") << "]";
         qCritical() << "reason  : [" << (reasonFault ? QString::fromStdString(reasonFault) : "no reason") << "]";
         qCritical() << "detail  : [" << (detailFault ? QString::fromStdString(detailFault) : "no detail") << "]";
-        */
-
-        soap_stream_fault(soap, std::cerr);
     }
 }
 
