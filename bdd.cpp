@@ -12,12 +12,13 @@ void Bdd::openDatabase()
 {
     bool newAccesoDB = checkDatabaseFile("/usr/share/nginx/www/protected/data/acceso.db");
     bool newConfigDB = checkDatabaseFile("/usr/share/nginx/www/protected/data/config.db");
+    bool newSyncroDB = checkDatabaseFile("/usr/share/nginx/www/protected/data/offline.db");
 
     QSqlDatabase dbSyncro = QSqlDatabase::addDatabase("QSQLITE","syncro");
-    dbSyncro.setDatabaseName(":memory:");
+    dbSyncro.setDatabaseName("/usr/share/nginx/www/protected/data/offline.db");
 
     if(!dbSyncro.open())
-        qCritical() << "Open Persona BDD error : " << dbSyncro.lastError();
+        qCritical() << "Open Syncro BDD error : " << dbSyncro.lastError();
 
     QSqlDatabase dbAcceso = QSqlDatabase::addDatabase("QSQLITE","acceso");
     dbAcceso.setDatabaseName("/usr/share/nginx/www/protected/data/acceso.db");
@@ -34,12 +35,12 @@ void Bdd::openDatabase()
             qCritical() << "Open Config BDD error : " << dbConfig.lastError();
     }
 
-    createDatabase("/usr/share/nginx/www/protected/data/schema.syncro.sql","syncro");
-
     if(newAccesoDB)
         createDatabase("/usr/share/nginx/www/protected/data/schema.acceso.sql","persona");
     if(newConfigDB)
         createDatabase("/usr/share/nginx/www/protected/data/schema.config.sql","config");
+    if(newSyncroDB)
+        createDatabase("/usr/share/nginx/www/protected/data/schema.offline.sql","syncro");
 }
 
 QSqlRecord Bdd::identificationCredencial(Persona *persona)
@@ -128,14 +129,13 @@ void Bdd::saveAccess(Acceso &acceso, Persona &persona)
 {
     QSqlQuery query(QSqlDatabase::database("syncro"));
 
-    QString sql = "INSERT INTO acceso(fecha, uuid, rut, dv, tipoMarca) VALUES (:fecha, :uuid, :rut, :dv, :tipoMarca);";
+    QString sql = "INSERT INTO acceso(uuid, dispo, tipoMarca, fecha) VALUES (:uuid, :dispo, :tipoMarca, :fecha);";
     query.prepare(sql);
 
+    query.bindValue(":uuid", persona.uuid());
+    query.bindValue(":dispo", Configurator::instance()->getConfig("usm"));
     query.bindValue(":fecha", acceso.dateFormated("yyyy-MM-dd hh:mm:ss"));
     query.bindValue(":tipoMarca", persona.tipoMarca());
-    query.bindValue(":uuid", acceso.uuid());
-    query.bindValue(":rut", acceso.rut());
-    query.bindValue(":dv", acceso.dv());
 
     if (!query.exec())
         qCritical() << "Query Error (SaveAccess) : " << query.lastError();
@@ -324,7 +324,6 @@ bool Bdd::checkDatabaseFile(const QString &basePath)
 
 void Bdd::createDatabase(const QString &scriptPath, const QString &conn)
 {
-
     QFile f(scriptPath);
     QSqlDatabase db = QSqlDatabase::database(conn);
 

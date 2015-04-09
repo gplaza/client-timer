@@ -19,7 +19,7 @@ INSTALLS += target
 DEPENDPATH += .
 INCLUDEPATH += .
 
-include(3rdparty/Add-on_serial/src/serial.pri)
+
 include(3rdparty/Add-on_printer/src/printer.pri)
 
 include(addon-protector-qt/protector.pri)
@@ -31,8 +31,8 @@ include(addon-logger-qt/logger.pri)
 include(addon-fingerprint-qt/fingerprint.pri)
 include(addon-configurator-qt/configurator.pri)
 
+INCLUDEPATH += /mnt/rpi-rootfs/opt/qt5-rpi/include/ /mnt/rpi-rootfs/usr/local/include/
 
-INCLUDEPATH += /mnt/rasp-pi-rootfs/usr/local/qt5pi/include/ /mnt/rasp-pi-rootfs/usr/local/include/
 qml_folder.source = qml
 DEPLOYMENTFOLDERS = qml_folder
 

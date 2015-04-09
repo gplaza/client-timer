@@ -39,6 +39,7 @@ QByteArray SoapClient::getFoto(QString rut)
     QByteArray fotoResult;
 
     struct soap *soap = soap_new();
+    soap_set_namespaces(soap,foto_namespaces);
 
     soap->send_timeout = timeout.toInt();
     soap->recv_timeout = timeout.toInt();
@@ -79,20 +80,23 @@ QByteArray SoapClient::getFoto(QString rut)
 void SoapClient::actionValidarCasino(Persona *persona,Acceso &acceso, QDateTime dateTime)
 {
     struct soap *soap = soap_new1(SOAP_C_UTFSTRING);
+    soap_set_namespaces(soap,casino_namespaces);
 
     soap->send_timeout = timeout.toInt();
     soap->recv_timeout = timeout.toInt();
 
-    casino::casino1__validar_USCOREcasino* validarCasino = new casino::casino1__validar_USCOREcasino();
-    casino::casino1__validar_USCOREcasinoResponse validarCasinoResponse;
+    casino::ns1__validar_USCOREcasino* validarCasino = new casino::ns1__validar_USCOREcasino();
+    casino::ns1__validar_USCOREcasinoResponse validarCasinoResponse;
 
     QString result = "";
-    QString rut = persona->complete_rut().rightJustified(10,'0');
+    QString rut = persona->rut().length() > 0 ? persona->complete_rut().rightJustified(10,'0') : "";
     QString uuid = persona->uuid();
     int tipoMarca = persona->tipoMarca();
 
     const char* c_endPoint = endPointCasino.toLocal8Bit().constData();
     const char* c_soapAction = soapActionCasinoValidar.toLocal8Bit().constData();
+
+    //soap_set_endpoint();
 
     std::string temp_rut = rut.toStdString();
     std::string temp_usm = usm.toStdString();
@@ -113,37 +117,60 @@ void SoapClient::actionValidarCasino(Persona *persona,Acceso &acceso, QDateTime 
     qDebug() << "idMaquina  : " << QString::fromStdString(temp_usm);
     qDebug() << "rut        : " << QString::fromStdString(temp_rut);
 
-    if (casino::soap_call___casino1__validar_USCOREcasino(soap,c_endPoint,c_soapAction,validarCasino,validarCasinoResponse) == SOAP_OK)
+    if (casino::soap_call___ns1__validar_USCOREcasino(soap,NULL,NULL,validarCasino,validarCasinoResponse) == SOAP_OK)
     {
         std::string* temp_result = validarCasinoResponse.return_;
         result = QString::fromStdString(*temp_result);
         QStringList resultField = result.split(";");
         bool ok;
 
-        // Response sample :
-        // 23;YA USO EL SERVICIO DE ALIMENTACION.....;86;4;0;0184480379;CAROLINA ANDREA ZAMORA CASTRO;YA USO EL SERVICIO DE ALIMENTACION.....;COMEDORUSM
-        // 0;REGISTRO CORRECTO;85;6;0;0193571204;JOSE IGNACIO SEBASTIAN ABARZUA ROJAS;Normal;COMEDORUSM
+        if(resultField.size() >= 7)
+        {
+            // Response sample :
+            // 23;YA USO EL SERVICIO DE ALIMENTACION.....;86;4;0;0184480379;CAROLINA ANDREA ZAMORA CASTRO;YA USO EL SERVICIO DE ALIMENTACION.....;COMEDORUSM
+            // 0;REGISTRO CORRECTO;85;6;0;0193571204;JOSE IGNACIO SEBASTIAN ABARZUA ROJAS;Normal;COMEDORUSM
 
-        int idAuth = resultField.at(0).toInt(&ok);
-        QString textAuth = resultField.at(1);
+            if(tipoMarca == Persona::MARCA_RFID) // Web service response rfid card
+            {
+                int idAuth = resultField.at(0).toInt(&ok);
+                QString textAuth = resultField.at(1);
 
-        int count_casino = resultField.at(2).toInt(&ok);
-        int count_lunch = resultField.at(3).toInt(&ok);
-        int count_dinner = resultField.at(4).toInt(&ok);
+                int count_casino = resultField.at(2).toInt(&ok);
+                int count_lunch = resultField.at(3).toInt(&ok);
+                int count_dinner = resultField.at(4).toInt(&ok);
 
-        QString rut = resultField.at(5).left(resultField.at(2).length()-1);
-        QString dv = resultField.at(5).right(1);
-        QString name = resultField.at(6);
-        QString info_print = resultField.at(7);
-        QString name_cafeteria = resultField.at(8);
+                QString rut = resultField.at(5).left(resultField.at(2).length()-1);
+                QString dv = resultField.at(5).right(1);
+                QString name = resultField.at(6);
+                QString info_print = resultField.at(7);
+                QString name_cafeteria = resultField.at(8);
 
-        while(rut.startsWith("0"))
-            rut = rut.right(rut.length() -1);
+                while(rut.startsWith("0"))
+                    rut = rut.right(rut.length() -1);
 
+                acceso.setIdAuth(idAuth);
+                acceso.setTextAuth(textAuth);
+
+                acceso.setRut(rut);
+                acceso.setDv(dv);
+                acceso.setName(name);
+                acceso.setUuid(uuid);
+
+                qDebug() << "Rut :" << rut;
+                qDebug() << "Dv  :" << dv;
+            }
+
+
+        } else {
+
+            qCritical() << "Web service error : Invalid response";
+        }
 
         qDebug() << "Web Service raw response : " << result;
 
     } else {
+
+        qDebug() << "endPoint" << soap->endpoint;
 
         qCritical() << "Error Web service.";
         this->error(soap);

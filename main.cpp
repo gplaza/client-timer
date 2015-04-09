@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
     bdd.openDatabase();
 
     //Physical Access object :
-    Credencial credencial;
+    Credencial credencial("pn532_spi:/dev/spidev0.0:500000");
     // Fingerprint fingerprint("/dev/ttyAMA0");
 
     //QObject::connect(&fingerprint, &Fingerprint::setTypeEvent, &serviceAccess, &ServiceAccess::setTypeEvent);

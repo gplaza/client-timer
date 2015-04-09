@@ -10,7 +10,7 @@ class Credencial : public Rfid
 {
     Q_OBJECT
 public:
-    Credencial();
+    Credencial(QString conn);
 private:
     QString hexQString_to_RUT(QString hex);
     QString convert_uid(char* string);

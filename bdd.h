@@ -4,6 +4,7 @@
 #include <QtSql>
 #include <QStringList>
 #include <QFile>
+#include <configurator.h>
 #include <acceso.h>
 #include <persona.h>
 

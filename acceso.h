@@ -37,34 +37,41 @@ public:
     QString hash() const;
     void setHash(const QString &);
 
+    QString complete_rut() const;
+
     /*
-    0;registro correcto;rut; fecha;Datos personales; Entrada|salida|evento ;
-    1;Persona ya enrolada;rut;fecha;Datos personales;Persona valida;
-    1;Persona no enrolada;rut;fecha;Datos personales;Persona valida;
-    1; Error en base de datos;rut;fecha; Sin informacion;Modulo principal CA;
-    2; Error en base de datos;rut;fecha; Sin informacion; Tempo;
-    3; Registra evento;rut;fecha; Datos personales; Evento;
-    4; Formato Invalido;rut;fecha; Datos personales; hash|credencial|RFID;
-    5;Persona no existe;rut;fecha; ; Sin informacion; Individuo;
-    6;Persona no ingresada en sistema;rut;fecha; ; Sin informacion; Tempo;
-    6;Persona no ingresada en sistema;rut;fecha; ; Sin informacion; dato;
-    7;Contrato vencido;rut;fecha; Datos personales; fecha contrato;
-    8;No registrado en punto control;rut;fecha; Datos personales; punto control;
-    9;Fuera del horario;rut;fecha; Datos personales; bloque horario asignado;
+      0 : Registro correcto
+      1 : Persona ya enrolada
+      2 : Persona no enrolada
+      3 : Error en base de datos CA
+      4 : Error en base de datos Tempo
+      5 : Registra evento
+      6 : Formato invalido (Hash | Credencial | RFID)
+      7 : Persona no existe
+      8 : Persona no ingresada en Tempo
+      9 : Persona no ingresada en CA
+     10 : Contrato vencido
+     11 : No registrado en punto control
+     12 : Fuera del horario
+     13 : Credencial /huella Inhabilitada
+     14 : Formato tipo marca inválida
+     15 : Sin imagen huella
+     16 : No quedan almuerzos
+     17 : No quedan cenas
+     18 : Fuera de horario
+     19 : No tiene acceso
+     20 : No le quedan almuerzo
+     21 : No registra asistencia
+     22 : Error en base de datos As400
+     23 : Ya uso el servicio de alimentación
+     24 : Persona no existe en AS400
     */
 
     enum ResponseType{
         PERSON_OK = 0,
-        PERSON_FINGERPRINT_STATE = 1,
-        PERSON_REGISTER_EVENT = 3,
-        PERSON_NO_EXIST = 5,
-        PERSON_NO_REGISTERED = 6,
-        PERSON_HOUR_ERROR = 9,
-        PERSON_NO_REGISTERED_IN_AREA = 8,
-        PERSON_EXPIRED = 7
+        PERSON_NO_EXIST = 7,
+        PERSON_NO_LUNCH = 20
     };
-
-    QString complete_rut() const;
 
 private:
     QDateTime m_date;
