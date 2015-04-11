@@ -33,6 +33,8 @@ private:
     QString endPointCasino;
     QString soapActionCasinoValidar;
     QString soapActionCasinoTransaction;
+    QString endPointFoto;
+    QString soapActionFoto;
     QString usm;
 };
 

@@ -15,7 +15,7 @@
 #include <fingerprint.h>
 #include <bdd.h>
 #include <configurator.h>
-
+#include <fotoprovider.h>
 #include <stdsoap2.h>
 
 //#include <QtTest/QTest>
@@ -43,6 +43,8 @@ int main(int argc, char *argv[])
     confs << "endPointCasino";
     confs << "soapActionCasinoValidar";
     confs << "soapActionCasinoTransaction";
+    confs << "endPointFoto";
+    confs << "soapActionFoto";
     confs << "usm";
     confs << "serial";
     confs << "logLevel";
@@ -60,12 +62,6 @@ int main(int argc, char *argv[])
         qDebug() << i.key().leftJustified(30,' ') + " : " << i.value();
     }
 
-    view.setSource(QUrl(QCoreApplication::applicationDirPath() + "/qml/main.qml"));
-    view.show();
-
-    QObject *objectView = view.rootObject();
-
-
     Protector licence(config["serial"]);
 
     if(!licence.isValid())
@@ -75,14 +71,21 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    //Init database;
+    Bdd bdd;
+    bdd.openDatabase();
+
+    //Init UI (warinig : order !!)
+    view.engine()->addImageProvider(QLatin1String("getimagebyrut"), new FotoProvider);
+    view.setSource(QUrl(QCoreApplication::applicationDirPath() + "/qml/main.qml"));
+    QObject *objectView = view.rootObject();
+    view.show();
+
+    //Init Web service component
     SoapClient *soapClient = new SoapClient();
     ServiceAccess serviceAccess(soapClient,objectView);
     Synchroniser sync(soapClient);
     Screen display;
-    Bdd bdd;
-
-    //Init database;
-    bdd.openDatabase();
 
     //Physical Access object :
     Credencial credencial("pn532_spi:/dev/spidev0.0:500000");

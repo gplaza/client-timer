@@ -58,22 +58,15 @@ void Fingerprint::checkFingerTouch()
 void Fingerprint::processDataFingerprint()
 {
     QVariant scanResult = scanFinger();
-    int id = scanResult.toInt();
+    int id = scanResult.toInt(); // TODO: conversion direct QString ??
 
     if(id > -1)
     {
         qDebug() << "Fingerprint finded";
         qDebug() << "User ID : " << id;
 
-        QSqlRecord fingerprint = Bdd::identificationFingerprint(id);
-
-        Persona persona;
-        persona.setRut(fingerprint.value("rut").toString());
-        persona.setDv(fingerprint.value("dv").toString());
-        persona.setUuid(fingerprint.value("hash").toString());
-        persona.setTipoMarca(Persona::MARCA_FINGER);
-
-        emit endReadFingerprint(&persona);
+        QString ident = QString::number(id);
+        emit endReadFingerprint(ident);
         endProcess();
 
     } else {

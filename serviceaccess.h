@@ -29,7 +29,8 @@ signals:
     void hashResponse(Acceso &acceso);
 
 public slots:
-    void check(QObject *object);
+    void check(QString &id);
+    void initUi();
 
 private:
     void finalizeResponse(Acceso &acceso);

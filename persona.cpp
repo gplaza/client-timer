@@ -3,6 +3,7 @@
 Persona::Persona(QObject *parent) : QObject(parent)
 {
     m_foto = QByteArray();
+    m_rut = "";
 }
 
 QString Persona::rut() const

@@ -16,21 +16,17 @@ void Credencial::getInfoTag(MifareTag *tags)
         char* cardId = freefare_get_tag_uid(tag);
         QString uuid = QString::fromLocal8Bit(cardId).toUpper();
 
-        //uuid = "8AE76220";
+        //uuid = "6046A4F9";
+        //uuid = "1CEF4619";
         qDebug() << "UUID : " << uuid;
-
-        Persona persona;
-        persona.setUuid(uuid);
-        persona.setTipoMarca(Persona::MARCA_RFID);
 
         mifare_classic_disconnect(tag);
         freefare_free_tags(tags);
-
-        emit endReadRFID(&persona);
+        emit endReadRFID(uuid);
 
     } else {
 
-        QTimer::singleShot(1500, this, SLOT(WaitForTag()));
+        QTimer::singleShot(1000, this, SLOT(WaitForTag()));
     }
 }
 

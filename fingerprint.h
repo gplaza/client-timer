@@ -29,7 +29,7 @@ public slots:
 
 signals:
     void sendToScreen(const QString &m);
-    void endReadFingerprint(QObject *object);
+    void endReadFingerprint(QString &id);
     void sucessRegister(int idUser);
     void responseRegister(const QString &status, const QString &response);
     void setTypeEvent(int event);

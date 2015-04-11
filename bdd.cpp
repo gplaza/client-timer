@@ -43,28 +43,16 @@ void Bdd::openDatabase()
         createDatabase("/usr/share/nginx/www/protected/data/schema.offline.sql","syncro");
 }
 
-QSqlRecord Bdd::identificationCredencial(Persona *persona)
+QSqlRecord Bdd::identificationCredencial(QString uuid)
 {
     QSqlDatabase db = QSqlDatabase::database("acceso");
     QSqlRecord result;
     QSqlQuery query(db);
 
-    QString sql = "SELECT autorizado,nombre FROM persona WHERE rut=:rut and dv=:dv";
-
-    if(persona->tipoMarca() == 1)
-        sql += " and hash=:hash";
-    if(persona->tipoMarca() == 2)
-        sql += " and uuid=:uuid";
+    QString sql = "SELECT rut,dv,nombre,autorizado,image FROM persona WHERE uuid=:uuid";
 
     query.prepare(sql);
-
-    if(persona->tipoMarca() == 1)
-        query.bindValue(":hash", persona->uuid());
-    if(persona->tipoMarca() == 2)
-        query.bindValue(":uuid", persona->uuid());
-
-    query.bindValue(":rut", persona->rut());
-    query.bindValue(":dv", persona->dv());
+    query.bindValue(":uuid", uuid);
 
     if (!query.exec())
         qCritical() << "Query Error (identificationCredencial) : " << query.lastError();
@@ -89,9 +77,7 @@ QSqlRecord Bdd::identificationFingerprint(int id)
         qCritical() << "Query Error (identificationFingerprint) : " << query.lastError();
 
     if(query.first())
-    {
         result = query.record();
-    }
 
     return result;
 }
@@ -111,6 +97,39 @@ QString Bdd::textAuthentication(Acceso &acceso)
 
     if(query.first())
         result =  query.value(0).toString();
+
+    return result;
+}
+
+void Bdd::setImage(QString rut, QByteArray img)
+{
+    QSqlQuery query(QSqlDatabase::database("acceso"));
+
+    QString sql = "UPDATE persona SET image=:image WHERE rut=:rut;";
+    query.prepare(sql);
+
+    query.bindValue(":image", img);
+    query.bindValue(":rut", rut);
+
+    if (!query.exec())
+        qCritical() << "Query Error (setImage) : " << query.lastError();
+}
+
+QByteArray Bdd::getImage(QString rut)
+{
+    QSqlDatabase db = QSqlDatabase::database("acceso");
+    QByteArray result;
+    QSqlQuery query(db);
+
+    QString sql = "SELECT image FROM persona WHERE rut=:rut";
+    query.prepare(sql);
+    query.bindValue(":rut", rut);
+
+    if (!query.exec())
+        qCritical() << "Query Error (getImage) : " << query.lastError();
+
+    if(query.first())
+        result = query.record().value("image").toByteArray();
 
     return result;
 }

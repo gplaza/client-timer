@@ -31,7 +31,7 @@ include(addon-logger-qt/logger.pri)
 include(addon-fingerprint-qt/fingerprint.pri)
 include(addon-configurator-qt/configurator.pri)
 
-INCLUDEPATH += /mnt/rpi-rootfs/opt/qt5-rpi/include/ /mnt/rpi-rootfs/usr/local/include/
+INCLUDEPATH += /mnt/rpi-rootfs/opt/qt5-rpi/include/ /mnt/rpi-rootfs/usr/local/include/ /mnt/rpi-rootfs/usr/include
 
 qml_folder.source = qml
 DEPLOYMENTFOLDERS = qml_folder
@@ -45,7 +45,8 @@ SOURCES += main.cpp \
     synchroniser.cpp \
     serviceaccess.cpp \
     soapclient.cpp \
-    fingerprint.cpp
+    fingerprint.cpp \
+    fotoprovider.cpp
 
 HEADERS += \
     credencial.h \
@@ -56,7 +57,8 @@ HEADERS += \
     synchroniser.h \
     serviceaccess.h \
     soapclient.h \
-    fingerprint.h
+    fingerprint.h \
+    fotoprovider.h
 
 #-------------
 # Web Service

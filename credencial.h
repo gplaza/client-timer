@@ -2,7 +2,6 @@
 #define CREDENCIAL_H
 #include <QTimer>
 
-#include <persona.h>
 #include <buzzer.h>
 #include <rfid.h>
 

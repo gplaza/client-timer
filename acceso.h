@@ -12,6 +12,9 @@ class Acceso : public QObject
     Q_PROPERTY(QString dv READ dv WRITE setDv)
     Q_PROPERTY(QString name READ name WRITE setName)
     Q_PROPERTY(QString hash READ hash WRITE setHash)
+    Q_PROPERTY(int count_casino READ count_casino WRITE setCount_casino)
+    Q_PROPERTY(int count_lunch READ count_lunch WRITE setCount_lunch)
+    Q_PROPERTY(int count_dinner READ count_dinner WRITE setCount_dinner)
     Q_ENUMS(EventPrint)
 
 public:
@@ -36,6 +39,12 @@ public:
     void setUuid(const QString &);
     QString hash() const;
     void setHash(const QString &);
+    int count_casino();
+    void setCount_casino(int);
+    int count_lunch();
+    void setCount_lunch(int);
+    int count_dinner();
+    void setCount_dinner(int);
 
     QString complete_rut() const;
 
@@ -82,6 +91,10 @@ private:
     QString m_uuid;
     QString m_name;
     QString m_hash;
+
+    int m_count_casino;
+    int m_count_lunch;
+    int m_count_dinner;
 };
 
 #endif // ACCESO_H

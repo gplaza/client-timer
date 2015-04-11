@@ -10,6 +10,8 @@ Acceso::Acceso(QObject *parent) : QObject(parent)
     this->m_date = now;
     this->m_name = "-";
     this->m_hash = ";";
+    this->m_count_lunch = 0;
+    this->m_count_dinner = 0;
 }
 
 QString Acceso::toString() const
@@ -105,4 +107,34 @@ void Acceso::setHash(const QString &h)
 QString Acceso::complete_rut() const
 {
     return m_rut + m_dv;
+}
+
+int Acceso::count_casino()
+{
+    return m_count_casino;
+}
+
+void Acceso::setCount_casino(int i)
+{
+    m_count_casino = i;
+}
+
+int Acceso::count_lunch()
+{
+    return m_count_lunch;
+}
+
+void Acceso::setCount_lunch(int i)
+{
+    m_count_lunch = i;
+}
+
+int Acceso::count_dinner()
+{
+    return m_count_dinner;
+}
+
+void Acceso::setCount_dinner(int i)
+{
+    m_count_dinner = i;
 }

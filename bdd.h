@@ -111,7 +111,7 @@ class Bdd : public QObject
     Q_OBJECT
 public:
     Bdd(QObject *parent = 0);
-    static QSqlRecord identificationCredencial(Persona *persona);
+    static QSqlRecord identificationCredencial(QString uuid);
     static QSqlRecord identificationFingerprint(int id);
     static QString textAuthentication(Acceso &acceso);
     static void saveAccess(Acceso &acceso, Persona &persona);
@@ -124,6 +124,9 @@ public:
     static void updatePersonaByAcceso(Acceso &acceso);
     static void createPersona(Acceso &acceso);
     static bool checkPersona(Persona &persona);
+
+    static QByteArray getImage(QString rut);
+    static void setImage(QString rut, QByteArray img);
 
     void openDatabase();
     bool checkDatabaseFile(const QString &basePath);

@@ -10,15 +10,49 @@ ServiceAccess::ServiceAccess(SoapClient *soapClient,QObject *objectView, QObject
     connect(this, &ServiceAccess::offLine,this, &ServiceAccess::on_offline);
 }
 
-void ServiceAccess::check(QObject *object)
+void ServiceAccess::check(QString &id)
 {
-    Persona *perso = qobject_cast<Persona *>(object);
-    persona.setRut(perso->rut());
-    persona.setUuid(perso->uuid());
-    persona.setDv(perso->dv());
-    persona.setTipoMarca(perso->tipoMarca());
-    persona.setFingerprintID(perso->fingerprintID());
-    persona.setFoto(perso->foto());
+    QObject* obj = sender();
+    const QMetaObject *meta = obj->metaObject();
+    QString caller = QString::fromUtf8(meta->className());
+
+    if(caller == "Credencial")
+    {
+        QSqlRecord record = Bdd::identificationCredencial(id);
+
+        if(!record.isEmpty()) {
+
+            //TODO : nombre,autorizado ??
+
+            persona.setRut(record.value("rut").toString());
+            persona.setDv(record.value("dv").toString());
+            persona.setFoto(record.value("image").toByteArray());
+        }
+
+        persona.setUuid(id);
+        persona.setTipoMarca(Persona::MARCA_RFID);
+    }
+
+    if(caller == "Fingerprint")
+    {
+        int ident = id.toInt();
+        QSqlRecord fingerprint = Bdd::identificationFingerprint(ident);
+
+        persona.setRut(fingerprint.value("rut").toString());
+        persona.setDv(fingerprint.value("dv").toString());
+        persona.setUuid(fingerprint.value("hash").toString());
+        persona.setTipoMarca(Persona::MARCA_FINGER);
+
+        /*
+        Persona *perso = qobject_cast<Persona *>(id);
+        persona.setRut(perso->rut());
+        persona.setUuid(perso->uuid());
+        persona.setDv(perso->dv());
+        persona.setTipoMarca(perso->tipoMarca());
+        persona.setFingerprintID(perso->fingerprintID());
+        persona.setFoto(perso->foto());
+        */
+    }
 
     if(persona.tipoMarca() == Persona::MARCA_RFID)
         LOG_INFO("Intento Acceso     : " + persona.rut() + "-" + persona.dv() + " ID tarjeta : " + persona.uuid() + " Tipo marca : " + QString::number(persona.tipoMarca()));
@@ -51,6 +85,12 @@ void ServiceAccess::on_online()
         emit synchroniseOnLine(acceso,persona);
     }
 
+    if(persona.foto().isEmpty())
+    {
+        QByteArray foto = soapClient->getFoto(acceso.rut());
+        Bdd::setImage(acceso.rut(),foto);
+    }
+
     finalizeResponse(acceso);
 }
 
@@ -58,29 +98,27 @@ void ServiceAccess::on_offline()
 {
     qDebug() << "Offline WebService";
 
-    QSqlRecord credencial = Bdd::identificationCredencial(&persona);
-
     Acceso acceso;
     acceso.setRut(persona.rut());
     acceso.setDv(persona.dv());
     acceso.setUuid(persona.uuid());
     acceso.setDate(QDateTime::currentDateTime());
 
-    if(credencial.isEmpty()) {
+    if(persona.rut().isEmpty()) {
 
         acceso.setIdAuth(Acceso::PERSON_NO_EXIST);
         acceso.setName("No existe");
 
     } else {
 
-        int autorizado = credencial.value("autorizado").toInt();
-        QString nombre = credencial.value("nombre").toString();
+        //int autorizado = credencial.value("autorizado").toInt();
+        //QString nombre = credencial.value("nombre").toString();
 
-        qDebug() << "nombre             :" << nombre;
-        qDebug() << "autorizado         :" << autorizado;
+        //qDebug() << "nombre             :" << nombre;
+        //qDebug() << "autorizado         :" << autorizado;
 
-        acceso.setIdAuth(autorizado);
-        acceso.setName(nombre);
+        //acceso.setIdAuth(autorizado);
+        //acceso.setName(nombre);
     }
 
     acceso.setTextAuth(Bdd::textAuthentication(acceso));
@@ -91,12 +129,22 @@ void ServiceAccess::on_offline()
 
 void ServiceAccess::finalizeResponse(Acceso &acceso)
 {
-
     LOG_INFO("Resultado Acceso   : " + acceso.toString());
     emit sendToScreen(acceso.textAuth());
 
+    QObject *fotoStudent = objectView->findChild<QObject*>("fotoStudent");
+    fotoStudent->setProperty("source", "image://getimagebyrut/" + acceso.rut());
+
+    QObject *lunchInfo = objectView->findChild<QObject*>("lunchInfo");
+    lunchInfo->setProperty("text", "Almuerzos disponibles : " + QString::number(acceso.count_lunch()));
+    QObject *dinnerInfo = objectView->findChild<QObject*>("dinnerInfo");
+    dinnerInfo->setProperty("text", "Cenas disponibles : " + QString::number(acceso.count_dinner()));
+
     if(acceso.idAuth() == Acceso::PERSON_OK)
     {
+        QObject *errorMsg = objectView->findChild<QObject*>("errorMsg");
+        errorMsg->setProperty("text", "");
+
         QString formatedDate = acceso.dateFormated("dd/MM/yy - hh:mm:ss");
         QString name = acceso.name();
 
@@ -108,15 +156,26 @@ void ServiceAccess::finalizeResponse(Acceso &acceso)
         printer.setLine("Tarjeta : " + acceso.uuid());
 
         printer.print();
-    }
 
-    QTimer *timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &ServiceAccess::finished);
-    connect(this, &ServiceAccess::finished, timer, &QTimer::deleteLater);
-    timer->start(1500);
+    } else {
+
+        QString msgPrefix = "Mensaje : ";
+
+        QObject *errorMsg = objectView->findChild<QObject*>("errorMsg");
+        errorMsg->setProperty("text", msgPrefix + acceso.textAuth());
+
+    }
 
     QMetaObject::invokeMethod(objectView,"toggle");
 
-
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &ServiceAccess::finished);
+    connect(timer, &QTimer::timeout, this, &ServiceAccess::initUi);
+    connect(this, &ServiceAccess::finished, timer, &QTimer::deleteLater);
+    timer->start(1000 + 2000);
 }
 
+void ServiceAccess::initUi()
+{
+    QMetaObject::invokeMethod(objectView,"toggle");
+}

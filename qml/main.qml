@@ -5,48 +5,30 @@ import "../qml"
 Item {
 
     id: mainWindow
-    width: 1920
-    height: 1080
+    width: 1024
+    height: 768
 
     function toggle() {
-        if(rot.angle ==0)
-            rot.angle = 180;
-        else
-            rot.angle = 0;
-    }
-
-    function showFront() {
-        rot.angle=0;
-    }
-
-    function showBack() {
-        rot.angle=180;
+        infoUserWindows.flipped = !infoUserWindows.flipped;
     }
 
     Clock {}
 
     Flipable {
+
         id: infoUserWindows
         x:60
         y:50
-        width: 1200  //800
-        height: 600 //430
+        width: 800
+        height: 600
 
-        transform: Rotation {
-            id: rot
-            origin.x: 400;
-            origin.y: 100;
-            axis.x:0; axis.y:1; axis.z:0
-            angle:0
-
-            Behavior on angle { PropertyAnimation{} }
-        }
+        property bool flipped: false
 
         front: Item {
             Rectangle {
                 id: baseFront
-                width: 1200
-                height: 600
+                width: infoUserWindows.width
+                height: infoUserWindows.height
                 color:"white"
                 border.color: "yellowgreen"
                 border.width: 3
@@ -77,16 +59,17 @@ Item {
         back: Item {
 
             transform:Rotation {
-                origin.x: 400;
-                origin.y:100;
+                origin.x: infoUserWindows.width/2 + infoUserWindows.x
+                origin.y: infoUserWindows.height/2 + infoUserWindows.y
                 axis.x:0; axis.y:1; axis.z:0
                 angle:180
             }
 
+
             Rectangle {
-                id:baseBack
-                width: 1200
-                height: 600
+                id: baseBack
+                width: infoUserWindows.width
+                height: infoUserWindows.height
                 color:"white"
                 border.color: "yellowgreen"
                 border.width: 3
@@ -110,19 +93,23 @@ Item {
                 anchors.verticalCenter: baseBack.verticalCenter
                 anchors.right: baseBack.right
                 anchors.rightMargin: 40
+                font.capitalization : Font.AllLowercase
                 color: "red"
                 text: ""
-                font.pointSize: 30
+                font.pointSize: 20
             }
 
+
             Image {
-                id: foto_estudiante
-                x: 15
+                id: fotoStudent
+                objectName: "fotoStudent"
+                anchors.leftMargin: 15
                 anchors.verticalCenter: baseBack.verticalCenter
-                width: 300
-                height: 300
-                source: "images/seba.jpg"
+                width: baseBack.height/3
+                height: baseBack.height/3
+                source: "image://getimagebyrut/16486738"
             }
+
 
             Text {
                 id : lunchInfo
@@ -130,10 +117,10 @@ Item {
                 anchors.top : baseBack.top
                 anchors.topMargin: 30
                 anchors.left: baseBack.left
-                anchors.leftMargin: 250
+                anchors.leftMargin: baseBack.width/7
                 color: "green"
                 text: "Almuerzos disponibles :"
-                font.pointSize: 20
+                font.pointSize: 15
             }
 
             Text {
@@ -142,11 +129,29 @@ Item {
                 anchors.top : baseBack.top
                 anchors.topMargin: 30
                 anchors.right: baseBack.right
-                anchors.rightMargin: 250
+                anchors.rightMargin: baseBack.width/7
                 color: "green"
                 text: "Cenas disponibles :"
-                font.pointSize: 20
+                font.pointSize: 15
             }
+        }
+
+        transform: Rotation {
+            id: rotation
+            origin.x: infoUserWindows.width/2 + infoUserWindows.x
+            origin.y: infoUserWindows.height/2 + infoUserWindows.y
+            axis.x: 0; axis.y: 1; axis.z: 0
+            angle: 0
+        }
+
+        transitions: Transition {
+            NumberAnimation { target: rotation; property: "angle"; duration: 1000 }
+        }
+
+        states: State {
+            name: "back"
+            PropertyChanges { target: rotation; angle: 180 }
+            when: infoUserWindows.flipped
         }
     }
 }
