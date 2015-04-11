@@ -22,3 +22,6 @@
 [submodule "addon-soap-qt"]
 	path = addon-soap-qt
 	url = git@gitlab.development:root/addon-soap-qt.git
+[submodule "addon-printer-qt"]
+	path = addon-printer-qt
+	url = git@gitlab.development:root/addon-printer-qt.git

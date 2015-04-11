@@ -19,9 +19,7 @@ INSTALLS += target
 DEPENDPATH += .
 INCLUDEPATH += .
 
-
-include(3rdparty/Add-on_printer/src/printer.pri)
-
+include(addon-printer-qt/printer.pri)
 include(addon-protector-qt/protector.pri)
 include(addon-display-qt/display.pri)
 include(addon-rfid-qt/rfid.pri)
