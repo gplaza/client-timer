@@ -5,28 +5,28 @@ Item {
     id:root
 
     Rectangle {
-        id:clockBar
+        id: toolBar
         color:"white"
         width: parent.width
         height: parent.height
     }
 
     Image {
-        source :"images/printer_KO.png"
-        width: 50
-        height: 50
 
-        anchors.top : clockBar.top;
-        anchors.right: clockBar.right;
-
-        anchors.rightMargin: 20
+        source :"images/logo_federico.jpeg"
+        width: 225
+        height: 94
+        anchors.top: toolBar.top;
+        anchors.left: toolBar.left;
+        anchors.topMargin: 10
+        anchors.leftMargin: 10
     }
 
     Text {
 
         id: clockText
 
-        property real fontSize: 50
+        property real fontSize: 30
         property real fontScale: 0.5
         property color textColor: "green"
         property string fontFamily: "Times"
@@ -42,16 +42,18 @@ Item {
             var m = d.getMinutes();
             if (mo < 10) mo = "0" + mo;
             if (m < 10) m = "0" + m;
-            return d.getHours() + ":" + m + " " + da + "/" + mo + "/" + y;
+            return d.getHours() + ":" + m + " " + da + "/" + mo + "/" + y; //TODO : hours 2 digit.
         }
 
         color: textColor;
         font.family: fontFamily;
         font.pixelSize: fontSize * fontScale;
 
-        anchors.top : clockBar.top;
-        anchors.right: clockBar.right;
-        anchors.rightMargin: 200
+        anchors.top : toolBar.top;
+        anchors.right: toolBar.right;
+
+        anchors.rightMargin: 70
+        anchors.topMargin: 10
 
         Timer {
             interval: 60000;

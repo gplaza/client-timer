@@ -27,16 +27,11 @@ void Synchroniser::onLine(Acceso &acceso, Persona &persona)
         thread->start();
     }
 
-    bool personExist = (persona.tipoMarca() == Persona::MARCA_FINGER)? true : Bdd::checkPersona(persona);
+    bool personExist = (persona.tipoMarca() == Persona::MARCA_FINGER)? true : Bdd::checkPersona(acceso);
     bool stateCreate = (acceso.idAuth() == Acceso::PERSON_OK || acceso.idAuth() == Acceso::PERSON_NO_LUNCH);
 
-    /*
-    if(personExist && acceso.idAuth() != Acceso::PERSON_OK && acceso.idAuth() != Acceso::PERSON_REGISTER_EVENT)
-    {
-        qDebug() << "Person exist in local database";
+    if(personExist)
         Bdd::updatePersonaByAcceso(acceso);
-    }
-    */
 
     if(!personExist && stateCreate)
         Bdd::createPersona(acceso);

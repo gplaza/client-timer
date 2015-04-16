@@ -17,11 +17,13 @@ void Credencial::getInfoTag(MifareTag *tags)
         QString uuid = QString::fromLocal8Bit(cardId).toUpper();
 
         //uuid = "6046A4F9";
-        //uuid = "1CEF4619";
+        uuid = "94AA723F";
         qDebug() << "UUID : " << uuid;
 
         mifare_classic_disconnect(tag);
         freefare_free_tags(tags);
+        Buzzer::instance()->good();
+
         emit endReadRFID(uuid);
 
     } else {

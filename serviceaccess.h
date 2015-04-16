@@ -27,6 +27,7 @@ signals:
     void synchroniseOnLine(Acceso &acceso, Persona &persona);
     void synchroniseOffLine(Acceso &acceso, Persona &persona);
     void hashResponse(Acceso &acceso);
+    void changeStatus();
 
 public slots:
     void check(QString &id);
@@ -40,6 +41,7 @@ private:
     QObject *objectView;
     QTcpSocket service;
     Persona persona;
+    Printer *printer;
 };
 
 #endif // SERVICEACCESS_H

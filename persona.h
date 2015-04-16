@@ -7,7 +7,6 @@ class Persona : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString rut READ rut WRITE setRut)
-    Q_PROPERTY(QString dv READ dv WRITE setDv)
     Q_PROPERTY(QString uuid READ uuid WRITE setUuid)
     Q_PROPERTY(QString hash READ hash WRITE setHash)
     Q_PROPERTY(int tipoMarca READ tipoMarca WRITE setTipoMarca)
@@ -19,13 +18,11 @@ public:
 
     QString rut() const;
     void setRut(const QString &);
-    QString dv() const;
-    void setDv(const QString &);
     QString uuid() const;
     void setUuid(const QString &);
     QString hash() const;
     void setHash(const QString &);
-    QString complete_rut() const;
+    QString formated_rut() const;
     void setTipoMarca(int tipoMarca);
     int tipoMarca();
     void setFingerprintID(int fingerprintID);
@@ -43,7 +40,6 @@ public:
 
 private:
     QString m_rut;
-    QString m_dv;
     QString m_uuid;
     QString m_hash;
     QByteArray m_foto;

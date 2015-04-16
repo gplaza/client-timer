@@ -9,18 +9,19 @@ class Acceso : public QObject
     Q_PROPERTY(int idAuth READ idAuth WRITE setIdAuth)
     Q_PROPERTY(QString textAuth READ textAuth WRITE setTextAuth)
     Q_PROPERTY(QString rut READ rut WRITE setRut)
-    Q_PROPERTY(QString dv READ dv WRITE setDv)
     Q_PROPERTY(QString name READ name WRITE setName)
     Q_PROPERTY(QString hash READ hash WRITE setHash)
     Q_PROPERTY(int count_casino READ count_casino WRITE setCount_casino)
     Q_PROPERTY(int count_lunch READ count_lunch WRITE setCount_lunch)
     Q_PROPERTY(int count_dinner READ count_dinner WRITE setCount_dinner)
+    Q_PROPERTY(QString info_print READ info_print WRITE setInfo_print)
     Q_ENUMS(EventPrint)
 
 public:
     explicit Acceso(QObject *parent = 0);
 
     QString dateFormated(const QString &format);
+    QString rutFormated();
     QString toString() const;
 
     QDateTime date() const;
@@ -33,8 +34,6 @@ public:
     void setName(const QString &);
     QString rut() const;
     void setRut(const QString &);
-    QString dv() const;
-    void setDv(const QString &);
     QString uuid() const;
     void setUuid(const QString &);
     QString hash() const;
@@ -45,8 +44,8 @@ public:
     void setCount_lunch(int);
     int count_dinner();
     void setCount_dinner(int);
-
-    QString complete_rut() const;
+    QString info_print() const;
+    void setInfo_print(const QString &);
 
     /*
       0 : Registro correcto
@@ -87,7 +86,6 @@ private:
     int m_idAuth;
     QString m_textAuth;
     QString m_rut;
-    QString m_dv;
     QString m_uuid;
     QString m_name;
     QString m_hash;
@@ -95,6 +93,7 @@ private:
     int m_count_casino;
     int m_count_lunch;
     int m_count_dinner;
+    QString m_info_print;
 };
 
 #endif // ACCESO_H

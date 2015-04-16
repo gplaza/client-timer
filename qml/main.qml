@@ -12,15 +12,41 @@ Item {
         infoUserWindows.flipped = !infoUserWindows.flipped;
     }
 
-    Clock {}
+    function changeStatusPrinter(status) {
+        console.log(status);
+        statusPrinter.source = (status)? "images/printer_OK.png" : "images/printer_KO.png";
+        statusPrinter.update();
+    }
+
+    ToolBar {
+
+        id : toolbarObject
+        anchors.right: parent.right
+        width: parent.width
+        height: 50
+
+        Image {
+            id : statusPrinter
+            source :"images/printer_OK.png"
+            objectName: "statusPrinter"
+            cache: false
+            width: 30
+            height: 30
+            anchors.top : parent.top;
+            anchors.right: parent.right;
+            anchors.topMargin: 10
+            anchors.rightMargin: 10
+        }
+    }
 
     Flipable {
 
         id: infoUserWindows
-        x:60
-        y:50
-        width: 800
-        height: 600
+        x: 10
+        anchors.bottom: mainWindow.bottom
+        anchors.bottomMargin: mainWindow.height / 15
+        width: mainWindow.width / 1.5
+        height: mainWindow.height / 1.3
 
         property bool flipped: false
 
@@ -40,7 +66,8 @@ Item {
 
                 anchors.horizontalCenter: baseFront.horizontalCenter
                 anchors.top : baseFront.top
-                font.pointSize: 40
+                anchors.topMargin: 10
+                font.pointSize: mainWindow.width / 34
                 styleColor: "yellowgreen"
                 style: Text.Outline
                 text: "Bienvenido/a"
@@ -50,8 +77,8 @@ Item {
                 id: saver
                 anchors.verticalCenter: baseFront.verticalCenter
                 anchors.horizontalCenter: baseFront.horizontalCenter
-                width: 378
-                height: 284
+                width: baseFront.width/ 1.5
+                height: baseFront.width/ 1.5
                 source: "images/saver_alt.jpg"
             }
         }
@@ -87,29 +114,50 @@ Item {
                 source: errorMsg
             }
 
+            Image {
+                id: fotoStudent
+                objectName: "fotoStudent"
+                anchors.left: baseBack.left
+                anchors.verticalCenter: baseBack.verticalCenter
+                anchors.leftMargin: 15
+                width: baseBack.height/3
+                height: baseBack.height/3
+                source: "image://getimagebyrut/16486738"
+            }
+
             Text {
                 id : errorMsg
                 objectName: "errorMsg"
+                width : baseBack.width - (10 + fotoStudent.width + 10)
                 anchors.verticalCenter: baseBack.verticalCenter
-                anchors.right: baseBack.right
-                anchors.rightMargin: 40
+                anchors.left : fotoStudent.right
+                anchors.leftMargin: 10
+                wrapMode: Text.WordWrap
                 font.capitalization : Font.AllLowercase
                 color: "red"
                 text: ""
                 font.pointSize: 20
             }
 
-
-            Image {
-                id: fotoStudent
-                objectName: "fotoStudent"
-                anchors.leftMargin: 15
-                anchors.verticalCenter: baseBack.verticalCenter
-                width: baseBack.height/3
-                height: baseBack.height/3
-                source: "image://getimagebyrut/16486738"
+            Text {
+                id : rut
+                objectName: "rutText"
+                anchors.top : fotoStudent.bottom
+                anchors.horizontalCenter: fotoStudent.horizontalCenter
+                anchors.topMargin: 15
+                text: ""
+                color: "green"
             }
 
+            Text {
+                id : name
+                objectName: "nameText"
+                anchors.top : rut.bottom
+                anchors.left: rut.left
+                anchors.topMargin: 10
+                text: ""
+                color: "green"
+            }
 
             Text {
                 id : lunchInfo

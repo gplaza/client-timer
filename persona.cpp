@@ -16,16 +16,6 @@ void Persona::setRut(const QString &r)
     m_rut = r;
 }
 
-QString Persona::dv() const
-{
-    return m_dv;
-}
-
-void Persona::setDv(const QString &d)
-{
-    m_dv = d;
-}
-
 QString Persona::uuid() const
 {
     return m_uuid;
@@ -44,11 +34,6 @@ QString Persona::hash() const
 void Persona::setHash(const QString &h)
 {
     m_hash = h;
-}
-
-QString Persona::complete_rut() const
-{
-    return m_rut + m_dv;
 }
 
 void Persona::setTipoMarca(int tipoMarca)
@@ -85,7 +70,7 @@ QTextStream& operator<< (QTextStream &stream, const Persona &persona)
 {
     QStringList sl;
 
-    sl << persona.rut() << persona.dv() << persona.uuid();
+    sl << persona.rut() << persona.uuid();
     stream << sl.join(";") << "\n";
 
     return stream;
@@ -97,7 +82,6 @@ QTextStream& operator>> (QTextStream &stream, Persona &persona)
     QStringList fields = line.split(";");
 
     persona.setRut(fields[0]);
-    persona.setDv(fields[1]);
     persona.setUuid(fields[2]);
 
     return stream;

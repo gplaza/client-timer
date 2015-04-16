@@ -8,15 +8,16 @@ Acceso::Acceso(QObject *parent) : QObject(parent)
     this->m_uuid = "-";
     this->m_textAuth = "WebService Error";
     this->m_date = now;
-    this->m_name = "-";
+    this->m_name = "";
     this->m_hash = ";";
+    this->m_info_print = "";
     this->m_count_lunch = 0;
     this->m_count_dinner = 0;
 }
 
 QString Acceso::toString() const
 {
-    return QString::number(m_idAuth) + ";" + textAuth() + ";" + m_rut + "-" + m_dv + ";" + m_date.toString("ddd MMM dd hh:mm:ss yyyy") + ";" + m_name;
+    return QString::number(m_idAuth) + ";" + textAuth() + ";" + m_rut + ";" + m_date.toString("ddd MMM dd hh:mm:ss yyyy") + ";" + m_name;
 }
 
 QDateTime Acceso::date() const
@@ -27,6 +28,11 @@ QDateTime Acceso::date() const
 QString Acceso::dateFormated(const QString &format)
 {
     return m_date.toString(format);
+}
+
+QString Acceso::rutFormated()
+{
+    return m_rut.mid(0,m_rut.length() - 7) + '.' + m_rut.mid(m_rut.length() - 7,3) + '.' + m_rut.mid(m_rut.length() - 4,3) +  "-" + m_rut.right(1);
 }
 
 void Acceso::setDate(const QDateTime &d)
@@ -74,16 +80,6 @@ void Acceso::setRut(const QString &r)
     m_rut = r;
 }
 
-QString Acceso::dv() const
-{
-    return m_dv;
-}
-
-void Acceso::setDv(const QString &d)
-{
-    m_dv = d;
-}
-
 QString Acceso::uuid() const
 {
     return m_uuid;
@@ -102,11 +98,6 @@ QString Acceso::hash() const
 void Acceso::setHash(const QString &h)
 {
     m_hash = h;
-}
-
-QString Acceso::complete_rut() const
-{
-    return m_rut + m_dv;
 }
 
 int Acceso::count_casino()
@@ -137,4 +128,14 @@ int Acceso::count_dinner()
 void Acceso::setCount_dinner(int i)
 {
     m_count_dinner = i;
+}
+
+QString Acceso::info_print() const
+{
+    return m_info_print;
+}
+
+void Acceso::setInfo_print(const QString &ip)
+{
+    m_info_print = ip;
 }

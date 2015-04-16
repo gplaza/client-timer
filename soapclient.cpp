@@ -51,6 +51,7 @@ QByteArray SoapClient::getFoto(QString rut)
     foto::foto1__obtenerFoto* obtenerFoto = new foto::foto1__obtenerFoto();
     foto::foto1__obtenerFotoResponse obtenerFotoResponse;
 
+    rut = rut.left(rut.length() - 1);
     std::string temp_rut = rut.toStdString();
     obtenerFoto->rut = &temp_rut;
 
@@ -101,7 +102,7 @@ void SoapClient::actionValidarCasino(Persona *persona,Acceso &acceso, QDateTime 
     casino::ns1__validar_USCOREcasinoResponse validarCasinoResponse;
 
     QString result = "";
-    QString rut = persona->rut().length() > 0 ? persona->complete_rut().rightJustified(10,'0') : "";
+    QString rut = persona->rut().length() > 0 ? persona->rut().rightJustified(10,'0') : "";
     QString uuid = persona->uuid();
     int tipoMarca = persona->tipoMarca();
 
@@ -146,45 +147,40 @@ void SoapClient::actionValidarCasino(Persona *persona,Acceso &acceso, QDateTime 
             // 7;Persona no existe;0;0;0;;;Sin impresión;credencial no existe
             // 24;NO EXISTE;58;No;No;04444444404;No No No;NO EXISTE;COMEDORUSM
 
-            if(tipoMarca == Persona::MARCA_RFID) // Web service response rfid card
-            {
-                int idAuth = resultField.at(0).toInt(&ok);
-                QString textAuth = resultField.at(1);
+            int idAuth = resultField.at(0).toInt(&ok);
+            QString textAuth = resultField.at(1);
 
-                int count_casino = resultField.at(2).toInt(&ok);
-                int count_lunch = resultField.at(3).toInt(&ok);
-                int count_dinner = resultField.at(4).toInt(&ok);
+            int count_casino = resultField.at(2).toInt(&ok);
+            int count_lunch = resultField.at(3).toInt(&ok);
+            int count_dinner = resultField.at(4).toInt(&ok);
 
-                QString rut = resultField.at(5).left(resultField.at(5).length()-1);
-                QString dv = resultField.at(5).right(1);
+            QString rut = resultField.at(5);
 
-                QString name = "";
-                QString info_print = "";
-                QString name_cafeteria = "";
+            QString name = "";
+            QString info_print = "";
+            QString name_cafeteria = "";
 
-                if(resultField.size() >= 6)
-                    name = resultField.at(6);
-                if(resultField.size() >= 7)
-                    info_print= resultField.at(7);
-                if(resultField.size() >= 8)
-                    name_cafeteria= resultField.at(8);
+            if(resultField.size() >= 6)
+                name = resultField.at(6);
+            if(resultField.size() >= 7)
+                info_print= resultField.at(7);
+            if(resultField.size() >= 8)
+                name_cafeteria= resultField.at(8);
 
-                while(rut.startsWith("0"))
-                    rut = rut.right(rut.length() -1);
+            while(rut.startsWith("0"))
+                rut = rut.right(rut.length() -1);
 
-                acceso.setIdAuth(idAuth);
-                acceso.setTextAuth(textAuth);
+            acceso.setIdAuth(idAuth);
+            acceso.setTextAuth(textAuth);
 
-                acceso.setRut(rut);
-                acceso.setDv(dv);
-                acceso.setName(name);
-                acceso.setUuid(uuid);
+            acceso.setRut(rut);
+            acceso.setName(name);
+            acceso.setUuid(uuid);
 
-                acceso.setCount_casino(count_casino);
-                acceso.setCount_lunch(count_lunch);
-                acceso.setCount_dinner(count_dinner);
-            }
-
+            acceso.setCount_casino(count_casino);
+            acceso.setCount_lunch(count_lunch);
+            acceso.setCount_dinner(count_dinner);
+            acceso.setInfo_print(info_print);
 
         } else {
 
@@ -255,7 +251,6 @@ bool SoapClient::action(Acceso *acceso)
     Persona persona;
 
     persona.setRut(acceso->rut());
-    persona.setDv(acceso->dv());
     persona.setUuid(acceso->uuid());
     // persona.setTipoMarca(acceso->event().toInt());
 
