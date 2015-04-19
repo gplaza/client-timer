@@ -113,14 +113,16 @@ public:
     Bdd(QObject *parent = 0);
 
     static QSqlRecord identificationCredencial(QString uuid);
-    static QSqlRecord identificationFingerprint(int id);
+    static QSqlRecord identificationFingerprint(QString id);
     static QSqlRecord identificationOffline(QString rut);
 
     static QString textAuthentication(Acceso &acceso);
+
+    // BDD control Syncro
     static void saveAccess(Acceso &acceso, Persona &persona);
     static void registerAccess(int ErrorType = 0);
-    static void deleteAccess(Acceso *acceso);
-    static Acceso *syncAccess();
+    static void deleteAccess(Persona &persona, QDateTime date);
+    static QDateTime syncAccess(Persona &persona);
     static bool checkOfflineData();
 
     static void updatePersona(Persona &persona);

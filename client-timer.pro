@@ -30,6 +30,7 @@ include(addon-fingerprint-qt/fingerprint.pri)
 include(addon-configurator-qt/configurator.pri)
 
 INCLUDEPATH += /mnt/rpi-rootfs/opt/qt5-rpi/include/ /mnt/rpi-rootfs/usr/local/include/ /mnt/rpi-rootfs/usr/include
+QML_IMPORT_PATH = qml qml/jbQuick/Charts
 
 qml_folder.source = qml
 DEPLOYMENTFOLDERS = qml_folder
@@ -44,6 +45,7 @@ SOURCES += main.cpp \
     serviceaccess.cpp \
     soapclient.cpp \
     fingerprint.cpp \
+    configuratoradapter.cpp \
     fotoprovider.cpp
 
 HEADERS += \
@@ -56,6 +58,7 @@ HEADERS += \
     serviceaccess.h \
     soapclient.h \
     fingerprint.h \
+    configuratoradapter.h \
     fotoprovider.h
 
 #-------------

@@ -15,6 +15,7 @@ public:
     SynchroWorker(SoapClient *soapClient)
     {
         this->soapClient = soapClient;
+        this->soapClient->init();
     }
 
     ~SynchroWorker()
@@ -25,18 +26,23 @@ public:
 public slots:
     void process()
     {
-        Acceso *acceso = new Acceso();
-        acceso = Bdd::syncAccess();
+        Persona persona;
+        QDateTime date = Bdd::syncAccess(persona);
 
-        while(!acceso->uuid().isEmpty())
+        while(!date.isNull())
         {
-            soapClient->action(acceso);
+            Acceso acceso;
+            bool result = soapClient->syncro(&persona,acceso,date);
 
-            if (acceso->idAuth() == -1)
+            if(!result)
                 break;
 
-            Bdd::deleteAccess(acceso);
-            acceso = Bdd::syncAccess();
+            qDebug() << acceso.count_casino();
+            qDebug() << acceso.count_lunch();
+            qDebug() << acceso.count_dinner();
+
+            Bdd::deleteAccess(persona, date);
+            date = Bdd::syncAccess(persona);
         }
 
         emit finished();

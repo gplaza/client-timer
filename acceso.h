@@ -15,7 +15,6 @@ class Acceso : public QObject
     Q_PROPERTY(int count_lunch READ count_lunch WRITE setCount_lunch)
     Q_PROPERTY(int count_dinner READ count_dinner WRITE setCount_dinner)
     Q_PROPERTY(QString info_print READ info_print WRITE setInfo_print)
-    Q_ENUMS(EventPrint)
 
 public:
     explicit Acceso(QObject *parent = 0);
@@ -78,7 +77,9 @@ public:
     enum ResponseType{
         PERSON_OK = 0,
         PERSON_NO_EXIST = 7,
-        PERSON_NO_LUNCH = 20
+        PERSON_CRED_NO_EXIST = 24,
+        PERSON_NO_LUNCH = 20,
+        PERSON_SERVICE_USED = 23
     };
 
 private:

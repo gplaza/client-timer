@@ -63,12 +63,12 @@ QSqlRecord Bdd::identificationCredencial(QString uuid)
     return result;
 }
 
-QSqlRecord Bdd::identificationFingerprint(int id)
+QSqlRecord Bdd::identificationFingerprint(QString id)
 {
     QSqlQuery query(QSqlDatabase::database("acceso"));
     QSqlRecord result;
 
-    QString sql = "SELECT hash,rut,dv,nombre FROM persona WHERE id_huella=:id_huella";
+    QString sql = "SELECT hash, rut, nombre FROM persona WHERE id_huella=:id_huella";
 
     query.prepare(sql);
     query.bindValue(":id_huella", id);
@@ -170,14 +170,13 @@ void Bdd::saveAccess(Acceso &acceso, Persona &persona)
     QString sql = "";
 
     if(persona.tipoMarca() == Persona::MARCA_FINGER)
-        sql += "INSERT INTO acceso(uuid, rut, dispo, tipoMarca, fecha) VALUES (:uuid, :rut, :dispo, :tipoMarca, :fecha);";
+        sql += "INSERT INTO acceso(uuid, rut, tipoMarca, fecha) VALUES (:uuid, :rut, :tipoMarca, :fecha);";
     if(persona.tipoMarca() == Persona::MARCA_RFID)
-        sql += "INSERT INTO acceso(uuid, dispo, tipoMarca, fecha) VALUES (:uuid, :dispo, :tipoMarca, :fecha);";
+        sql += "INSERT INTO acceso(uuid, tipoMarca, fecha) VALUES (:uuid, :tipoMarca, :fecha);";
 
     query.prepare(sql);
 
     query.bindValue(":uuid", persona.uuid());
-    query.bindValue(":dispo", Configurator::instance()->getConfig("usm"));
     query.bindValue(":fecha", acceso.dateFormated("yyyy-MM-dd hh:mm:ss"));
     query.bindValue(":tipoMarca", persona.tipoMarca());
 
@@ -188,16 +187,40 @@ void Bdd::saveAccess(Acceso &acceso, Persona &persona)
         qCritical() << "Query Error (SaveAccess) : " << query.lastError();
 }
 
-void Bdd::deleteAccess(Acceso *acceso)
+QDateTime Bdd::syncAccess(Persona &persona)
+{
+    QSqlQuery query(QSqlDatabase::database("syncro"));
+    QDateTime date;
+
+    if (!query.exec("SELECT fecha, tipoMarca, uuid, rut FROM acceso ORDER BY fecha LIMIT 1"))
+        qCritical() << "Query Error (syncAccess) : " << query.lastError();
+
+    if(query.first())
+    {
+        QSqlRecord access = query.record();
+
+        date = QDateTime::fromString(access.value("fecha").toString(),"yyyy-MM-dd hh:mm:ss");
+        int tipoMarca = access.value("tipoMarca").toInt();
+        QString uuid = access.value("uuid").toString();
+        QString rut = access.value("rut").toString();
+
+        persona.setRut(rut);
+        persona.setUuid(uuid);
+        persona.setTipoMarca(tipoMarca);
+    }
+
+    return date;
+}
+
+void Bdd::deleteAccess(Persona &persona, QDateTime date)
 {
     QSqlQuery query(QSqlDatabase::database("syncro"));
 
-    QString sql = "DELETE FROM acceso WHERE fecha=:fecha AND uuid=:uuid AND rut=:rut AND dv=:dv;";
+    QString sql = "DELETE FROM acceso WHERE fecha=:fecha AND tipoMarca=:tipoMarca;";
     query.prepare(sql);
 
-    query.bindValue(":fecha", acceso->dateFormated("yyyy-MM-dd hh:mm:ss"));
-    query.bindValue(":uuid", acceso->uuid());
-    query.bindValue(":rut", acceso->rut());
+    query.bindValue(":fecha", date.toString("yyyy-MM-dd hh:mm:ss"));
+    query.bindValue(":tipoMarca", persona.tipoMarca());
 
     if (!query.exec())
         qCritical() << "Query Error (deleteAccess) : " << query.lastError();
@@ -271,7 +294,7 @@ void Bdd::updatePersonaByAcceso(Acceso &acceso)
 
     qDebug() << "Update Data persona";
 
-    QString sql = "UPDATE persona SET autorizado=:autorizado, nombre=:nombre, count_lunch=:count_lunch, count_dinner=:count_dinner";
+    QString sql = "UPDATE persona SET autorizado=:autorizado, count_lunch=:count_lunch, count_dinner=:count_dinner";
     sql += updateUUID? ", uuid=:uuid" : "";
     sql += " WHERE rut=:rut;";
     query.prepare(sql);
@@ -280,40 +303,13 @@ void Bdd::updatePersonaByAcceso(Acceso &acceso)
         query.bindValue(":uuid", acceso.uuid());
 
     query.bindValue(":autorizado", acceso.idAuth());
-    query.bindValue(":nombre", acceso.name());
-    query.bindValue(":rut", acceso.rut());
-
     query.bindValue(":count_lunch", acceso.count_lunch());
     query.bindValue(":count_dinner",acceso.count_dinner());
 
+    query.bindValue(":rut", acceso.rut());
+
     if (!query.exec())
         qCritical() << "Query Error (updatePersonaByAcceso.update) : " << query.lastError();
-}
-
-Acceso* Bdd::syncAccess()
-{
-    QSqlQuery query(QSqlDatabase::database("syncro"));
-
-    if (!query.exec("SELECT fecha, tipoMarca, uuid, rut FROM acceso ORDER BY fecha LIMIT 1"))
-        qCritical() << "Query Error (checkOfflineData) : " << query.lastError();
-
-    Acceso *acceso = new Acceso;
-
-    if(query.first())
-    {
-        QSqlRecord access = query.record();
-
-        QDateTime date = QDateTime::fromString(access.value("fecha").toString(),"yyyy-MM-dd hh:mm:ss");
-        QString tipoMarca = access.value("tipoMarca").toString();
-        QString uuid = access.value("uuid").toString();
-        QString rut = access.value("rut").toString();
-
-        acceso->setDate(date);
-        acceso->setUuid(uuid);
-        acceso->setRut(rut);
-    }
-
-    return acceso;
 }
 
 bool Bdd::checkDatabaseFile(const QString &basePath)

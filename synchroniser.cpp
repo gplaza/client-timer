@@ -28,7 +28,7 @@ void Synchroniser::onLine(Acceso &acceso, Persona &persona)
     }
 
     bool personExist = (persona.tipoMarca() == Persona::MARCA_FINGER)? true : Bdd::checkPersona(acceso);
-    bool stateCreate = (acceso.idAuth() == Acceso::PERSON_OK || acceso.idAuth() == Acceso::PERSON_NO_LUNCH);
+    bool stateCreate = (acceso.idAuth() == Acceso::PERSON_OK || acceso.idAuth() == Acceso::PERSON_NO_LUNCH || acceso.idAuth() == Acceso::PERSON_SERVICE_USED);
 
     if(personExist)
         Bdd::updatePersonaByAcceso(acceso);

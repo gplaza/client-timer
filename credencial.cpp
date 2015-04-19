@@ -17,7 +17,8 @@ void Credencial::getInfoTag(MifareTag *tags)
         QString uuid = QString::fromLocal8Bit(cardId).toUpper();
 
         //uuid = "6046A4F9";
-        uuid = "94AA723F";
+
+        uuid = "7C81A719";
         qDebug() << "UUID : " << uuid;
 
         mifare_classic_disconnect(tag);

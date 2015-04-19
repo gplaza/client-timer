@@ -58,7 +58,7 @@ void Fingerprint::checkFingerTouch()
 void Fingerprint::processDataFingerprint()
 {
     QVariant scanResult = scanFinger();
-    int id = scanResult.toInt(); // TODO: conversion direct QString ??
+    int id = scanResult.toInt();
 
     if(id > -1)
     {
@@ -66,13 +66,14 @@ void Fingerprint::processDataFingerprint()
         qDebug() << "User ID : " << id;
 
         QString ident = QString::number(id);
+        Buzzer::instance()->good();
         emit endReadFingerprint(ident);
         endProcess();
 
     } else {
 
         emit sendToScreen("Huella desconocida");
-        Piezo::instance()->bad();
+        Buzzer::instance()->bad();
         emit cancel();
     }
 }

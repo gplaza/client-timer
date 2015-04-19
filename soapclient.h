@@ -18,11 +18,8 @@ class SoapClient : public QObject
     Q_OBJECT
 public:
     explicit SoapClient(QObject *parent = 0);
-    bool action(Acceso *acceso);
     bool init();
-    void action(Persona *persona, Acceso &acceso, QDateTime dateTime = QDateTime::currentDateTime());
-    QString action(QString rut, QString dv, QString id, QDateTime dateTime = QDateTime::currentDateTime());
-
+    bool syncro(Persona *persona,Acceso &acceso, QDateTime dateTime);
     void actionValidarCasino(Persona *persona, Acceso &acceso, QDateTime dateTime = QDateTime::currentDateTime());
 
     QByteArray getFoto(QString rut);

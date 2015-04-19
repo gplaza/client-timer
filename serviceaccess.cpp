@@ -43,7 +43,7 @@ void ServiceAccess::check(QString &id)
             if(!record.isEmpty()) {
 
                 persona.setRut(record.value("rut").toString());
-                persona.setFoto(record.value("image").toByteArray());
+                persona.setFoto(record.value("image").toByteArray()); //TODO foto vide ??
             }
 
             persona.setUuid(id);
@@ -52,8 +52,7 @@ void ServiceAccess::check(QString &id)
 
         if(caller == "Fingerprint")
         {
-            int ident = id.toInt();
-            QSqlRecord fingerprint = Bdd::identificationFingerprint(ident);
+            QSqlRecord fingerprint = Bdd::identificationFingerprint(id);
 
             persona.setRut(fingerprint.value("rut").toString());
             persona.setUuid(fingerprint.value("hash").toString());
@@ -85,7 +84,6 @@ void ServiceAccess::on_online()
 
     Acceso acceso;
 
-
     soapClient->actionValidarCasino(&persona,acceso);
 
     if(acceso.idAuth() == -1)
@@ -99,10 +97,10 @@ void ServiceAccess::on_online()
         emit synchroniseOnLine(acceso,persona);
     }
 
-    if(persona.foto().isEmpty())
-    {
+    if(persona.foto().isEmpty() && acceso.idAuth() != Acceso::PERSON_NO_EXIST && acceso.idAuth() != Acceso::PERSON_CRED_NO_EXIST) {
         QByteArray foto = soapClient->getFoto(acceso.rut());
-        Bdd::setImage(acceso.rut(),foto);
+        if(!foto.isEmpty())
+            Bdd::setImage(acceso.rut(),foto);
     }
 
     finalizeResponse(acceso);
@@ -143,7 +141,7 @@ void ServiceAccess::on_offline()
 
 void ServiceAccess::finalizeResponse(Acceso &acceso)
 {
-    LOG_INFO("Resultado Acceso   : " + acceso.toString());
+    LOG_INFO("Resultado Local : " + acceso.toString());
     emit sendToScreen(acceso.textAuth());
 
     QObject *fotoStudent = objectView->findChild<QObject*>("fotoStudent");
@@ -164,6 +162,13 @@ void ServiceAccess::finalizeResponse(Acceso &acceso)
 
     if(!acceso.rut().isEmpty())
 
+        // TODO : what state show counter casino ?
+        if(acceso.idAuth() == Acceso::PERSON_OK || acceso.idAuth() == Acceso::PERSON_SERVICE_USED || acceso.idAuth() == Acceso::PERSON_NO_LUNCH)
+        {
+            QObject *casinoCount = objectView->findChild<QObject*>("casinoCount");
+            casinoCount->setProperty("text", acceso.count_casino());
+        }
+
         if(acceso.idAuth() == Acceso::PERSON_OK)
         {
             QObject *errorMsg = objectView->findChild<QObject*>("errorMsg");
@@ -175,15 +180,15 @@ void ServiceAccess::finalizeResponse(Acceso &acceso)
             printer->setLine(" UTFSM USM:" + Configurator::instance()->getConfig("usm"));
             printer->setLine("Fecha    : " + formatedDate);
             printer->setLine("Nombre   : " + name.leftJustified(31, ' ', true));
-            printer->setLine("RUT/Tip. : " + acceso.rutFormated() + '/' + acceso.info_print());
+            printer->setLine("RUT/Tip. : " + acceso.rutFormated() + ' ' + acceso.info_print());
 
-           // Linea 1: UTFSM [nombre Campus] [Número dispositivo] [Nombre dispositivo]
-           // Linea 2: Fecha y hora de la transacción
-           // Linea 3: [Nombre y apellidos de la persona.]
-           // Linea 4: [Rut  y Tipo usuario.]
-           // Linea 5 : [Tipo Beca]
+            // Linea 1: UTFSM [nombre Campus] [Número dispositivo] [Nombre dispositivo]
+            // Linea 2: Fecha y hora de la transacción
+            // Linea 3: [Nombre y apellidos de la persona.]
+            // Linea 4: [Rut  y Tipo usuario.]
+            // Linea 5 : [Tipo Beca]
 
-           printer->print();
+            printer->print();
 
         } else {
 

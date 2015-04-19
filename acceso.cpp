@@ -17,7 +17,9 @@ Acceso::Acceso(QObject *parent) : QObject(parent)
 
 QString Acceso::toString() const
 {
-    return QString::number(m_idAuth) + ";" + textAuth() + ";" + m_rut + ";" + m_date.toString("ddd MMM dd hh:mm:ss yyyy") + ";" + m_name;
+    return QString::number(m_idAuth) + ";" + textAuth() + ";" +
+            QString::number(m_count_casino) +  ";" + QString::number(m_count_lunch) + ";" + QString::number(m_count_dinner) + ";" +
+            m_rut + ";" + m_name + ";" + m_info_print + ";" + m_date.toString("ddd MMM dd hh:mm:ss yyyy");
 }
 
 QDateTime Acceso::date() const

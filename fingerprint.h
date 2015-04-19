@@ -2,7 +2,7 @@
 #define FINGERPRINT_H
 
 #include <persona.h>
-#include <piezo.h>
+#include <buzzer.h>
 #include <secugen_sda04.h>
 #include <serviceaccess.h>
 #include <bdd.h>

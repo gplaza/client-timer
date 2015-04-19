@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import "../qml"
+import jbQuick.Charts 1.0
 
 Item {
 
@@ -16,6 +17,89 @@ Item {
         console.log(status);
         statusPrinter.source = (status)? "images/printer_OK.png" : "images/printer_KO.png";
         statusPrinter.update();
+    }
+
+    /*
+      see : http://jwintz.me/blog/2014/02/15/qchart-dot-js-qml-binding-for-chart-dot-js/
+    Chart {
+        id : hcrat_line
+        width : 400
+        height : 400
+        anchors.right: mainWindow.right
+        chartAnimated : false
+        chartAnimationEasing: Easing.InOutElastic
+        chartAnimationDuration: 2000
+        chartType: Charts.ChartType.LINE
+        Component.onCompleted: {
+            chartData = [
+                        {
+                            label: "My First dataset",
+                            fillColor: "rgba(220,220,220,0.2)",
+                            strokeColor: "rgba(220,220,220,1)",
+                            pointColor: "rgba(220,220,220,1)",
+                            pointStrokeColor: "#fff",
+                            pointHighlightFill: "#fff",
+                            pointHighlightStroke: "rgba(220,220,220,1)",
+                            data: [65, 59, 80, 81, 56, 55, 40]
+                        }
+                    ]
+        }
+    }*/
+
+    Rectangle {
+
+        id : containerCasinoCounter
+        width: 150
+        height: 170
+        anchors.right: parent.right
+        anchors.rightMargin: 100
+        anchors.top: toolbarObject.bottom
+        anchors.topMargin: 100
+        color:"white"
+        border.color: "yellowgreen"
+        border.width: 7
+        radius: width/2
+        opacity: 0.4
+
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "white" }
+            GradientStop { position: 1.0; color: "yellowgreen" }
+        }
+    }
+
+
+    Text {
+        id : casinoCounter
+        objectName: "casinoCount"
+        anchors.horizontalCenter: containerCasinoCounter.horizontalCenter
+        anchors.verticalCenter: containerCasinoCounter.verticalCenter
+        styleColor: "yellowgreen"
+        style: Text.Outline
+        text: "99"
+        font.pointSize: mainWindow.width / 34
+    }
+
+    Text {
+
+        id : labelCasinoCounter
+        anchors.horizontalCenter: containerCasinoCounter.horizontalCenter
+        anchors.bottom: casinoCounter.top
+        styleColor: "yellowgreen"
+        style: Text.Outline
+        text : "servicios"
+        font.pointSize: mainWindow.width / 55
+    }
+
+    Text {
+
+        id : casinoName
+        anchors.horizontalCenter: containerCasinoCounter.horizontalCenter
+        anchors.bottom: containerCasinoCounter.top
+        anchors.bottomMargin: 20
+        styleColor: "yellowgreen"
+        style: Text.Outline
+        text : "COMEDORUSM"
+        font.pointSize: mainWindow.width / 55
     }
 
     ToolBar {

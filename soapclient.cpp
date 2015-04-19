@@ -142,7 +142,7 @@ void SoapClient::actionValidarCasino(Persona *persona,Acceso &acceso, QDateTime 
         {
             // Response sample :
             // 23;YA USO EL SERVICIO DE ALIMENTACION.....;86;4;0;0184480379;CAROLINA ANDREA ZAMORA CASTRO;YA USO EL SERVICIO DE ALIMENTACION.....;COMEDORUSM
-            // 0;REGISTRO CORRECTO;85;6;0;0193571204;JOSE IGNACIO SEBASTIAN ABARZUA ROJAS;Normal;COMEDORUSM
+            // 0;REGISTRO CORRECTO;41;9;0;0194065760;FELIPE ANTONIO AGUILERA ESPINOZA;ESTUDIANTE;Junaeb;COMEDORUSM
             // 13;Credencial Inhabilitada;0;0;0;0116222132;
             // 7;Persona no existe;0;0;0;;;Sin impresión;credencial no existe
             // 24;NO EXISTE;58;No;No;04444444404;No No No;NO EXISTE;COMEDORUSM
@@ -237,25 +237,8 @@ void SoapClient::error(struct soap *soap)
     }
 }
 
-void SoapClient::action(Persona *persona,Acceso &acceso, QDateTime dateTime)
+bool SoapClient::syncro(Persona *persona,Acceso &acceso, QDateTime dateTime)
 {
-
-    struct soap soap;
-    soap_init1(&soap, SOAP_C_UTFSTRING);
-
-}
-
-bool SoapClient::action(Acceso *acceso)
-{
-    Acceso response;
-    Persona persona;
-
-    persona.setRut(acceso->rut());
-    persona.setUuid(acceso->uuid());
-    // persona.setTipoMarca(acceso->event().toInt());
-
-    this->action(&persona,response,acceso->date());
-
-    qDebug() << "Synchronisation response : " << response.textAuth() << " El " << response.date().toString("dd/MM/yy - hh:mm:ss") << " Rut:" << response.rut();
-    return response.idAuth() != -1;
+    actionValidarCasino(persona,acceso,dateTime);
+    return true;
 }
