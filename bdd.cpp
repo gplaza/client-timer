@@ -49,7 +49,7 @@ QSqlRecord Bdd::identificationCredencial(QString uuid)
     QSqlRecord result;
     QSqlQuery query(db);
 
-    QString sql = "SELECT rut,nombre,autorizado,image FROM persona WHERE uuid=:uuid";
+    QString sql = "SELECT rut,nombre,autorizado,id_huella,image FROM persona WHERE uuid=:uuid";
 
     query.prepare(sql);
     query.bindValue(":uuid", uuid);

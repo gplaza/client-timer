@@ -37,10 +37,7 @@ public slots:
             if(!result)
                 break;
 
-            qDebug() << acceso.count_casino();
-            qDebug() << acceso.count_lunch();
-            qDebug() << acceso.count_dinner();
-
+            Bdd::updatePersonaByAcceso(acceso);
             Bdd::deleteAccess(persona, date);
             date = Bdd::syncAccess(persona);
         }
@@ -63,7 +60,11 @@ class Synchroniser : public QObject
 public:
     Synchroniser(SoapClient *soapClient, QObject *parent = 0);
 
+signals:
+    void registerFingerPrint(Persona &persona, QString &hash);
+
 private:
+    void checkFingerPrint(Persona &persona);
     SoapClient *soapClient;
 
 public slots:

@@ -1,6 +1,7 @@
 #include <soapclient.h>
 #include "web-service/casino/casino.nsmap"
 #include "web-service/foto/foto.nsmap"
+#include "web-service/acceso/acceso.nsmap"
 #include "soap.nsmap"
 
 SoapClient::SoapClient(QObject *parent) : QObject(parent)
@@ -18,6 +19,9 @@ bool SoapClient::init()
 
     endPointFoto = Configurator::instance()->getConfig("endPointFoto");
     soapActionFoto = Configurator::instance()->getConfig("soapActionFoto");
+
+    endPointAcceso = Configurator::instance()->getConfig("endPointAcceso");
+    soapActionAcceso = Configurator::instance()->getConfig("soapActionAcceso");
 
     usm = Configurator::instance()->getConfig("usm");
 
@@ -38,7 +42,7 @@ bool SoapClient::init()
     return true;
 }
 
-QByteArray SoapClient::getFoto(QString rut)
+QByteArray SoapClient::actionGetFoto(QString rut)
 {
     QByteArray fotoResult;
 
@@ -185,13 +189,12 @@ void SoapClient::actionValidarCasino(Persona *persona,Acceso &acceso, QDateTime 
         } else {
 
             qCritical() << "Web service error : Invalid response";
+            this->error(soap);
         }
 
         qDebug() << "Web Service raw response : " << result;
 
     } else {
-
-        qDebug() << "endPoint" << soap->endpoint;
 
         qCritical() << "Error Web service.";
         this->error(soap);
@@ -201,6 +204,105 @@ void SoapClient::actionValidarCasino(Persona *persona,Acceso &acceso, QDateTime 
     soap_end(soap);     // dealloc temp data
     soap_free(soap);    // dealloc 'soap' engine context
 
+}
+
+void SoapClient::actionInfoAcceso(Persona *persona,Acceso &acceso, QDateTime dateTime) {
+
+    struct soap *soap = soap_new1(SOAP_C_UTFSTRING);
+    soap_set_namespaces(soap,acceso_namespaces);
+
+    soap->send_timeout = timeout.toInt();
+    soap->recv_timeout = timeout.toInt();
+
+    acceso::ns1__Modulo_USCOREAcceso_USCOREPuerta* infoAcceso = new acceso::ns1__Modulo_USCOREAcceso_USCOREPuerta();
+    acceso::ns1__Modulo_USCOREAcceso_USCOREPuertaResponse infoAccesoResponse;
+
+    QString result = "";
+    QString rut = persona->rut();
+    QString uuid = persona->uuid();
+    int tipoMarca = persona->tipoMarca();
+
+    QByteArray b_endPoint = endPointAcceso.toLocal8Bit();
+    const char* c_endPoint = b_endPoint.constData();
+
+    QByteArray b_soapAction = soapActionAcceso.toLocal8Bit();
+    const char* c_soapAction = b_soapAction.constData();
+
+    std::string temp_rut = rut.toStdString();
+    std::string temp_usm = usm.toStdString();
+    std::string temp_uuid = uuid.toStdString();
+    time_t time = dateTime.toTime_t();
+
+    unsigned char* pixels = {0};
+
+    acceso::xsd__base64Binary *pimage = acceso::soap_new_xsd__base64Binary(soap);
+    pimage->__ptr = pixels;
+    pimage->__size = 0;
+
+    infoAcceso->rut = &temp_rut;
+    infoAcceso->tipomarca = tipoMarca;
+    infoAcceso->numerodispositivo = &temp_usm;
+    infoAcceso->dato_USCORErecibido = &temp_uuid;
+    infoAcceso->fecha = &time;
+    infoAcceso->foto = pimage;
+
+    qDebug() << "SOAP Web Service parameters :";
+    qDebug() << "endPoint   : " << c_endPoint;
+    qDebug() << "soapAction : " << c_soapAction;
+    qDebug() << "tipoMarca  : " << tipoMarca;
+    qDebug() << "uuid       : " << QString::fromStdString(temp_uuid);
+    qDebug() << "idMaquina  : " << QString::fromStdString(temp_usm);
+    qDebug() << "rut        : " << QString::fromStdString(temp_rut);
+
+    if (acceso::soap_call___ns1__Modulo_USCOREAcceso_USCOREPuerta(soap,c_endPoint,c_soapAction,infoAcceso,infoAccesoResponse) == SOAP_OK)
+    {
+        std::string* temp_result = infoAccesoResponse.return_;
+        result = QString::fromStdString(*temp_result);
+        QStringList resultField = result.split(";");
+
+        if(resultField.length() >= 8)
+        {
+            int idAuth = resultField.at(0).toInt();
+            QString rut = resultField.at(2);
+            QString timeZoneAb = resultField.at(3).contains("CLT")? "CLT" : "CLST";
+            QDateTime date = dateTime.fromString(resultField.at(3),"ddd MMM dd hh:mm:ss " + timeZoneAb + " yyyy");
+            QString name = resultField.length() > 3 ? resultField.at(4) : "";
+            QString textAuth = resultField.at(5);
+            uuid = resultField.at(6);
+            QString hash = resultField.at(7);
+
+            //If DB Santa Maria don't have the UUID replace by UUID local if exist
+            if (uuid.isEmpty() && !persona->uuid().isEmpty())
+                uuid = persona->uuid();
+
+            while(rut.startsWith("0"))
+                rut = rut.right(rut.length() -1);
+
+            acceso.setIdAuth(idAuth);
+            acceso.setRut(rut);
+            acceso.setUuid(uuid);
+            acceso.setDate(date);
+            acceso.setName(name);
+            acceso.setTextAuth(textAuth);
+            acceso.setHash(hash);
+
+        } else {
+
+            qCritical() << "Web service error : Invalid response";
+            this->error(soap);
+        }
+
+        qDebug() << "Web Service raw response : " << result;
+
+    } else {
+
+        qCritical() << "Error Web service.";
+        this->error(soap);
+    }
+
+    soap_destroy(soap); // dealloc serialization data
+    soap_end(soap);     // dealloc temp data
+    soap_free(soap);    // dealloc 'soap' engine context
 }
 
 void SoapClient::error(struct soap *soap)

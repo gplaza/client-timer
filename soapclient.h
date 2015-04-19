@@ -11,6 +11,7 @@
 #include <QTcpSocket>
 #include <web-service/casino/casinoH.h>
 #include <web-service/foto/fotoH.h>
+#include <web-service/acceso/accesoH.h>
 #include <envH.h>
 
 class SoapClient : public QObject
@@ -20,9 +21,11 @@ public:
     explicit SoapClient(QObject *parent = 0);
     bool init();
     bool syncro(Persona *persona,Acceso &acceso, QDateTime dateTime);
-    void actionValidarCasino(Persona *persona, Acceso &acceso, QDateTime dateTime = QDateTime::currentDateTime());
 
-    QByteArray getFoto(QString rut);
+    // Web service action :
+    void actionValidarCasino(Persona *persona, Acceso &acceso, QDateTime dateTime = QDateTime::currentDateTime());
+    void actionInfoAcceso(Persona *persona,Acceso &acceso, QDateTime dateTime = QDateTime::currentDateTime());
+    QByteArray actionGetFoto(QString rut);
     void error(struct soap *soap);
 
 private:
@@ -32,6 +35,8 @@ private:
     QString soapActionCasinoTransaction;
     QString endPointFoto;
     QString soapActionFoto;
+    QString endPointAcceso;
+    QString soapActionAcceso;
     QString usm;
 };
 

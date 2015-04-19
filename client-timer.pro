@@ -69,16 +69,21 @@ SOURCES += \
     web-service/casino/casinoC.cpp \
     web-service/casino/casinoClient.cpp \
     web-service/foto/fotoC.cpp \
-    web-service/foto/fotoClient.cpp
+    web-service/foto/fotoClient.cpp \
+    web-service/acceso/accesoC.cpp \
+    web-service/acceso/accesoClient.cpp
 
 HEADERS += \
     web-service/casino/casinoH.h \
     web-service/casino/casinoStub.h \
     web-service/foto/fotoH.h \
-    web-service/foto/fotoStub.h
+    web-service/foto/fotoStub.h \
+    web-service/acceso/accesoH.h \
+    web-service/acceso/accesoStub.h
 
 OTHER_FILES += web-service/foto/foto.nsmap \
-               web-service/casino/casino.nsmap
+               web-service/casino/casino.nsmap \
+               web-service/acceso/acceso.nsmap
 
 #-------------
 # Test Class

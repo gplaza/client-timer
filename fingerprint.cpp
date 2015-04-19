@@ -72,7 +72,7 @@ void Fingerprint::processDataFingerprint()
 
     } else {
 
-        emit sendToScreen("Huella desconocida");
+        emit sendToScreen("Huella          desconocida");
         Buzzer::instance()->bad();
         emit cancel();
     }

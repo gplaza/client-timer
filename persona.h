@@ -35,7 +35,8 @@ public:
 
     enum MarcaType{
         MARCA_FINGER = 1,
-        MARCA_RFID = 2
+        MARCA_RFID = 2,
+        MARCA_INFO = 4
     };
 
 private:

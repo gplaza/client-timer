@@ -38,16 +38,20 @@ void ServiceAccess::check(QString &id)
 
         if(caller == "Credencial")
         {
+            QByteArray foto;
+            persona.setUuid(id);
+            persona.setRut(""); // TODO : change to pointer the object Persona.
+            persona.setFoto(foto);
+            persona.setTipoMarca(Persona::MARCA_RFID);
+
             QSqlRecord record = Bdd::identificationCredencial(id);
 
             if(!record.isEmpty()) {
 
                 persona.setRut(record.value("rut").toString());
-                persona.setFoto(record.value("image").toByteArray()); //TODO foto vide ??
+                persona.setFoto(record.value("image").toByteArray());
+                persona.setFingerprintID(record.value("id_huella").toInt());
             }
-
-            persona.setUuid(id);
-            persona.setTipoMarca(Persona::MARCA_RFID);
         }
 
         if(caller == "Fingerprint")
@@ -56,12 +60,9 @@ void ServiceAccess::check(QString &id)
 
             persona.setRut(fingerprint.value("rut").toString());
             persona.setUuid(fingerprint.value("hash").toString());
+            persona.setFingerprintID(id.toInt());
 
             persona.setTipoMarca(Persona::MARCA_FINGER);
-
-            /*
-            persona.setFingerprintID(perso->fingerprintID()); TODO : used ?
-            */
         }
 
         if(persona.tipoMarca() == Persona::MARCA_RFID)
@@ -98,7 +99,7 @@ void ServiceAccess::on_online()
     }
 
     if(persona.foto().isEmpty() && acceso.idAuth() != Acceso::PERSON_NO_EXIST && acceso.idAuth() != Acceso::PERSON_CRED_NO_EXIST) {
-        QByteArray foto = soapClient->getFoto(acceso.rut());
+        QByteArray foto = soapClient->actionGetFoto(acceso.rut());
         if(!foto.isEmpty())
             Bdd::setImage(acceso.rut(),foto);
     }
@@ -169,43 +170,48 @@ void ServiceAccess::finalizeResponse(Acceso &acceso)
             casinoCount->setProperty("text", acceso.count_casino());
         }
 
-        if(acceso.idAuth() == Acceso::PERSON_OK)
-        {
-            QObject *errorMsg = objectView->findChild<QObject*>("errorMsg");
-            errorMsg->setProperty("text", "");
+    if(acceso.idAuth() == Acceso::PERSON_OK)
+    {
+        QObject *errorMsg = objectView->findChild<QObject*>("errorMsg");
+        errorMsg->setProperty("text", "");
 
-            QString formatedDate = acceso.dateFormated("dd/MM/yy - hh:mm:ss");
-            QString name = acceso.name();
+        QString formatedDate = acceso.dateFormated("dd/MM/yy - hh:mm:ss");
+        QString name = acceso.name();
 
-            printer->setLine(" UTFSM USM:" + Configurator::instance()->getConfig("usm"));
-            printer->setLine("Fecha    : " + formatedDate);
-            printer->setLine("Nombre   : " + name.leftJustified(31, ' ', true));
-            printer->setLine("RUT/Tip. : " + acceso.rutFormated() + ' ' + acceso.info_print());
+        printer->setLine(" UTFSM USM:" + Configurator::instance()->getConfig("usm"));
+        printer->setLine("Fecha    : " + formatedDate);
+        printer->setLine("Nombre   : " + name.leftJustified(31, ' ', true));
+        printer->setLine("RUT/Tip. : " + acceso.rutFormated() + ' ' + acceso.info_print());
 
-            // Linea 1: UTFSM [nombre Campus] [Número dispositivo] [Nombre dispositivo]
-            // Linea 2: Fecha y hora de la transacción
-            // Linea 3: [Nombre y apellidos de la persona.]
-            // Linea 4: [Rut  y Tipo usuario.]
-            // Linea 5 : [Tipo Beca]
+        // Linea 1: UTFSM [nombre Campus] [Número dispositivo] [Nombre dispositivo]
+        // Linea 2: Fecha y hora de la transacción
+        // Linea 3: [Nombre y apellidos de la persona.]
+        // Linea 4: [Rut  y Tipo usuario.]
+        // Linea 5 : [Tipo Beca]
 
-            printer->print();
+        printer->print();
 
-        } else {
+    } else {
 
-            QString msgPrefix = "Mensaje : ";
+        QString msgPrefix = "Mensaje : ";
 
-            QObject *errorMsg = objectView->findChild<QObject*>("errorMsg");
-            errorMsg->setProperty("text", msgPrefix + acceso.textAuth());
+        QObject *errorMsg = objectView->findChild<QObject*>("errorMsg");
+        errorMsg->setProperty("text", msgPrefix + acceso.textAuth());
 
-        }
+    }
 
     QMetaObject::invokeMethod(objectView,"toggle");
+
+    QString tUser = Configurator::instance()->getConfig("timeShowUser");
+    bool ok;
+    tUser.toInt(&ok);
+    int timeShow = (ok == false)? 1000 : tUser.toInt() * 1000;
 
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &ServiceAccess::finished);
     connect(timer, &QTimer::timeout, this, &ServiceAccess::initUi);
     connect(this, &ServiceAccess::finished, timer, &QTimer::deleteLater);
-    timer->start(1000 + 2000);
+    timer->start(1000 + timeShow);
 }
 
 void ServiceAccess::initUi()
