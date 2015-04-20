@@ -34,6 +34,12 @@ void ServiceAccess::check(QString &id)
         connect(this, &ServiceAccess::finished, timer, &QTimer::deleteLater);
         timer->start(1000);
 
+        QStringList parameter;
+        parameter << Configurator::instance()->getConfig("emailPrinterError");
+
+        if (!QProcess::startDetached("/root/emailPrinter.sh", parameter))
+            qDebug() << "Error to send email";
+
     } else {
 
         if(caller == "Credencial")
