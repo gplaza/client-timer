@@ -162,14 +162,17 @@ void SoapClient::actionValidarCasino(Persona *persona,Acceso &acceso, QDateTime 
 
             QString name = "";
             QString info_print = "";
+            QString beca_print = "";
             QString name_cafeteria = "";
 
-            if(resultField.size() >= 6)
+            if(resultField.size() > 6)
                 name = resultField.at(6);
-            if(resultField.size() >= 7)
-                info_print= resultField.at(7);
-            if(resultField.size() >= 8)
-                name_cafeteria= resultField.at(8);
+            if(resultField.size() > 7)
+                info_print = resultField.at(7);
+            if(resultField.size() > 8)
+                beca_print = resultField.at(8);
+            if(resultField.size() > 9)
+                name_cafeteria= resultField.at(9);
 
             while(rut.startsWith("0"))
                 rut = rut.right(rut.length() -1);
@@ -185,6 +188,7 @@ void SoapClient::actionValidarCasino(Persona *persona,Acceso &acceso, QDateTime 
             acceso.setCount_lunch(count_lunch);
             acceso.setCount_dinner(count_dinner);
             acceso.setInfo_print(info_print);
+            acceso.setBeca_print(beca_print);
 
         } else {
 

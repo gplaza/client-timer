@@ -93,6 +93,7 @@ Item {
     Text {
 
         id : casinoName
+        objectName: "casinoName"
         anchors.horizontalCenter: containerCasinoCounter.horizontalCenter
         anchors.bottom: containerCasinoCounter.top
         anchors.bottomMargin: 20

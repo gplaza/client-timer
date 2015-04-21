@@ -151,6 +151,13 @@ void ServiceAccess::finalizeResponse(Acceso &acceso)
     LOG_INFO("Resultado Local : " + acceso.toString());
     emit sendToScreen(acceso.textAuth());
 
+    QObject *casinoName = objectView->findChild<QObject*>("casinoName");
+    QString currentCasinoName = casinoName->property("text").toString();
+    QString newName = Configurator::instance()->getConfig("casinoName");
+
+    if(currentCasinoName != newName)
+        casinoName->setProperty("text",newName);
+
     QObject *fotoStudent = objectView->findChild<QObject*>("fotoStudent");
     fotoStudent->setProperty("source", "image://getimagebyrut/" + acceso.rut());
 
@@ -184,16 +191,11 @@ void ServiceAccess::finalizeResponse(Acceso &acceso)
         QString formatedDate = acceso.dateFormated("dd/MM/yy - hh:mm:ss");
         QString name = acceso.name();
 
-        printer->setLine(" UTFSM USM:" + Configurator::instance()->getConfig("usm"));
+        printer->setLine("*** UTFSM USM:" + Configurator::instance()->getConfig("usm") + ' ' + Configurator::instance()->getConfig("casinoName") + " ***");
         printer->setLine("Fecha    : " + formatedDate);
         printer->setLine("Nombre   : " + name.leftJustified(31, ' ', true));
         printer->setLine("RUT/Tip. : " + acceso.rutFormated() + ' ' + acceso.info_print());
-
-        // Linea 1: UTFSM [nombre Campus] [Número dispositivo] [Nombre dispositivo]
-        // Linea 2: Fecha y hora de la transacción
-        // Linea 3: [Nombre y apellidos de la persona.]
-        // Linea 4: [Rut  y Tipo usuario.]
-        // Linea 5 : [Tipo Beca]
+        printer->setLine("Beca : " + acceso.beca_print());
 
         printer->print();
 

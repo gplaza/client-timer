@@ -141,3 +141,13 @@ void Acceso::setInfo_print(const QString &ip)
 {
     m_info_print = ip;
 }
+
+QString Acceso::beca_print() const
+{
+    return m_beca_print;
+}
+
+void Acceso::setBeca_print(const QString &bp)
+{
+    m_beca_print = bp;
+}

@@ -302,9 +302,35 @@ void Bdd::updatePersonaByAcceso(Acceso &acceso)
     if(updateUUID)
         query.bindValue(":uuid", acceso.uuid());
 
-    query.bindValue(":autorizado", acceso.idAuth());
-    query.bindValue(":count_lunch", acceso.count_lunch());
-    query.bindValue(":count_dinner",acceso.count_dinner());
+    int idAuth = acceso.idAuth();
+    int count_lunch = acceso.count_lunch();
+    int count_dinner = acceso.count_dinner();
+
+    if(idAuth == Acceso::PERSON_OK) {
+
+        QString format = "HH:mm";
+        QTime current = QTime::currentTime();
+        QTime startLunch = QTime::fromString(Configurator::instance()->getConfig("startLunch"),format);
+        QTime endLunch = QTime::fromString(Configurator::instance()->getConfig("endLunch"),format);
+        QTime startDinner = QTime::fromString(Configurator::instance()->getConfig("startDinner"),format);
+        QTime endDinner = QTime::fromString(Configurator::instance()->getConfig("endDinner"),format);
+
+        if(startLunch <= current && current <= endLunch)
+            count_lunch--;
+        if(startDinner <= current && current <= endDinner)
+            count_dinner--;
+
+        idAuth = Acceso::PERSON_SERVICE_USED;
+
+        qDebug() << "Registro local grabado :";
+        qDebug() << "state        : " << idAuth;
+        qDebug() << "count_lunch  : " << count_lunch;
+        qDebug() << "count_dinner : " << count_dinner;
+    }
+
+    query.bindValue(":autorizado", idAuth);
+    query.bindValue(":count_lunch", count_lunch);
+    query.bindValue(":count_dinner", count_dinner);
 
     query.bindValue(":rut", acceso.rut());
 

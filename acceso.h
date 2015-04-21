@@ -15,6 +15,7 @@ class Acceso : public QObject
     Q_PROPERTY(int count_lunch READ count_lunch WRITE setCount_lunch)
     Q_PROPERTY(int count_dinner READ count_dinner WRITE setCount_dinner)
     Q_PROPERTY(QString info_print READ info_print WRITE setInfo_print)
+    Q_PROPERTY(QString beca_print READ beca_print WRITE setBeca_print)
 
 public:
     explicit Acceso(QObject *parent = 0);
@@ -45,6 +46,8 @@ public:
     void setCount_dinner(int);
     QString info_print() const;
     void setInfo_print(const QString &);
+    QString beca_print() const;
+    void setBeca_print(const QString &);
 
     /*
       0 : Registro correcto
@@ -95,6 +98,7 @@ private:
     int m_count_lunch;
     int m_count_dinner;
     QString m_info_print;
+    QString m_beca_print;
 };
 
 #endif // ACCESO_H
