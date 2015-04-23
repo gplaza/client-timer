@@ -33,6 +33,7 @@ void Synchroniser::onLine(Acceso &acceso, Persona &persona)
 
     if(personExist) {
         Bdd::updatePersonaByAcceso(acceso);
+
         checkFingerPrint(persona);
     }
 

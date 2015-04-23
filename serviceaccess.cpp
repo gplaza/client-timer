@@ -66,6 +66,7 @@ void ServiceAccess::check(QString &id)
 
             persona.setRut(fingerprint.value("rut").toString());
             persona.setUuid(fingerprint.value("hash").toString());
+            persona.setFoto(fingerprint.value("image").toByteArray());
             persona.setFingerprintID(id.toInt());
 
             persona.setTipoMarca(Persona::MARCA_FINGER);
@@ -127,8 +128,6 @@ void ServiceAccess::on_offline()
 
         acceso.setIdAuth(Acceso::PERSON_NO_EXIST);
         acceso.setName("No existe");
-        acceso.setCount_lunch(0);
-        acceso.setCount_dinner(0);
 
     } else {
 
@@ -140,6 +139,8 @@ void ServiceAccess::on_offline()
         acceso.setCount_dinner(identity.value("count_dinner").toInt());
     }
 
+    // TODO : last counter casino
+    acceso.setCount_casino(0);
     acceso.setTextAuth(Bdd::textAuthentication(acceso));
 
     emit synchroniseOffLine(acceso,persona);

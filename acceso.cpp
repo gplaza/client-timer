@@ -11,6 +11,7 @@ Acceso::Acceso(QObject *parent) : QObject(parent)
     this->m_name = "";
     this->m_hash = ";";
     this->m_info_print = "";
+    this->m_count_casino = 0;
     this->m_count_lunch = 0;
     this->m_count_dinner = 0;
 }

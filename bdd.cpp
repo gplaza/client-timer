@@ -49,7 +49,7 @@ QSqlRecord Bdd::identificationCredencial(QString uuid)
     QSqlRecord result;
     QSqlQuery query(db);
 
-    QString sql = "SELECT rut,nombre,autorizado,id_huella,image FROM persona WHERE uuid=:uuid";
+    QString sql = "SELECT rut,id_huella,image FROM persona WHERE uuid=:uuid";
 
     query.prepare(sql);
     query.bindValue(":uuid", uuid);
@@ -68,7 +68,7 @@ QSqlRecord Bdd::identificationFingerprint(QString id)
     QSqlQuery query(QSqlDatabase::database("acceso"));
     QSqlRecord result;
 
-    QString sql = "SELECT hash, rut, nombre FROM persona WHERE id_huella=:id_huella";
+    QString sql = "SELECT hash,rut,image FROM persona WHERE id_huella=:id_huella";
 
     query.prepare(sql);
     query.bindValue(":id_huella", id);
