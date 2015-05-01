@@ -37,7 +37,7 @@ void Synchroniser::onLine(Acceso &acceso, Persona &persona)
         checkFingerPrint(persona);
     }
 
-    if(!personExist && stateCreate)
+    if(!personExist && stateCreate) //TODO : create with a valid counter of lunch and dinner.
         Bdd::createPersona(acceso);
 }
 

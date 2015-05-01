@@ -315,14 +315,23 @@ void Bdd::updatePersonaByAcceso(Acceso &acceso)
         QTime startDinner = QTime::fromString(Configurator::instance()->getConfig("startDinner"),format);
         QTime endDinner = QTime::fromString(Configurator::instance()->getConfig("endDinner"),format);
 
-        if(startLunch <= current && current <= endLunch)
-            count_lunch--;
-        if(startDinner <= current && current <= endDinner)
-            count_dinner--;
-
         idAuth = Acceso::PERSON_SERVICE_USED;
 
+        if(startLunch <= current && current <= endLunch) {
+            count_lunch--;
+            if(count_lunch == 0)
+                idAuth = Acceso::PERSON_NO_LUNCH;
+        }
+
+        if(startDinner <= current && current <= endDinner) {
+            count_dinner--;
+            if(count_dinner == 0)
+                idAuth = Acceso::PERSON_NO_DINNER;
+        }
+
         qDebug() << "Registro local grabado :";
+        qDebug() << "Almuerzo     ? " << (startLunch <= current && current <= endLunch);
+        qDebug() << "Cena         ? " << (startDinner <= current && current <= endDinner);
         qDebug() << "state        : " << idAuth;
         qDebug() << "count_lunch  : " << count_lunch;
         qDebug() << "count_dinner : " << count_dinner;

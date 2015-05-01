@@ -40,8 +40,11 @@ Item {
             var da = d.getDate();
             var y = d.getFullYear();
             var m = d.getMinutes();
+
+            if (da < 10) da = "0" + da;
             if (mo < 10) mo = "0" + mo;
             if (m < 10) m = "0" + m;
+
             return d.getHours() + ":" + m + " " + da + "/" + mo + "/" + y; //TODO : hours 2 digit.
         }
 
