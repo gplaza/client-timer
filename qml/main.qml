@@ -1,20 +1,28 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
-import "../qml"
-import jbQuick.Charts 1.0
+//import "../qml"
+//import jbQuick.Charts 1.0
 
 Item {
 
     id: mainWindow
     width: 1024
     height: 768
+    property bool endAnimUser: false
+    onEndAnimUserChanged: accesoData.endAnim();
 
-    function toggle() {
-        infoUserWindows.flipped = !infoUserWindows.flipped;
+    Connections {
+        target: accesoData
+        onDataChanged: flipflip.start()
+    }
+
+    Item {
+        anchors.fill: parent
+        focus: true
+        Keys.onEscapePressed: Qt.quit()
     }
 
     function changeStatusPrinter(status) {
-        console.log(status);
         statusPrinter.source = (status)? "images/printer_OK.png" : "images/printer_KO.png";
         statusPrinter.update();
     }
@@ -75,7 +83,7 @@ Item {
         anchors.verticalCenter: containerCasinoCounter.verticalCenter
         styleColor: "yellowgreen"
         style: Text.Outline
-        text: "99"
+        text: accesoData.count_casino
         font.pointSize: mainWindow.width / 34
     }
 
@@ -93,13 +101,12 @@ Item {
     Text {
 
         id : casinoName
-        objectName: "casinoName"
         anchors.horizontalCenter: containerCasinoCounter.horizontalCenter
         anchors.bottom: containerCasinoCounter.top
         anchors.bottomMargin: 20
         styleColor: "yellowgreen"
         style: Text.Outline
-        text : "COMEDORUSM"
+        text : accesoData.casinoName
         font.pointSize: mainWindow.width / 55
     }
 
@@ -113,7 +120,6 @@ Item {
         Image {
             id : statusPrinter
             source :"images/printer_OK.png"
-            objectName: "statusPrinter"
             cache: false
             width: 30
             height: 30
@@ -132,8 +138,6 @@ Item {
         anchors.bottomMargin: mainWindow.height / 15
         width: mainWindow.width / 1.5
         height: mainWindow.height / 1.3
-
-        property bool flipped: false
 
         front: Item {
             Rectangle {
@@ -164,7 +168,7 @@ Item {
                 anchors.horizontalCenter: baseFront.horizontalCenter
                 width: baseFront.width/ 1.5
                 height: baseFront.width/ 1.5
-                source: "images/saver_alt.jpg"
+                source: "images/saver.jpg"
             }
         }
 
@@ -201,18 +205,16 @@ Item {
 
             Image {
                 id: fotoStudent
-                objectName: "fotoStudent"
                 anchors.left: baseBack.left
                 anchors.verticalCenter: baseBack.verticalCenter
                 anchors.leftMargin: 15
                 width: baseBack.height/3
                 height: baseBack.height/3
-                source: "image://getimagebyrut/16486738"
+                source: "image://getimagebyrut/" + accesoData.fotoSrc
             }
 
             Text {
                 id : errorMsg
-                objectName: "errorMsg"
                 width : baseBack.width - (10 + fotoStudent.width + 10)
                 anchors.verticalCenter: baseBack.verticalCenter
                 anchors.left : fotoStudent.right
@@ -220,51 +222,47 @@ Item {
                 wrapMode: Text.WordWrap
                 font.capitalization : Font.AllLowercase
                 color: "red"
-                text: ""
+                text: accesoData.textAuth
                 font.pointSize: 20
             }
 
             Text {
                 id : rut
-                objectName: "rutText"
                 anchors.top : fotoStudent.bottom
                 anchors.horizontalCenter: fotoStudent.horizontalCenter
                 anchors.topMargin: 15
-                text: ""
+                text: accesoData.rutFormat
                 color: "green"
             }
 
             Text {
                 id : name
-                objectName: "nameText"
                 anchors.top : rut.bottom
                 anchors.left: rut.left
                 anchors.topMargin: 10
-                text: ""
+                text: accesoData.name
                 color: "green"
             }
 
             Text {
                 id : lunchInfo
-                objectName: "lunchInfo"
                 anchors.top : baseBack.top
                 anchors.topMargin: 30
                 anchors.left: baseBack.left
                 anchors.leftMargin: baseBack.width/7
                 color: "green"
-                text: "Almuerzos disponibles :"
+                text: "Almuerzos disponibles : " + accesoData.count_lunch
                 font.pointSize: 15
             }
 
             Text {
                 id : dinnerInfo
-                objectName: "dinnerInfo"
                 anchors.top : baseBack.top
                 anchors.topMargin: 30
                 anchors.right: baseBack.right
                 anchors.rightMargin: baseBack.width/7
                 color: "green"
-                text: "Cenas disponibles :"
+                text: "Cenas disponibles : " + accesoData.count_dinner
                 font.pointSize: 15
             }
         }
@@ -277,14 +275,19 @@ Item {
             angle: 0
         }
 
-        transitions: Transition {
-            NumberAnimation { target: rotation; property: "angle"; duration: 1000 }
-        }
-
-        states: State {
-            name: "back"
-            PropertyChanges { target: rotation; angle: 180 }
-            when: infoUserWindows.flipped
+        SequentialAnimation {
+            id:flipflip
+            NumberAnimation { target: rotation; from:0; to:180; property: "angle"; duration: 1000 }
+            PauseAnimation { duration: accesoData.timeShow }
+            NumberAnimation { id:lastAnim; target: rotation; from:180; to:0; property: "angle"; duration: 1000 }
+            PropertyAction{ target:mainWindow; property:"endAnimUser"; value: !endAnimUser }
         }
     }
 }
+
+
+
+
+
+
+

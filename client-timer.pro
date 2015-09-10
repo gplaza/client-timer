@@ -30,10 +30,8 @@ include(addon-fingerprint-qt/fingerprint.pri)
 include(addon-configurator-qt/configurator.pri)
 
 INCLUDEPATH += /mnt/rpi-rootfs/opt/qt5-rpi/include/ /mnt/rpi-rootfs/usr/local/include/ /mnt/rpi-rootfs/usr/include
-QML_IMPORT_PATH = qml qml/jbQuick/Charts
-
-qml_folder.source = qml
-DEPLOYMENTFOLDERS = qml_folder
+LIBS += -lsqlite3
+#QML_IMPORT_PATH = qml qml/jbQuick/Charts
 
 SOURCES += main.cpp \
     credencial.cpp \
@@ -123,6 +121,8 @@ for(deploymentfolder, DEPLOYMENTFOLDERS) {
     INSTALLS += $$item
 }
 
+RESOURCES += \
+    interfaz.qrc
 
 
 

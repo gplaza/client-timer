@@ -35,6 +35,7 @@ Item {
         text: currentTime();
 
         function currentTime() {
+
             var d = new Date();
             var mo = d.getMonth() + 1;
             var da = d.getDate();
@@ -59,7 +60,7 @@ Item {
         anchors.topMargin: 10
 
         Timer {
-            interval: 60000;
+            interval: 1000;
             repeat: true;
             running: true
             onTriggered: clockText.text = clockText.currentTime();

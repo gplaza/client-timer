@@ -114,21 +114,24 @@ public:
 
     static QSqlRecord identificationCredencial(QString uuid);
     static QSqlRecord identificationFingerprint(QString id);
-    static QSqlRecord identificationOffline(QString rut);
+    static QSqlRecord identificationOfflineByRut(QString rut);
+    static QSqlRecord identificationOfflineByUuid(QString uuid);
 
-    static QString textAuthentication(Acceso &acceso);
+    static QString textAuthentication(Acceso *acceso);
+    static int casinoService();
 
     // BDD control Syncro
-    static void saveAccess(Acceso &acceso, Persona &persona);
+    static void saveAccess(Acceso *acceso, Persona &persona);
     static void registerAccess(int ErrorType = 0);
     static void deleteAccess(Persona &persona, QDateTime date);
     static QDateTime syncAccess(Persona &persona);
     static bool checkOfflineData();
 
     static void updatePersona(Persona &persona);
-    static void updatePersonaByAcceso(Acceso &acceso);
-    static void createPersona(Acceso &acceso);
-    static bool checkPersona(Acceso &acceso);
+    static void updatePersonaByAcceso(Acceso *acceso);
+    static void updateCasinoService(Acceso *acceso);
+    static void createPersona(Acceso *acceso);
+    static bool checkPersona(Acceso *acceso);
 
     static QByteArray getImage(QString rut);
     static void setImage(QString rut, QByteArray img);
@@ -144,8 +147,16 @@ public:
         UNKNOWN_FINGERPRINT = 3
     };
 
+private:
+    bool saveDatabase(QString databaseName, QString fileName);
+
 signals:
     void bddReady();
+private slots:
+    void saveDB();
+public slots:
+    void dataBaseChanged();
+
 
 };
 

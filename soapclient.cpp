@@ -94,7 +94,7 @@ QByteArray SoapClient::actionGetFoto(QString rut)
     return fotoResult;
 }
 
-void SoapClient::actionValidarCasino(Persona *persona,Acceso &acceso, QDateTime dateTime)
+void SoapClient::actionValidarCasino(Persona *persona,Acceso *acceso, QDateTime dateTime, bool sync)
 {
     struct soap *soap = soap_new1(SOAP_C_UTFSTRING);
     soap_set_namespaces(soap,casino_namespaces);
@@ -102,8 +102,8 @@ void SoapClient::actionValidarCasino(Persona *persona,Acceso &acceso, QDateTime 
     soap->send_timeout = timeout.toInt();
     soap->recv_timeout = timeout.toInt();
 
-    casino::ns1__validar_USCOREcasino* validarCasino = new casino::ns1__validar_USCOREcasino();
-    casino::ns1__validar_USCOREcasinoResponse validarCasinoResponse;
+    casino::casino1__Modulo_USCORECasino* validarCasino = new casino::casino1__Modulo_USCORECasino();
+    casino::casino1__Modulo_USCORECasinoResponse validarCasinoResponse;
 
     QString result = "";
     QString rut = persona->rut().length() > 0 ? persona->rut().rightJustified(10,'0') : "";
@@ -123,35 +123,51 @@ void SoapClient::actionValidarCasino(Persona *persona,Acceso &acceso, QDateTime 
 
     validarCasino->rut = &temp_rut;
     validarCasino->tipomarca = tipoMarca;
-    validarCasino->dispo = &temp_usm;
+    validarCasino->numerodispositivo = &temp_usm;
     validarCasino->dato_USCORErecibido = &temp_uuid;
     validarCasino->fecha = &time;
 
-    qDebug() << "SOAP Web Service parameters :";
-    qDebug() << "endPoint   : " << c_endPoint;
-    qDebug() << "soapAction : " << c_soapAction;
-    qDebug() << "tipoMarca  : " << tipoMarca;
-    qDebug() << "uuid       : " << QString::fromStdString(temp_uuid);
-    qDebug() << "idMaquina  : " << QString::fromStdString(temp_usm);
-    qDebug() << "rut        : " << QString::fromStdString(temp_rut);
+    QMap<QString,QString> inputValues;
+    inputValues.insert("endPoint",c_endPoint);
+    inputValues.insert("soapAction",c_soapAction);
+    inputValues.insert("tipoMarca",QString::number(tipoMarca));
+    inputValues.insert("fecha",dateTime.toString("ddd MMM dd hh:mm:ss yyyy"));
+    inputValues.insert("uuid",QString::fromStdString(temp_uuid));
+    inputValues.insert("idMaquina",QString::fromStdString(temp_usm));
+    inputValues.insert("rut",QString::fromStdString(temp_rut));
 
-    if (casino::soap_call___ns1__validar_USCOREcasino(soap,c_endPoint,c_soapAction,validarCasino,validarCasinoResponse) == SOAP_OK)
+    if(!sync)
+    {
+        qDebug() << "SOAP Web Service parameters :";
+        qDebug() << "endPoint   : " << c_endPoint;
+        qDebug() << "soapAction : " << c_soapAction;
+        qDebug() << "tipoMarca  : " << tipoMarca;
+        qDebug() << "fecha      : " << dateTime.toString("ddd MMM dd hh:mm:ss yyyy");
+        qDebug() << "uuid       : " << QString::fromStdString(temp_uuid);
+        qDebug() << "idMaquina  : " << QString::fromStdString(temp_usm);
+        qDebug() << "rut        : " << QString::fromStdString(temp_rut);
+
+    } else {
+
+        qDebug() << "Syncro fecha      : " << dateTime.toString("ddd MMM dd hh:mm:ss yyyy");
+    }
+
+    if (casino::soap_call___casino1__Modulo_USCORECasino(soap,c_endPoint,c_soapAction,validarCasino,validarCasinoResponse) == SOAP_OK)
     {
         std::string* temp_result = validarCasinoResponse.return_;
         result = QString::fromStdString(*temp_result);
         QStringList resultField = result.split(";");
-        bool ok;
 
         if(resultField.size() >= 5)
         {
             // Response sample :
-            // 23;YA USO EL SERVICIO DE ALIMENTACION.....;86;4;0;0184480379;CAROLINA ANDREA ZAMORA CASTRO;YA USO EL SERVICIO DE ALIMENTACION.....;COMEDORUSM
-            // 0;REGISTRO CORRECTO;41;9;0;0194065760;FELIPE ANTONIO AGUILERA ESPINOZA;ESTUDIANTE;Junaeb;COMEDORUSM
-            // 13;Credencial Inhabilitada;0;0;0;0116222132;
-            // 7;Persona no existe;0;0;0;;;Sin impresión;credencial no existe
-            // 24;NO EXISTE;58;No;No;04444444404;No No No;NO EXISTE;COMEDORUSM
+            // 0;REGISTRO CORRECTO;206;19;0;0150691222;ALEJANDRO CAMILO OYARZUN PUENTES;FUNCIONARIO;Normal;COMEDORUSM
+            // 18;Fuera de horario;0;0;0;0184571900;GIOVANNI EDUARDO ARAVENA MORALES;Sin impresión;CASINOVAL3
 
-            int idAuth = resultField.at(0).toInt(&ok);
+            bool convertIdAuth;
+            bool ok;
+
+            int idAuth = resultField.at(0).toInt(&convertIdAuth);
             QString textAuth = resultField.at(1);
 
             int count_casino = resultField.at(2).toInt(&ok);
@@ -163,7 +179,7 @@ void SoapClient::actionValidarCasino(Persona *persona,Acceso &acceso, QDateTime 
             QString name = "";
             QString info_print = "";
             QString beca_print = "";
-            QString name_cafeteria = "";
+            QString casinoName = Configurator::instance()->getConfig("casinoName");
 
             if(resultField.size() > 6)
                 name = resultField.at(6);
@@ -171,43 +187,56 @@ void SoapClient::actionValidarCasino(Persona *persona,Acceso &acceso, QDateTime 
                 info_print = resultField.at(7);
             if(resultField.size() > 8)
                 beca_print = resultField.at(8);
-            if(resultField.size() > 9)
-                name_cafeteria= resultField.at(9);
+            if(resultField.size() > 9) {
+                if (casinoName != resultField.at(9)) {
+                    casinoName = resultField.at(9).simplified();
+                    Configurator::instance()->setConfigByKey("casinoName", casinoName);
+                }
+            }
 
             while(rut.startsWith("0"))
                 rut = rut.right(rut.length() -1);
 
-            acceso.setIdAuth(idAuth);
-            acceso.setTextAuth(textAuth);
+            acceso->setIdAuth(idAuth);
+            acceso->setTextAuth(textAuth);
 
-            acceso.setRut(rut);
-            acceso.setName(name);
-            acceso.setUuid(uuid);
+            acceso->setRut(rut);
+            acceso->setName(name);
+            acceso->setUuid(uuid);
 
-            acceso.setCount_casino(count_casino);
-            acceso.setCount_lunch(count_lunch);
-            acceso.setCount_dinner(count_dinner);
-            acceso.setInfo_print(info_print);
-            acceso.setBeca_print(beca_print);
+            acceso->setCount_casino(count_casino);
+            acceso->setCount_lunch(count_lunch);
+            acceso->setCount_dinner(count_dinner);
+            acceso->setInfo_print(info_print);
+            acceso->setBeca_print(beca_print);
+            acceso->setCasinoName(casinoName);
+
+            if(!convertIdAuth) {
+
+                acceso->setIdAuth(100);
+                acceso->setTextAuth("Error, comuníquese con el encargado para normalizar su situación.");
+
+                qCritical() << "Error conversion parameter idAuth to integer.";
+                this->error(soap, "validar_casino", inputValues, result);
+            }
 
         } else {
 
-            qCritical() << "Web service error : Invalid response";
-            this->error(soap);
+            qCritical() << "Number of field incorrect.";
+            this->error(soap, "validar_casino", inputValues, result);
         }
 
-        qDebug() << "Web Service raw response : " << result;
+        qDebug() << (sync? "Syncro " : "") << "Web Service raw response : " << result;
 
     } else {
 
         qCritical() << "Error Web service.";
-        this->error(soap);
+        this->error(soap, "validar_casino", inputValues);
     }
 
     soap_destroy(soap); // dealloc serialization data
     soap_end(soap);     // dealloc temp data
     soap_free(soap);    // dealloc 'soap' engine context
-
 }
 
 void SoapClient::actionInfoAcceso(Persona *persona,Acceso &acceso, QDateTime dateTime) {
@@ -251,12 +280,12 @@ void SoapClient::actionInfoAcceso(Persona *persona,Acceso &acceso, QDateTime dat
     infoAcceso->foto = pimage;
 
     qDebug() << "SOAP Web Service parameters :";
-    qDebug() << "endPoint   : " << c_endPoint;
-    qDebug() << "soapAction : " << c_soapAction;
-    qDebug() << "tipoMarca  : " << tipoMarca;
-    qDebug() << "uuid       : " << QString::fromStdString(temp_uuid);
-    qDebug() << "idMaquina  : " << QString::fromStdString(temp_usm);
-    qDebug() << "rut        : " << QString::fromStdString(temp_rut);
+    qDebug() << "endPoint             : " << c_endPoint;
+    qDebug() << "soapAction           : " << c_soapAction;
+    qDebug() << "tipoMarca            : " << tipoMarca;
+    qDebug() << "uuid (dato_recibido) : " << QString::fromStdString(temp_uuid);
+    qDebug() << "idMaquina            : " << QString::fromStdString(temp_usm);
+    qDebug() << "rut                  : " << QString::fromStdString(temp_rut);
 
     if (acceso::soap_call___ns1__Modulo_USCOREAcceso_USCOREPuerta(soap,c_endPoint,c_soapAction,infoAcceso,infoAccesoResponse) == SOAP_OK)
     {
@@ -264,20 +293,25 @@ void SoapClient::actionInfoAcceso(Persona *persona,Acceso &acceso, QDateTime dat
         result = QString::fromStdString(*temp_result);
         QStringList resultField = result.split(";");
 
-        if(resultField.length() >= 8)
+        if(resultField.length() >= 6)
         {
+            QString hashASI = "";
+            QString hashSG400 = "";
+            QString uuid = "";
+
             int idAuth = resultField.at(0).toInt();
             QString rut = resultField.at(2);
-            QString timeZoneAb = resultField.at(3).contains("CLT")? "CLT" : "CLST";
-            QDateTime date = dateTime.fromString(resultField.at(3),"ddd MMM dd hh:mm:ss " + timeZoneAb + " yyyy");
+            QString cleanDate = resultField.at(3);
+            cleanDate.replace("GMT-03:00", "");
+            QDateTime date = dateTime.fromString(cleanDate,"ddd MMM dd hh:mm:ss  yyyy");
             QString name = resultField.length() > 3 ? resultField.at(4) : "";
             QString textAuth = resultField.at(5);
-            uuid = resultField.at(6);
-            QString hash = resultField.at(7);
-
-            //If DB Santa Maria don't have the UUID replace by UUID local if exist
-            if (uuid.isEmpty() && !persona->uuid().isEmpty())
-                uuid = persona->uuid();
+            if(resultField.length() > 6)
+                uuid = resultField.at(6);
+            if(resultField.length() > 7)
+                hashASI = resultField.at(7);
+            if(resultField.length() > 8)
+                hashSG400 = resultField.at(8);
 
             while(rut.startsWith("0"))
                 rut = rut.right(rut.length() -1);
@@ -288,7 +322,7 @@ void SoapClient::actionInfoAcceso(Persona *persona,Acceso &acceso, QDateTime dat
             acceso.setDate(date);
             acceso.setName(name);
             acceso.setTextAuth(textAuth);
-            acceso.setHash(hash);
+            acceso.setHash(hashSG400);
 
         } else {
 
@@ -309,13 +343,26 @@ void SoapClient::actionInfoAcceso(Persona *persona,Acceso &acceso, QDateTime dat
     soap_free(soap);    // dealloc 'soap' engine context
 }
 
-void SoapClient::error(struct soap *soap)
+void SoapClient::error(struct soap *soap, QString WebServiceName, QMap<QString,QString> inputValues, QString response)
 {
     bool state = soap_check_state(soap);
 
+    QString mailText;
+    mailText +="Error Web Service (" + WebServiceName + ") : \\n\\n Entrada : \\n";
+
+    QMapIterator<QString, QString> i(inputValues);
+
+    while (i.hasNext()) {
+        i.next();
+        mailText += "\\n- " + i.key().leftJustified(30,' ') + " : " + i.value();
+    }
+
+    mailText +="\\n\\n";
+    QString error = "Error : ";
+
     if (state)
     {
-        qCritical() << "Error: soap struct state not initialized";
+        error += "Soap struct state not initialized";
 
     } else if (soap->error) {
 
@@ -335,16 +382,30 @@ void SoapClient::error(struct soap *soap)
         reasonFault = *soap_faultstring(soap);
         detailFault = soap_check_faultdetail(soap);
 
-        qCritical() << (soap->version ? "SOAP 1." : "Error ") << (soap->version ? (int)soap->version : soap->error);
-        qCritical() << "Fault   : " << QString::fromStdString(*fault);
-        qCritical() << "subcode : [" << (subCodeFault ? QString::fromStdString(subCodeFault) : "no subcode") << "]";
-        qCritical() << "reason  : [" << (reasonFault ? QString::fromStdString(reasonFault) : "no reason") << "]";
-        qCritical() << "detail  : [" << (detailFault ? QString::fromStdString(detailFault) : "no detail") << "]";
+        error += (soap->version ? "SOAP 1." : "Nb ") + (soap->version ? QString::number((int)soap->version) : QString::number(soap->error));
+        error += "Fault   : " + QString::fromStdString(*fault);
+        error += "subcode : [" + (subCodeFault ? QString::fromStdString(subCodeFault) : "no subcode") + "]";
+        error += "reason  : [" + (reasonFault ? QString::fromStdString(reasonFault) : "no reason") + "]";
+        error += "detail  : [" + (detailFault ? QString::fromStdString(detailFault) : "no detail") + "]";
+
+    } else {
+
+        error += "Repuesta Invalida";
     }
+
+    qCritical() << error;
+    mailText += error + "\\n";
+    mailText += "\\n\\n Salida : \\n";
+    mailText += "\""+ response +"\"";
+
+    QStringList parameter;
+    parameter << mailText;
+
+    QProcess::startDetached("/var/lib/QProcess/emailWS.sh", parameter);
 }
 
-bool SoapClient::syncro(Persona *persona,Acceso &acceso, QDateTime dateTime)
+bool SoapClient::syncro(Persona *persona,Acceso *acceso, QDateTime dateTime)
 {
-    actionValidarCasino(persona,acceso,dateTime);
+    actionValidarCasino(persona,acceso,dateTime,true);
     return true;
 }

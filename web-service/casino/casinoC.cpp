@@ -17,7 +17,7 @@ compiling, linking, and/or using OpenSSL is allowed.
 
 namespace casino {
 
-SOAP_SOURCE_STAMP("@(#) casinoC.cpp ver 2.8.21 2015-04-03 04:05:35 GMT")
+SOAP_SOURCE_STAMP("@(#) casinoC.cpp ver 2.8.21 2015-06-05 17:59:26 GMT")
 
 
 #ifndef WITH_NOGLOBAL
@@ -190,26 +190,48 @@ SOAP_FMAC3 void * SOAP_FMAC4 soap_getelement(struct soap *soap, int *type)
 		return soap_in_byte(soap, NULL, NULL, "xsd:byte");
 	case SOAP_TYPE_casino_int:
 		return soap_in_int(soap, NULL, NULL, "xsd:int");
+	case SOAP_TYPE_casino_unsignedByte:
+		return soap_in_unsignedByte(soap, NULL, NULL, "xsd:unsignedByte");
+	case SOAP_TYPE_casino_unsignedInt:
+		return soap_in_unsignedInt(soap, NULL, NULL, "xsd:unsignedInt");
 	case SOAP_TYPE_casino_time:
 		return soap_in_time(soap, NULL, NULL, "xsd:dateTime");
 	case SOAP_TYPE_casino_std__string:
 		return soap_in_std__string(soap, NULL, NULL, "xsd:string");
-	case SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse:
-		return soap_in_ns1__validar_USCOREcasinoResponse(soap, NULL, NULL, "ns1:validar_casinoResponse");
-	case SOAP_TYPE_casino_ns1__validar_USCOREcasino:
-		return soap_in_ns1__validar_USCOREcasino(soap, NULL, NULL, "ns1:validar_casino");
-	case SOAP_TYPE_casino_ns1__TransaccionesResponse:
-		return soap_in_ns1__TransaccionesResponse(soap, NULL, NULL, "ns1:TransaccionesResponse");
-	case SOAP_TYPE_casino_ns1__Transacciones:
-		return soap_in_ns1__Transacciones(soap, NULL, NULL, "ns1:Transacciones");
-	case SOAP_TYPE_casino_PointerTons1__Transacciones:
-		return soap_in_PointerTons1__Transacciones(soap, NULL, NULL, "ns1:Transacciones");
-	case SOAP_TYPE_casino_PointerTons1__validar_USCOREcasino:
-		return soap_in_PointerTons1__validar_USCOREcasino(soap, NULL, NULL, "ns1:validar_casino");
+	case SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse:
+		return soap_in_casino1__Modulo_USCORECasinoResponse(soap, NULL, NULL, "casino1:Modulo_CasinoResponse");
+	case SOAP_TYPE_casino_casino1__Modulo_USCORECasino:
+		return soap_in_casino1__Modulo_USCORECasino(soap, NULL, NULL, "casino1:Modulo_Casino");
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse:
+		return soap_in_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse(soap, NULL, NULL, "casino1:Modulo_Acceso_PuertaResponse");
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta:
+		return soap_in_casino1__Modulo_USCOREAcceso_USCOREPuerta(soap, NULL, NULL, "casino1:Modulo_Acceso_Puerta");
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse:
+		return soap_in_casino1__Modulo_USCOREobtener_USCOREhoraResponse(soap, NULL, NULL, "casino1:Modulo_obtener_horaResponse");
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora:
+		return soap_in_casino1__Modulo_USCOREobtener_USCOREhora(soap, NULL, NULL, "casino1:Modulo_obtener_hora");
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse:
+		return soap_in_casino1__Modulo_USCOREAsistenciaResponse(soap, NULL, NULL, "casino1:Modulo_AsistenciaResponse");
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia:
+		return soap_in_casino1__Modulo_USCOREAsistencia(soap, NULL, NULL, "casino1:Modulo_Asistencia");
+	case SOAP_TYPE_casino_xsd__base64Binary:
+		return soap_in_xsd__base64Binary(soap, NULL, NULL, "xsd:base64Binary");
+	case SOAP_TYPE_casino_PointerTocasino1__Modulo_USCORECasino:
+		return soap_in_PointerTocasino1__Modulo_USCORECasino(soap, NULL, NULL, "casino1:Modulo_Casino");
+	case SOAP_TYPE_casino_PointerTocasino1__Modulo_USCOREAsistencia:
+		return soap_in_PointerTocasino1__Modulo_USCOREAsistencia(soap, NULL, NULL, "casino1:Modulo_Asistencia");
+	case SOAP_TYPE_casino_PointerTocasino1__Modulo_USCOREobtener_USCOREhora:
+		return soap_in_PointerTocasino1__Modulo_USCOREobtener_USCOREhora(soap, NULL, NULL, "casino1:Modulo_obtener_hora");
+	case SOAP_TYPE_casino_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta:
+		return soap_in_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta(soap, NULL, NULL, "casino1:Modulo_Acceso_Puerta");
+	case SOAP_TYPE_casino_PointerToxsd__base64Binary:
+		return soap_in_PointerToxsd__base64Binary(soap, NULL, NULL, "xsd:base64Binary");
 	case SOAP_TYPE_casino_PointerTotime:
 		return soap_in_PointerTotime(soap, NULL, NULL, "xsd:dateTime");
 	case SOAP_TYPE_casino_PointerTostd__string:
 		return soap_in_PointerTostd__string(soap, NULL, NULL, "xsd:string");
+	case SOAP_TYPE_casino_PointerTounsignedByte:
+		return soap_in_PointerTounsignedByte(soap, NULL, NULL, "xsd:unsignedByte");
 	case SOAP_TYPE_casino__QName:
 	{	char **s;
 		s = soap_in__QName(soap, NULL, NULL, "xsd:QName");
@@ -231,21 +253,41 @@ SOAP_FMAC3 void * SOAP_FMAC4 soap_getelement(struct soap *soap, int *type)
 		{	*type = SOAP_TYPE_casino_std__string;
 			return soap_in_std__string(soap, NULL, NULL, NULL);
 		}
-		if (!soap_match_tag(soap, t, "ns1:validar_casinoResponse"))
-		{	*type = SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse;
-			return soap_in_ns1__validar_USCOREcasinoResponse(soap, NULL, NULL, NULL);
+		if (!soap_match_tag(soap, t, "casino1:Modulo_CasinoResponse"))
+		{	*type = SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse;
+			return soap_in_casino1__Modulo_USCORECasinoResponse(soap, NULL, NULL, NULL);
 		}
-		if (!soap_match_tag(soap, t, "ns1:validar_casino"))
-		{	*type = SOAP_TYPE_casino_ns1__validar_USCOREcasino;
-			return soap_in_ns1__validar_USCOREcasino(soap, NULL, NULL, NULL);
+		if (!soap_match_tag(soap, t, "casino1:Modulo_Casino"))
+		{	*type = SOAP_TYPE_casino_casino1__Modulo_USCORECasino;
+			return soap_in_casino1__Modulo_USCORECasino(soap, NULL, NULL, NULL);
 		}
-		if (!soap_match_tag(soap, t, "ns1:TransaccionesResponse"))
-		{	*type = SOAP_TYPE_casino_ns1__TransaccionesResponse;
-			return soap_in_ns1__TransaccionesResponse(soap, NULL, NULL, NULL);
+		if (!soap_match_tag(soap, t, "casino1:Modulo_Acceso_PuertaResponse"))
+		{	*type = SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse;
+			return soap_in_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse(soap, NULL, NULL, NULL);
 		}
-		if (!soap_match_tag(soap, t, "ns1:Transacciones"))
-		{	*type = SOAP_TYPE_casino_ns1__Transacciones;
-			return soap_in_ns1__Transacciones(soap, NULL, NULL, NULL);
+		if (!soap_match_tag(soap, t, "casino1:Modulo_Acceso_Puerta"))
+		{	*type = SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta;
+			return soap_in_casino1__Modulo_USCOREAcceso_USCOREPuerta(soap, NULL, NULL, NULL);
+		}
+		if (!soap_match_tag(soap, t, "casino1:Modulo_obtener_horaResponse"))
+		{	*type = SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse;
+			return soap_in_casino1__Modulo_USCOREobtener_USCOREhoraResponse(soap, NULL, NULL, NULL);
+		}
+		if (!soap_match_tag(soap, t, "casino1:Modulo_obtener_hora"))
+		{	*type = SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora;
+			return soap_in_casino1__Modulo_USCOREobtener_USCOREhora(soap, NULL, NULL, NULL);
+		}
+		if (!soap_match_tag(soap, t, "casino1:Modulo_AsistenciaResponse"))
+		{	*type = SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse;
+			return soap_in_casino1__Modulo_USCOREAsistenciaResponse(soap, NULL, NULL, NULL);
+		}
+		if (!soap_match_tag(soap, t, "casino1:Modulo_Asistencia"))
+		{	*type = SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia;
+			return soap_in_casino1__Modulo_USCOREAsistencia(soap, NULL, NULL, NULL);
+		}
+		if (!soap_match_tag(soap, t, "xsd:base64Binary"))
+		{	*type = SOAP_TYPE_casino_xsd__base64Binary;
+			return soap_in_xsd__base64Binary(soap, NULL, NULL, NULL);
 		}
 		if (!soap_match_tag(soap, t, "xsd:byte"))
 		{	*type = SOAP_TYPE_casino_byte;
@@ -254,6 +296,14 @@ SOAP_FMAC3 void * SOAP_FMAC4 soap_getelement(struct soap *soap, int *type)
 		if (!soap_match_tag(soap, t, "xsd:int"))
 		{	*type = SOAP_TYPE_casino_int;
 			return soap_in_int(soap, NULL, NULL, NULL);
+		}
+		if (!soap_match_tag(soap, t, "xsd:unsignedByte"))
+		{	*type = SOAP_TYPE_casino_unsignedByte;
+			return soap_in_unsignedByte(soap, NULL, NULL, NULL);
+		}
+		if (!soap_match_tag(soap, t, "xsd:unsignedInt"))
+		{	*type = SOAP_TYPE_casino_unsignedInt;
+			return soap_in_unsignedInt(soap, NULL, NULL, NULL);
 		}
 		if (!soap_match_tag(soap, t, "xsd:dateTime"))
 		{	*type = SOAP_TYPE_casino_time;
@@ -332,26 +382,48 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_putelement(struct soap *soap, const void *ptr, co
 		return soap_out_byte(soap, tag, id, (const char *)ptr, "xsd:byte");
 	case SOAP_TYPE_casino_int:
 		return soap_out_int(soap, tag, id, (const int *)ptr, "xsd:int");
+	case SOAP_TYPE_casino_unsignedByte:
+		return soap_out_unsignedByte(soap, tag, id, (const unsigned char *)ptr, "xsd:unsignedByte");
+	case SOAP_TYPE_casino_unsignedInt:
+		return soap_out_unsignedInt(soap, tag, id, (const unsigned int *)ptr, "xsd:unsignedInt");
 	case SOAP_TYPE_casino_time:
 		return soap_out_time(soap, tag, id, (const time_t *)ptr, "xsd:dateTime");
 	case SOAP_TYPE_casino_std__string:
 		return soap_out_std__string(soap, tag, id, (const std::string *)ptr, "xsd:string");
-	case SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse:
-		return ((ns1__validar_USCOREcasinoResponse *)ptr)->soap_out(soap, tag, id, "ns1:validar_casinoResponse");
-	case SOAP_TYPE_casino_ns1__validar_USCOREcasino:
-		return ((ns1__validar_USCOREcasino *)ptr)->soap_out(soap, tag, id, "ns1:validar_casino");
-	case SOAP_TYPE_casino_ns1__TransaccionesResponse:
-		return ((ns1__TransaccionesResponse *)ptr)->soap_out(soap, tag, id, "ns1:TransaccionesResponse");
-	case SOAP_TYPE_casino_ns1__Transacciones:
-		return ((ns1__Transacciones *)ptr)->soap_out(soap, tag, id, "ns1:Transacciones");
-	case SOAP_TYPE_casino_PointerTons1__Transacciones:
-		return soap_out_PointerTons1__Transacciones(soap, tag, id, (ns1__Transacciones *const*)ptr, "ns1:Transacciones");
-	case SOAP_TYPE_casino_PointerTons1__validar_USCOREcasino:
-		return soap_out_PointerTons1__validar_USCOREcasino(soap, tag, id, (ns1__validar_USCOREcasino *const*)ptr, "ns1:validar_casino");
+	case SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse:
+		return ((casino1__Modulo_USCORECasinoResponse *)ptr)->soap_out(soap, tag, id, "casino1:Modulo_CasinoResponse");
+	case SOAP_TYPE_casino_casino1__Modulo_USCORECasino:
+		return ((casino1__Modulo_USCORECasino *)ptr)->soap_out(soap, tag, id, "casino1:Modulo_Casino");
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse:
+		return ((casino1__Modulo_USCOREAcceso_USCOREPuertaResponse *)ptr)->soap_out(soap, tag, id, "casino1:Modulo_Acceso_PuertaResponse");
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta:
+		return ((casino1__Modulo_USCOREAcceso_USCOREPuerta *)ptr)->soap_out(soap, tag, id, "casino1:Modulo_Acceso_Puerta");
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse:
+		return ((casino1__Modulo_USCOREobtener_USCOREhoraResponse *)ptr)->soap_out(soap, tag, id, "casino1:Modulo_obtener_horaResponse");
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora:
+		return ((casino1__Modulo_USCOREobtener_USCOREhora *)ptr)->soap_out(soap, tag, id, "casino1:Modulo_obtener_hora");
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse:
+		return ((casino1__Modulo_USCOREAsistenciaResponse *)ptr)->soap_out(soap, tag, id, "casino1:Modulo_AsistenciaResponse");
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia:
+		return ((casino1__Modulo_USCOREAsistencia *)ptr)->soap_out(soap, tag, id, "casino1:Modulo_Asistencia");
+	case SOAP_TYPE_casino_xsd__base64Binary:
+		return ((xsd__base64Binary *)ptr)->soap_out(soap, tag, id, "xsd:base64Binary");
+	case SOAP_TYPE_casino_PointerTocasino1__Modulo_USCORECasino:
+		return soap_out_PointerTocasino1__Modulo_USCORECasino(soap, tag, id, (casino1__Modulo_USCORECasino *const*)ptr, "casino1:Modulo_Casino");
+	case SOAP_TYPE_casino_PointerTocasino1__Modulo_USCOREAsistencia:
+		return soap_out_PointerTocasino1__Modulo_USCOREAsistencia(soap, tag, id, (casino1__Modulo_USCOREAsistencia *const*)ptr, "casino1:Modulo_Asistencia");
+	case SOAP_TYPE_casino_PointerTocasino1__Modulo_USCOREobtener_USCOREhora:
+		return soap_out_PointerTocasino1__Modulo_USCOREobtener_USCOREhora(soap, tag, id, (casino1__Modulo_USCOREobtener_USCOREhora *const*)ptr, "casino1:Modulo_obtener_hora");
+	case SOAP_TYPE_casino_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta:
+		return soap_out_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta(soap, tag, id, (casino1__Modulo_USCOREAcceso_USCOREPuerta *const*)ptr, "casino1:Modulo_Acceso_Puerta");
+	case SOAP_TYPE_casino_PointerToxsd__base64Binary:
+		return soap_out_PointerToxsd__base64Binary(soap, tag, id, (xsd__base64Binary *const*)ptr, "xsd:base64Binary");
 	case SOAP_TYPE_casino_PointerTotime:
 		return soap_out_PointerTotime(soap, tag, id, (time_t *const*)ptr, "xsd:dateTime");
 	case SOAP_TYPE_casino_PointerTostd__string:
 		return soap_out_PointerTostd__string(soap, tag, id, (std::string *const*)ptr, "xsd:string");
+	case SOAP_TYPE_casino_PointerTounsignedByte:
+		return soap_out_PointerTounsignedByte(soap, tag, id, (unsigned char *const*)ptr, "xsd:unsignedByte");
 	case SOAP_TYPE_casino__QName:
 		return soap_out_string(soap, tag, id, (char*const*)(void*)&ptr, "xsd:QName");
 	case SOAP_TYPE_casino_string:
@@ -369,35 +441,68 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_markelement(struct soap *soap, const void *ptr, 
 	case SOAP_TYPE_casino_std__string:
 		soap_serialize_std__string(soap, (const std::string *)ptr);
 		break;
-	case SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse:
-		((ns1__validar_USCOREcasinoResponse *)ptr)->soap_serialize(soap);
+	case SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse:
+		((casino1__Modulo_USCORECasinoResponse *)ptr)->soap_serialize(soap);
 		break;
-	case SOAP_TYPE_casino_ns1__validar_USCOREcasino:
-		((ns1__validar_USCOREcasino *)ptr)->soap_serialize(soap);
+	case SOAP_TYPE_casino_casino1__Modulo_USCORECasino:
+		((casino1__Modulo_USCORECasino *)ptr)->soap_serialize(soap);
 		break;
-	case SOAP_TYPE_casino_ns1__TransaccionesResponse:
-		((ns1__TransaccionesResponse *)ptr)->soap_serialize(soap);
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse:
+		((casino1__Modulo_USCOREAcceso_USCOREPuertaResponse *)ptr)->soap_serialize(soap);
 		break;
-	case SOAP_TYPE_casino_ns1__Transacciones:
-		((ns1__Transacciones *)ptr)->soap_serialize(soap);
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta:
+		((casino1__Modulo_USCOREAcceso_USCOREPuerta *)ptr)->soap_serialize(soap);
 		break;
-	case SOAP_TYPE_casino___ns1__Transacciones:
-		soap_serialize___ns1__Transacciones(soap, (const struct __ns1__Transacciones *)ptr);
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse:
+		((casino1__Modulo_USCOREobtener_USCOREhoraResponse *)ptr)->soap_serialize(soap);
 		break;
-	case SOAP_TYPE_casino___ns1__validar_USCOREcasino:
-		soap_serialize___ns1__validar_USCOREcasino(soap, (const struct __ns1__validar_USCOREcasino *)ptr);
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora:
+		((casino1__Modulo_USCOREobtener_USCOREhora *)ptr)->soap_serialize(soap);
 		break;
-	case SOAP_TYPE_casino_PointerTons1__Transacciones:
-		soap_serialize_PointerTons1__Transacciones(soap, (ns1__Transacciones *const*)ptr);
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse:
+		((casino1__Modulo_USCOREAsistenciaResponse *)ptr)->soap_serialize(soap);
 		break;
-	case SOAP_TYPE_casino_PointerTons1__validar_USCOREcasino:
-		soap_serialize_PointerTons1__validar_USCOREcasino(soap, (ns1__validar_USCOREcasino *const*)ptr);
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia:
+		((casino1__Modulo_USCOREAsistencia *)ptr)->soap_serialize(soap);
+		break;
+	case SOAP_TYPE_casino_xsd__base64Binary:
+		((xsd__base64Binary *)ptr)->soap_serialize(soap);
+		break;
+	case SOAP_TYPE_casino___casino1__Modulo_USCORECasino:
+		soap_serialize___casino1__Modulo_USCORECasino(soap, (const struct __casino1__Modulo_USCORECasino *)ptr);
+		break;
+	case SOAP_TYPE_casino___casino1__Modulo_USCOREAsistencia:
+		soap_serialize___casino1__Modulo_USCOREAsistencia(soap, (const struct __casino1__Modulo_USCOREAsistencia *)ptr);
+		break;
+	case SOAP_TYPE_casino___casino1__Modulo_USCOREobtener_USCOREhora:
+		soap_serialize___casino1__Modulo_USCOREobtener_USCOREhora(soap, (const struct __casino1__Modulo_USCOREobtener_USCOREhora *)ptr);
+		break;
+	case SOAP_TYPE_casino___casino1__Modulo_USCOREAcceso_USCOREPuerta:
+		soap_serialize___casino1__Modulo_USCOREAcceso_USCOREPuerta(soap, (const struct __casino1__Modulo_USCOREAcceso_USCOREPuerta *)ptr);
+		break;
+	case SOAP_TYPE_casino_PointerTocasino1__Modulo_USCORECasino:
+		soap_serialize_PointerTocasino1__Modulo_USCORECasino(soap, (casino1__Modulo_USCORECasino *const*)ptr);
+		break;
+	case SOAP_TYPE_casino_PointerTocasino1__Modulo_USCOREAsistencia:
+		soap_serialize_PointerTocasino1__Modulo_USCOREAsistencia(soap, (casino1__Modulo_USCOREAsistencia *const*)ptr);
+		break;
+	case SOAP_TYPE_casino_PointerTocasino1__Modulo_USCOREobtener_USCOREhora:
+		soap_serialize_PointerTocasino1__Modulo_USCOREobtener_USCOREhora(soap, (casino1__Modulo_USCOREobtener_USCOREhora *const*)ptr);
+		break;
+	case SOAP_TYPE_casino_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta:
+		soap_serialize_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta(soap, (casino1__Modulo_USCOREAcceso_USCOREPuerta *const*)ptr);
+		break;
+	case SOAP_TYPE_casino_PointerToxsd__base64Binary:
+		soap_serialize_PointerToxsd__base64Binary(soap, (xsd__base64Binary *const*)ptr);
 		break;
 	case SOAP_TYPE_casino_PointerTotime:
 		soap_serialize_PointerTotime(soap, (time_t *const*)ptr);
 		break;
 	case SOAP_TYPE_casino_PointerTostd__string:
 		soap_serialize_PointerTostd__string(soap, (std::string *const*)ptr);
+		break;
+	case SOAP_TYPE_casino_PointerTounsignedByte:
+		soap_serialize_PointerTounsignedByte(soap, (unsigned char *const*)ptr);
 		break;
 	case SOAP_TYPE_casino__QName:
 		soap_serialize_string(soap, (char*const*)(void*)&ptr);
@@ -413,20 +518,34 @@ SOAP_FMAC3 void * SOAP_FMAC4 casino_instantiate(struct soap *soap, int t, const 
 {	(void)type;
 	switch (t)
 	{
+	case SOAP_TYPE_casino_xsd__base64Binary:
+		return (void*)soap_instantiate_xsd__base64Binary(soap, -1, type, arrayType, n);
 	case SOAP_TYPE_casino_std__string:
 		return (void*)soap_instantiate_std__string(soap, -1, type, arrayType, n);
-	case SOAP_TYPE_casino_ns1__Transacciones:
-		return (void*)soap_instantiate_ns1__Transacciones(soap, -1, type, arrayType, n);
-	case SOAP_TYPE_casino_ns1__TransaccionesResponse:
-		return (void*)soap_instantiate_ns1__TransaccionesResponse(soap, -1, type, arrayType, n);
-	case SOAP_TYPE_casino_ns1__validar_USCOREcasino:
-		return (void*)soap_instantiate_ns1__validar_USCOREcasino(soap, -1, type, arrayType, n);
-	case SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse:
-		return (void*)soap_instantiate_ns1__validar_USCOREcasinoResponse(soap, -1, type, arrayType, n);
-	case SOAP_TYPE_casino___ns1__validar_USCOREcasino:
-		return (void*)soap_instantiate___ns1__validar_USCOREcasino(soap, -1, type, arrayType, n);
-	case SOAP_TYPE_casino___ns1__Transacciones:
-		return (void*)soap_instantiate___ns1__Transacciones(soap, -1, type, arrayType, n);
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia:
+		return (void*)soap_instantiate_casino1__Modulo_USCOREAsistencia(soap, -1, type, arrayType, n);
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse:
+		return (void*)soap_instantiate_casino1__Modulo_USCOREAsistenciaResponse(soap, -1, type, arrayType, n);
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora:
+		return (void*)soap_instantiate_casino1__Modulo_USCOREobtener_USCOREhora(soap, -1, type, arrayType, n);
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse:
+		return (void*)soap_instantiate_casino1__Modulo_USCOREobtener_USCOREhoraResponse(soap, -1, type, arrayType, n);
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta:
+		return (void*)soap_instantiate_casino1__Modulo_USCOREAcceso_USCOREPuerta(soap, -1, type, arrayType, n);
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse:
+		return (void*)soap_instantiate_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse(soap, -1, type, arrayType, n);
+	case SOAP_TYPE_casino_casino1__Modulo_USCORECasino:
+		return (void*)soap_instantiate_casino1__Modulo_USCORECasino(soap, -1, type, arrayType, n);
+	case SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse:
+		return (void*)soap_instantiate_casino1__Modulo_USCORECasinoResponse(soap, -1, type, arrayType, n);
+	case SOAP_TYPE_casino___casino1__Modulo_USCOREAcceso_USCOREPuerta:
+		return (void*)soap_instantiate___casino1__Modulo_USCOREAcceso_USCOREPuerta(soap, -1, type, arrayType, n);
+	case SOAP_TYPE_casino___casino1__Modulo_USCOREobtener_USCOREhora:
+		return (void*)soap_instantiate___casino1__Modulo_USCOREobtener_USCOREhora(soap, -1, type, arrayType, n);
+	case SOAP_TYPE_casino___casino1__Modulo_USCOREAsistencia:
+		return (void*)soap_instantiate___casino1__Modulo_USCOREAsistencia(soap, -1, type, arrayType, n);
+	case SOAP_TYPE_casino___casino1__Modulo_USCORECasino:
+		return (void*)soap_instantiate___casino1__Modulo_USCORECasino(soap, -1, type, arrayType, n);
 #ifndef WITH_NOGLOBAL
 	case SOAP_TYPE_casino_SOAP_ENV__Header:
 		return (void*)soap_instantiate_SOAP_ENV__Header(soap, -1, type, arrayType, n);
@@ -447,8 +566,6 @@ SOAP_FMAC3 void * SOAP_FMAC4 casino_instantiate(struct soap *soap, int t, const 
 	case SOAP_TYPE_casino_SOAP_ENV__Fault:
 		return (void*)soap_instantiate_SOAP_ENV__Fault(soap, -1, type, arrayType, n);
 #endif
-	case SOAP_TYPE_casino_std__vectorTemplateOfstd__string:
-		return (void*)soap_instantiate_std__vectorTemplateOfstd__string(soap, -1, type, arrayType, n);
 	}
 	return NULL;
 }
@@ -456,47 +573,89 @@ SOAP_FMAC3 void * SOAP_FMAC4 casino_instantiate(struct soap *soap, int t, const 
 SOAP_FMAC3 int SOAP_FMAC4 casino_fdelete(struct soap_clist *p)
 {	switch (p->type)
 	{
+	case SOAP_TYPE_casino_xsd__base64Binary:
+		if (p->size < 0)
+			SOAP_DELETE((xsd__base64Binary*)p->ptr);
+		else
+			SOAP_DELETE_ARRAY((xsd__base64Binary*)p->ptr);
+		break;
 	case SOAP_TYPE_casino_std__string:
 		if (p->size < 0)
 			SOAP_DELETE((std::string*)p->ptr);
 		else
 			SOAP_DELETE_ARRAY((std::string*)p->ptr);
 		break;
-	case SOAP_TYPE_casino_ns1__Transacciones:
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia:
 		if (p->size < 0)
-			SOAP_DELETE((ns1__Transacciones*)p->ptr);
+			SOAP_DELETE((casino1__Modulo_USCOREAsistencia*)p->ptr);
 		else
-			SOAP_DELETE_ARRAY((ns1__Transacciones*)p->ptr);
+			SOAP_DELETE_ARRAY((casino1__Modulo_USCOREAsistencia*)p->ptr);
 		break;
-	case SOAP_TYPE_casino_ns1__TransaccionesResponse:
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse:
 		if (p->size < 0)
-			SOAP_DELETE((ns1__TransaccionesResponse*)p->ptr);
+			SOAP_DELETE((casino1__Modulo_USCOREAsistenciaResponse*)p->ptr);
 		else
-			SOAP_DELETE_ARRAY((ns1__TransaccionesResponse*)p->ptr);
+			SOAP_DELETE_ARRAY((casino1__Modulo_USCOREAsistenciaResponse*)p->ptr);
 		break;
-	case SOAP_TYPE_casino_ns1__validar_USCOREcasino:
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora:
 		if (p->size < 0)
-			SOAP_DELETE((ns1__validar_USCOREcasino*)p->ptr);
+			SOAP_DELETE((casino1__Modulo_USCOREobtener_USCOREhora*)p->ptr);
 		else
-			SOAP_DELETE_ARRAY((ns1__validar_USCOREcasino*)p->ptr);
+			SOAP_DELETE_ARRAY((casino1__Modulo_USCOREobtener_USCOREhora*)p->ptr);
 		break;
-	case SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse:
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse:
 		if (p->size < 0)
-			SOAP_DELETE((ns1__validar_USCOREcasinoResponse*)p->ptr);
+			SOAP_DELETE((casino1__Modulo_USCOREobtener_USCOREhoraResponse*)p->ptr);
 		else
-			SOAP_DELETE_ARRAY((ns1__validar_USCOREcasinoResponse*)p->ptr);
+			SOAP_DELETE_ARRAY((casino1__Modulo_USCOREobtener_USCOREhoraResponse*)p->ptr);
 		break;
-	case SOAP_TYPE_casino___ns1__validar_USCOREcasino:
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta:
 		if (p->size < 0)
-			SOAP_DELETE((struct __ns1__validar_USCOREcasino*)p->ptr);
+			SOAP_DELETE((casino1__Modulo_USCOREAcceso_USCOREPuerta*)p->ptr);
 		else
-			SOAP_DELETE_ARRAY((struct __ns1__validar_USCOREcasino*)p->ptr);
+			SOAP_DELETE_ARRAY((casino1__Modulo_USCOREAcceso_USCOREPuerta*)p->ptr);
 		break;
-	case SOAP_TYPE_casino___ns1__Transacciones:
+	case SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse:
 		if (p->size < 0)
-			SOAP_DELETE((struct __ns1__Transacciones*)p->ptr);
+			SOAP_DELETE((casino1__Modulo_USCOREAcceso_USCOREPuertaResponse*)p->ptr);
 		else
-			SOAP_DELETE_ARRAY((struct __ns1__Transacciones*)p->ptr);
+			SOAP_DELETE_ARRAY((casino1__Modulo_USCOREAcceso_USCOREPuertaResponse*)p->ptr);
+		break;
+	case SOAP_TYPE_casino_casino1__Modulo_USCORECasino:
+		if (p->size < 0)
+			SOAP_DELETE((casino1__Modulo_USCORECasino*)p->ptr);
+		else
+			SOAP_DELETE_ARRAY((casino1__Modulo_USCORECasino*)p->ptr);
+		break;
+	case SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse:
+		if (p->size < 0)
+			SOAP_DELETE((casino1__Modulo_USCORECasinoResponse*)p->ptr);
+		else
+			SOAP_DELETE_ARRAY((casino1__Modulo_USCORECasinoResponse*)p->ptr);
+		break;
+	case SOAP_TYPE_casino___casino1__Modulo_USCOREAcceso_USCOREPuerta:
+		if (p->size < 0)
+			SOAP_DELETE((struct __casino1__Modulo_USCOREAcceso_USCOREPuerta*)p->ptr);
+		else
+			SOAP_DELETE_ARRAY((struct __casino1__Modulo_USCOREAcceso_USCOREPuerta*)p->ptr);
+		break;
+	case SOAP_TYPE_casino___casino1__Modulo_USCOREobtener_USCOREhora:
+		if (p->size < 0)
+			SOAP_DELETE((struct __casino1__Modulo_USCOREobtener_USCOREhora*)p->ptr);
+		else
+			SOAP_DELETE_ARRAY((struct __casino1__Modulo_USCOREobtener_USCOREhora*)p->ptr);
+		break;
+	case SOAP_TYPE_casino___casino1__Modulo_USCOREAsistencia:
+		if (p->size < 0)
+			SOAP_DELETE((struct __casino1__Modulo_USCOREAsistencia*)p->ptr);
+		else
+			SOAP_DELETE_ARRAY((struct __casino1__Modulo_USCOREAsistencia*)p->ptr);
+		break;
+	case SOAP_TYPE_casino___casino1__Modulo_USCORECasino:
+		if (p->size < 0)
+			SOAP_DELETE((struct __casino1__Modulo_USCORECasino*)p->ptr);
+		else
+			SOAP_DELETE_ARRAY((struct __casino1__Modulo_USCORECasino*)p->ptr);
 		break;
 #ifndef WITH_NOGLOBAL
 	case SOAP_TYPE_casino_SOAP_ENV__Header:
@@ -538,12 +697,6 @@ SOAP_FMAC3 int SOAP_FMAC4 casino_fdelete(struct soap_clist *p)
 			SOAP_DELETE_ARRAY((struct SOAP_ENV__Fault*)p->ptr);
 		break;
 #endif
-	case SOAP_TYPE_casino_std__vectorTemplateOfstd__string:
-		if (p->size < 0)
-			SOAP_DELETE((std::vector<std::string >*)p->ptr);
-		else
-			SOAP_DELETE_ARRAY((std::vector<std::string >*)p->ptr);
-		break;
 	default:	return SOAP_ERR;
 	}
 	return SOAP_OK;
@@ -566,10 +719,6 @@ SOAP_FMAC3 void SOAP_FMAC4 casino_container_insert(struct soap *soap, int st, in
 	(void)soap; (void)st; (void)p; (void)len; (void)q; (void)n; /* appease -Wall -Werror */
 	switch (tt)
 	{
-	case SOAP_TYPE_casino_std__vectorTemplateOfstd__string:
-		DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Container casino_container_insert type = %d in %d location = %p object = %p len = %lu\n", st, tt, p, q, (unsigned long)len));
-		(*(std::vector<std::string >*)p)[len] = *(std::string *)q;
-		break;
 	default:
 		DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Could not insert type = %d in %d\n", st, tt));
 	}
@@ -647,6 +796,80 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_put_int(struct soap *soap, const int *a, const ch
 SOAP_FMAC3 int * SOAP_FMAC4 soap_get_int(struct soap *soap, int *p, const char *tag, const char *type)
 {
 	if ((p = soap_in_int(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_default_unsignedByte(struct soap *soap, unsigned char *a)
+{
+	(void)soap; /* appease -Wall -Werror */
+#ifdef SOAP_DEFAULT_unsignedByte
+	*a = SOAP_DEFAULT_unsignedByte;
+#else
+	*a = (unsigned char)0;
+#endif
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_unsignedByte(struct soap *soap, const char *tag, int id, const unsigned char *a, const char *type)
+{
+	return soap_outunsignedByte(soap, tag, id, a, type, SOAP_TYPE_casino_unsignedByte);
+}
+
+SOAP_FMAC3 unsigned char * SOAP_FMAC4 soap_in_unsignedByte(struct soap *soap, const char *tag, unsigned char *a, const char *type)
+{	unsigned char *p;
+	p = soap_inunsignedByte(soap, tag, a, type, SOAP_TYPE_casino_unsignedByte);
+	return p;
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_unsignedByte(struct soap *soap, const unsigned char *a, const char *tag, const char *type)
+{
+	register int id = soap_embed(soap, (void*)a, NULL, 0, SOAP_TYPE_casino_unsignedByte);
+	if (soap_out_unsignedByte(soap, tag?tag:"unsignedByte", id, a, type))
+		return soap->error;
+	return soap_putindependent(soap);
+}
+
+SOAP_FMAC3 unsigned char * SOAP_FMAC4 soap_get_unsignedByte(struct soap *soap, unsigned char *p, const char *tag, const char *type)
+{
+	if ((p = soap_in_unsignedByte(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_default_unsignedInt(struct soap *soap, unsigned int *a)
+{
+	(void)soap; /* appease -Wall -Werror */
+#ifdef SOAP_DEFAULT_unsignedInt
+	*a = SOAP_DEFAULT_unsignedInt;
+#else
+	*a = (unsigned int)0;
+#endif
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_unsignedInt(struct soap *soap, const char *tag, int id, const unsigned int *a, const char *type)
+{
+	return soap_outunsignedInt(soap, tag, id, a, type, SOAP_TYPE_casino_unsignedInt);
+}
+
+SOAP_FMAC3 unsigned int * SOAP_FMAC4 soap_in_unsignedInt(struct soap *soap, const char *tag, unsigned int *a, const char *type)
+{	unsigned int *p;
+	p = soap_inunsignedInt(soap, tag, a, type, SOAP_TYPE_casino_unsignedInt);
+	return p;
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_unsignedInt(struct soap *soap, const unsigned int *a, const char *tag, const char *type)
+{
+	register int id = soap_embed(soap, (void*)a, NULL, 0, SOAP_TYPE_casino_unsignedInt);
+	if (soap_out_unsignedInt(soap, tag?tag:"unsignedInt", id, a, type))
+		return soap->error;
+	return soap_putindependent(soap);
+}
+
+SOAP_FMAC3 unsigned int * SOAP_FMAC4 soap_get_unsignedInt(struct soap *soap, unsigned int *p, const char *tag, const char *type)
+{
+	if ((p = soap_in_unsignedInt(soap, tag, p, type)))
 		if (soap_getindependent(soap))
 			return NULL;
 	return p;
@@ -779,56 +1002,56 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_copy_std__string(struct soap *soap, int st, int 
 	*(std::string*)p = *(std::string*)q;
 }
 
-void ns1__validar_USCOREcasinoResponse::soap_default(struct soap *soap)
+void casino1__Modulo_USCORECasinoResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	this->ns1__validar_USCOREcasinoResponse::return_ = NULL;
+	this->casino1__Modulo_USCORECasinoResponse::return_ = NULL;
 	/* transient soap skipped */
 }
 
-void ns1__validar_USCOREcasinoResponse::soap_serialize(struct soap *soap) const
+void casino1__Modulo_USCORECasinoResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_PointerTostd__string(soap, &this->ns1__validar_USCOREcasinoResponse::return_);
+	soap_serialize_PointerTostd__string(soap, &this->casino1__Modulo_USCORECasinoResponse::return_);
 	/* transient soap skipped */
 #endif
 }
 
-int ns1__validar_USCOREcasinoResponse::soap_out(struct soap *soap, const char *tag, int id, const char *type) const
+int casino1__Modulo_USCORECasinoResponse::soap_out(struct soap *soap, const char *tag, int id, const char *type) const
 {
-	return soap_out_ns1__validar_USCOREcasinoResponse(soap, tag, id, this, type);
+	return soap_out_casino1__Modulo_USCORECasinoResponse(soap, tag, id, this, type);
 }
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns1__validar_USCOREcasinoResponse(struct soap *soap, const char *tag, int id, const ns1__validar_USCOREcasinoResponse *a, const char *type)
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_casino1__Modulo_USCORECasinoResponse(struct soap *soap, const char *tag, int id, const casino1__Modulo_USCORECasinoResponse *a, const char *type)
 {
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
-	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse), type))
+	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse), type))
 		return soap->error;
-	if (soap_out_PointerTostd__string(soap, "return", -1, &(a->ns1__validar_USCOREcasinoResponse::return_), ""))
+	if (soap_out_PointerTostd__string(soap, "return", -1, &(a->casino1__Modulo_USCORECasinoResponse::return_), ""))
 		return soap->error;
 	/* transient soap skipped */
 	return soap_element_end_out(soap, tag);
 }
 
-void *ns1__validar_USCOREcasinoResponse::soap_in(struct soap *soap, const char *tag, const char *type)
-{	return soap_in_ns1__validar_USCOREcasinoResponse(soap, tag, this, type);
+void *casino1__Modulo_USCORECasinoResponse::soap_in(struct soap *soap, const char *tag, const char *type)
+{	return soap_in_casino1__Modulo_USCORECasinoResponse(soap, tag, this, type);
 }
 
-SOAP_FMAC3 ns1__validar_USCOREcasinoResponse * SOAP_FMAC4 soap_in_ns1__validar_USCOREcasinoResponse(struct soap *soap, const char *tag, ns1__validar_USCOREcasinoResponse *a, const char *type)
+SOAP_FMAC3 casino1__Modulo_USCORECasinoResponse * SOAP_FMAC4 soap_in_casino1__Modulo_USCORECasinoResponse(struct soap *soap, const char *tag, casino1__Modulo_USCORECasinoResponse *a, const char *type)
 {
 	(void)tag; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_in(soap, tag, 0, NULL))
 		return NULL;
-	a = (ns1__validar_USCOREcasinoResponse *)soap_class_id_enter(soap, soap->id, a, SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse, sizeof(ns1__validar_USCOREcasinoResponse), soap->type, soap->arrayType);
+	a = (casino1__Modulo_USCORECasinoResponse *)soap_class_id_enter(soap, soap->id, a, SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse, sizeof(casino1__Modulo_USCORECasinoResponse), soap->type, soap->arrayType);
 	if (!a)
 		return NULL;
 	if (soap->alloced)
 	{	a->soap_default(soap);
-		if (soap->clist->type != SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse)
+		if (soap->clist->type != SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse)
 		{	soap_revert(soap);
 			*soap->id = '\0';
-			return (ns1__validar_USCOREcasinoResponse *)a->soap_in(soap, tag, type);
+			return (casino1__Modulo_USCORECasinoResponse *)a->soap_in(soap, tag, type);
 		}
 	}
 	size_t soap_flag_return_1 = 1;
@@ -837,7 +1060,7 @@ SOAP_FMAC3 ns1__validar_USCOREcasinoResponse * SOAP_FMAC4 soap_in_ns1__validar_U
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_return_1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-				if (soap_in_PointerTostd__string(soap, "return", &(a->ns1__validar_USCOREcasinoResponse::return_), "xsd:string"))
+				if (soap_in_PointerTostd__string(soap, "return", &(a->casino1__Modulo_USCORECasinoResponse::return_), "xsd:string"))
 				{	soap_flag_return_1--;
 					continue;
 				}
@@ -853,138 +1076,138 @@ SOAP_FMAC3 ns1__validar_USCOREcasinoResponse * SOAP_FMAC4 soap_in_ns1__validar_U
 			return NULL;
 	}
 	else
-	{	a = (ns1__validar_USCOREcasinoResponse *)soap_id_forward(soap, soap->href, (void*)a, 0, SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse, 0, sizeof(ns1__validar_USCOREcasinoResponse), 0, soap_copy_ns1__validar_USCOREcasinoResponse);
+	{	a = (casino1__Modulo_USCORECasinoResponse *)soap_id_forward(soap, soap->href, (void*)a, 0, SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse, 0, sizeof(casino1__Modulo_USCORECasinoResponse), 0, soap_copy_casino1__Modulo_USCORECasinoResponse);
 		if (soap->body && soap_element_end_in(soap, tag))
 			return NULL;
 	}
 	return a;
 }
 
-int ns1__validar_USCOREcasinoResponse::soap_put(struct soap *soap, const char *tag, const  char *type) const
+int casino1__Modulo_USCORECasinoResponse::soap_put(struct soap *soap, const char *tag, const  char *type) const
 {
-	register int id = soap_embed(soap, (void*)this, NULL, 0, SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse);
-	if (this->soap_out(soap, tag?tag:"ns1:validar_casinoResponse", id, type))
+	register int id = soap_embed(soap, (void*)this, NULL, 0, SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse);
+	if (this->soap_out(soap, tag?tag:"casino1:Modulo_CasinoResponse", id, type))
 		return soap->error;
 	return soap_putindependent(soap);
 }
 
-void *ns1__validar_USCOREcasinoResponse::soap_get(struct soap *soap, const char *tag, const char *type)
+void *casino1__Modulo_USCORECasinoResponse::soap_get(struct soap *soap, const char *tag, const char *type)
 {
-	return soap_get_ns1__validar_USCOREcasinoResponse(soap, this, tag, type);
+	return soap_get_casino1__Modulo_USCORECasinoResponse(soap, this, tag, type);
 }
 
-SOAP_FMAC3 ns1__validar_USCOREcasinoResponse * SOAP_FMAC4 soap_get_ns1__validar_USCOREcasinoResponse(struct soap *soap, ns1__validar_USCOREcasinoResponse *p, const char *tag, const char *type)
+SOAP_FMAC3 casino1__Modulo_USCORECasinoResponse * SOAP_FMAC4 soap_get_casino1__Modulo_USCORECasinoResponse(struct soap *soap, casino1__Modulo_USCORECasinoResponse *p, const char *tag, const char *type)
 {
-	if ((p = soap_in_ns1__validar_USCOREcasinoResponse(soap, tag, p, type)))
+	if ((p = soap_in_casino1__Modulo_USCORECasinoResponse(soap, tag, p, type)))
 		if (soap_getindependent(soap))
 			return NULL;
 	return p;
 }
 
-SOAP_FMAC1 ns1__validar_USCOREcasinoResponse * SOAP_FMAC2 soap_instantiate_ns1__validar_USCOREcasinoResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
+SOAP_FMAC1 casino1__Modulo_USCORECasinoResponse * SOAP_FMAC2 soap_instantiate_casino1__Modulo_USCORECasinoResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_ns1__validar_USCOREcasinoResponse(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
-	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse, n, casino_fdelete);
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_casino1__Modulo_USCORECasinoResponse(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
+	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse, n, casino_fdelete);
 	(void)type; (void)arrayType; /* appease -Wall -Werror */
 	if (!cp)
 		return NULL;
 	if (n < 0)
-	{	cp->ptr = (void*)SOAP_NEW(ns1__validar_USCOREcasinoResponse);
+	{	cp->ptr = (void*)SOAP_NEW(casino1__Modulo_USCORECasinoResponse);
 		if (size)
-			*size = sizeof(ns1__validar_USCOREcasinoResponse);
-		((ns1__validar_USCOREcasinoResponse*)cp->ptr)->soap = soap;
+			*size = sizeof(casino1__Modulo_USCORECasinoResponse);
+		((casino1__Modulo_USCORECasinoResponse*)cp->ptr)->soap = soap;
 	}
 	else
-	{	cp->ptr = (void*)SOAP_NEW_ARRAY(ns1__validar_USCOREcasinoResponse, n);
+	{	cp->ptr = (void*)SOAP_NEW_ARRAY(casino1__Modulo_USCORECasinoResponse, n);
 		if (size)
-			*size = n * sizeof(ns1__validar_USCOREcasinoResponse);
+			*size = n * sizeof(casino1__Modulo_USCORECasinoResponse);
 		if (cp->ptr)
 			for (int i = 0; i < n; i++)
-				((ns1__validar_USCOREcasinoResponse*)cp->ptr)[i].soap = soap;
+				((casino1__Modulo_USCORECasinoResponse*)cp->ptr)[i].soap = soap;
 	}
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", cp->ptr));
 	if (!cp->ptr)
 		soap->error = SOAP_EOM;
-	return (ns1__validar_USCOREcasinoResponse*)cp->ptr;
+	return (casino1__Modulo_USCORECasinoResponse*)cp->ptr;
 }
 
-SOAP_FMAC3 void SOAP_FMAC4 soap_copy_ns1__validar_USCOREcasinoResponse(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
+SOAP_FMAC3 void SOAP_FMAC4 soap_copy_casino1__Modulo_USCORECasinoResponse(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
 {
 	(void)soap; (void)tt; (void)st; (void)len; (void)n; /* appease -Wall -Werror */
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying ns1__validar_USCOREcasinoResponse %p -> %p\n", q, p));
-	*(ns1__validar_USCOREcasinoResponse*)p = *(ns1__validar_USCOREcasinoResponse*)q;
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying casino1__Modulo_USCORECasinoResponse %p -> %p\n", q, p));
+	*(casino1__Modulo_USCORECasinoResponse*)p = *(casino1__Modulo_USCORECasinoResponse*)q;
 }
 
-void ns1__validar_USCOREcasino::soap_default(struct soap *soap)
+void casino1__Modulo_USCORECasino::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	this->ns1__validar_USCOREcasino::rut = NULL;
-	this->ns1__validar_USCOREcasino::fecha = NULL;
-	this->ns1__validar_USCOREcasino::dispo = NULL;
-	this->ns1__validar_USCOREcasino::dato_USCORErecibido = NULL;
-	soap_default_int(soap, &this->ns1__validar_USCOREcasino::tipomarca);
+	this->casino1__Modulo_USCORECasino::rut = NULL;
+	this->casino1__Modulo_USCORECasino::fecha = NULL;
+	this->casino1__Modulo_USCORECasino::numerodispositivo = NULL;
+	this->casino1__Modulo_USCORECasino::dato_USCORErecibido = NULL;
+	soap_default_int(soap, &this->casino1__Modulo_USCORECasino::tipomarca);
 	/* transient soap skipped */
 }
 
-void ns1__validar_USCOREcasino::soap_serialize(struct soap *soap) const
+void casino1__Modulo_USCORECasino::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_PointerTostd__string(soap, &this->ns1__validar_USCOREcasino::rut);
-	soap_serialize_PointerTotime(soap, &this->ns1__validar_USCOREcasino::fecha);
-	soap_serialize_PointerTostd__string(soap, &this->ns1__validar_USCOREcasino::dispo);
-	soap_serialize_PointerTostd__string(soap, &this->ns1__validar_USCOREcasino::dato_USCORErecibido);
+	soap_serialize_PointerTostd__string(soap, &this->casino1__Modulo_USCORECasino::rut);
+	soap_serialize_PointerTotime(soap, &this->casino1__Modulo_USCORECasino::fecha);
+	soap_serialize_PointerTostd__string(soap, &this->casino1__Modulo_USCORECasino::numerodispositivo);
+	soap_serialize_PointerTostd__string(soap, &this->casino1__Modulo_USCORECasino::dato_USCORErecibido);
 	/* transient soap skipped */
 #endif
 }
 
-int ns1__validar_USCOREcasino::soap_out(struct soap *soap, const char *tag, int id, const char *type) const
+int casino1__Modulo_USCORECasino::soap_out(struct soap *soap, const char *tag, int id, const char *type) const
 {
-	return soap_out_ns1__validar_USCOREcasino(soap, tag, id, this, type);
+	return soap_out_casino1__Modulo_USCORECasino(soap, tag, id, this, type);
 }
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns1__validar_USCOREcasino(struct soap *soap, const char *tag, int id, const ns1__validar_USCOREcasino *a, const char *type)
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_casino1__Modulo_USCORECasino(struct soap *soap, const char *tag, int id, const casino1__Modulo_USCORECasino *a, const char *type)
 {
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
-	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE_casino_ns1__validar_USCOREcasino), type))
+	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE_casino_casino1__Modulo_USCORECasino), type))
 		return soap->error;
-	if (soap_out_PointerTostd__string(soap, "rut", -1, &(a->ns1__validar_USCOREcasino::rut), ""))
+	if (soap_out_PointerTostd__string(soap, "rut", -1, &(a->casino1__Modulo_USCORECasino::rut), ""))
 		return soap->error;
-	if (soap_out_PointerTotime(soap, "fecha", -1, &(a->ns1__validar_USCOREcasino::fecha), ""))
+	if (soap_out_PointerTotime(soap, "fecha", -1, &(a->casino1__Modulo_USCORECasino::fecha), ""))
 		return soap->error;
-	if (soap_out_PointerTostd__string(soap, "dispo", -1, &(a->ns1__validar_USCOREcasino::dispo), ""))
+	if (soap_out_PointerTostd__string(soap, "numerodispositivo", -1, &(a->casino1__Modulo_USCORECasino::numerodispositivo), ""))
 		return soap->error;
-	if (soap_out_PointerTostd__string(soap, "dato_recibido", -1, &(a->ns1__validar_USCOREcasino::dato_USCORErecibido), ""))
+	if (soap_out_PointerTostd__string(soap, "dato_recibido", -1, &(a->casino1__Modulo_USCORECasino::dato_USCORErecibido), ""))
 		return soap->error;
-	if (soap_out_int(soap, "tipomarca", -1, &(a->ns1__validar_USCOREcasino::tipomarca), ""))
+	if (soap_out_int(soap, "tipomarca", -1, &(a->casino1__Modulo_USCORECasino::tipomarca), ""))
 		return soap->error;
 	/* transient soap skipped */
 	return soap_element_end_out(soap, tag);
 }
 
-void *ns1__validar_USCOREcasino::soap_in(struct soap *soap, const char *tag, const char *type)
-{	return soap_in_ns1__validar_USCOREcasino(soap, tag, this, type);
+void *casino1__Modulo_USCORECasino::soap_in(struct soap *soap, const char *tag, const char *type)
+{	return soap_in_casino1__Modulo_USCORECasino(soap, tag, this, type);
 }
 
-SOAP_FMAC3 ns1__validar_USCOREcasino * SOAP_FMAC4 soap_in_ns1__validar_USCOREcasino(struct soap *soap, const char *tag, ns1__validar_USCOREcasino *a, const char *type)
+SOAP_FMAC3 casino1__Modulo_USCORECasino * SOAP_FMAC4 soap_in_casino1__Modulo_USCORECasino(struct soap *soap, const char *tag, casino1__Modulo_USCORECasino *a, const char *type)
 {
 	(void)tag; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_in(soap, tag, 0, NULL))
 		return NULL;
-	a = (ns1__validar_USCOREcasino *)soap_class_id_enter(soap, soap->id, a, SOAP_TYPE_casino_ns1__validar_USCOREcasino, sizeof(ns1__validar_USCOREcasino), soap->type, soap->arrayType);
+	a = (casino1__Modulo_USCORECasino *)soap_class_id_enter(soap, soap->id, a, SOAP_TYPE_casino_casino1__Modulo_USCORECasino, sizeof(casino1__Modulo_USCORECasino), soap->type, soap->arrayType);
 	if (!a)
 		return NULL;
 	if (soap->alloced)
 	{	a->soap_default(soap);
-		if (soap->clist->type != SOAP_TYPE_casino_ns1__validar_USCOREcasino)
+		if (soap->clist->type != SOAP_TYPE_casino_casino1__Modulo_USCORECasino)
 		{	soap_revert(soap);
 			*soap->id = '\0';
-			return (ns1__validar_USCOREcasino *)a->soap_in(soap, tag, type);
+			return (casino1__Modulo_USCORECasino *)a->soap_in(soap, tag, type);
 		}
 	}
 	size_t soap_flag_rut1 = 1;
 	size_t soap_flag_fecha1 = 1;
-	size_t soap_flag_dispo1 = 1;
+	size_t soap_flag_numerodispositivo1 = 1;
 	size_t soap_flag_dato_USCORErecibido1 = 1;
 	size_t soap_flag_tipomarca1 = 1;
 	if (soap->body && !*soap->href)
@@ -992,27 +1215,27 @@ SOAP_FMAC3 ns1__validar_USCOREcasino * SOAP_FMAC4 soap_in_ns1__validar_USCOREcas
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_rut1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-				if (soap_in_PointerTostd__string(soap, "rut", &(a->ns1__validar_USCOREcasino::rut), "xsd:string"))
+				if (soap_in_PointerTostd__string(soap, "rut", &(a->casino1__Modulo_USCORECasino::rut), "xsd:string"))
 				{	soap_flag_rut1--;
 					continue;
 				}
 			if (soap_flag_fecha1 && soap->error == SOAP_TAG_MISMATCH)
-				if (soap_in_PointerTotime(soap, "fecha", &(a->ns1__validar_USCOREcasino::fecha), "xsd:dateTime"))
+				if (soap_in_PointerTotime(soap, "fecha", &(a->casino1__Modulo_USCORECasino::fecha), "xsd:dateTime"))
 				{	soap_flag_fecha1--;
 					continue;
 				}
-			if (soap_flag_dispo1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-				if (soap_in_PointerTostd__string(soap, "dispo", &(a->ns1__validar_USCOREcasino::dispo), "xsd:string"))
-				{	soap_flag_dispo1--;
+			if (soap_flag_numerodispositivo1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
+				if (soap_in_PointerTostd__string(soap, "numerodispositivo", &(a->casino1__Modulo_USCORECasino::numerodispositivo), "xsd:string"))
+				{	soap_flag_numerodispositivo1--;
 					continue;
 				}
 			if (soap_flag_dato_USCORErecibido1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-				if (soap_in_PointerTostd__string(soap, "dato_recibido", &(a->ns1__validar_USCOREcasino::dato_USCORErecibido), "xsd:string"))
+				if (soap_in_PointerTostd__string(soap, "dato_recibido", &(a->casino1__Modulo_USCORECasino::dato_USCORErecibido), "xsd:string"))
 				{	soap_flag_dato_USCORErecibido1--;
 					continue;
 				}
 			if (soap_flag_tipomarca1 && soap->error == SOAP_TAG_MISMATCH)
-				if (soap_in_int(soap, "tipomarca", &(a->ns1__validar_USCOREcasino::tipomarca), "xsd:int"))
+				if (soap_in_int(soap, "tipomarca", &(a->casino1__Modulo_USCORECasino::tipomarca), "xsd:int"))
 				{	soap_flag_tipomarca1--;
 					continue;
 				}
@@ -1028,7 +1251,7 @@ SOAP_FMAC3 ns1__validar_USCOREcasino * SOAP_FMAC4 soap_in_ns1__validar_USCOREcas
 			return NULL;
 	}
 	else
-	{	a = (ns1__validar_USCOREcasino *)soap_id_forward(soap, soap->href, (void*)a, 0, SOAP_TYPE_casino_ns1__validar_USCOREcasino, 0, sizeof(ns1__validar_USCOREcasino), 0, soap_copy_ns1__validar_USCOREcasino);
+	{	a = (casino1__Modulo_USCORECasino *)soap_id_forward(soap, soap->href, (void*)a, 0, SOAP_TYPE_casino_casino1__Modulo_USCORECasino, 0, sizeof(casino1__Modulo_USCORECasino), 0, soap_copy_casino1__Modulo_USCORECasino);
 		if (soap->body && soap_element_end_in(soap, tag))
 			return NULL;
 	}
@@ -1039,120 +1262,123 @@ SOAP_FMAC3 ns1__validar_USCOREcasino * SOAP_FMAC4 soap_in_ns1__validar_USCOREcas
 	return a;
 }
 
-int ns1__validar_USCOREcasino::soap_put(struct soap *soap, const char *tag, const  char *type) const
+int casino1__Modulo_USCORECasino::soap_put(struct soap *soap, const char *tag, const  char *type) const
 {
-	register int id = soap_embed(soap, (void*)this, NULL, 0, SOAP_TYPE_casino_ns1__validar_USCOREcasino);
-	if (this->soap_out(soap, tag?tag:"ns1:validar_casino", id, type))
+	register int id = soap_embed(soap, (void*)this, NULL, 0, SOAP_TYPE_casino_casino1__Modulo_USCORECasino);
+	if (this->soap_out(soap, tag?tag:"casino1:Modulo_Casino", id, type))
 		return soap->error;
 	return soap_putindependent(soap);
 }
 
-void *ns1__validar_USCOREcasino::soap_get(struct soap *soap, const char *tag, const char *type)
+void *casino1__Modulo_USCORECasino::soap_get(struct soap *soap, const char *tag, const char *type)
 {
-	return soap_get_ns1__validar_USCOREcasino(soap, this, tag, type);
+	return soap_get_casino1__Modulo_USCORECasino(soap, this, tag, type);
 }
 
-SOAP_FMAC3 ns1__validar_USCOREcasino * SOAP_FMAC4 soap_get_ns1__validar_USCOREcasino(struct soap *soap, ns1__validar_USCOREcasino *p, const char *tag, const char *type)
+SOAP_FMAC3 casino1__Modulo_USCORECasino * SOAP_FMAC4 soap_get_casino1__Modulo_USCORECasino(struct soap *soap, casino1__Modulo_USCORECasino *p, const char *tag, const char *type)
 {
-	if ((p = soap_in_ns1__validar_USCOREcasino(soap, tag, p, type)))
+	if ((p = soap_in_casino1__Modulo_USCORECasino(soap, tag, p, type)))
 		if (soap_getindependent(soap))
 			return NULL;
 	return p;
 }
 
-SOAP_FMAC1 ns1__validar_USCOREcasino * SOAP_FMAC2 soap_instantiate_ns1__validar_USCOREcasino(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
+SOAP_FMAC1 casino1__Modulo_USCORECasino * SOAP_FMAC2 soap_instantiate_casino1__Modulo_USCORECasino(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_ns1__validar_USCOREcasino(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
-	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino_ns1__validar_USCOREcasino, n, casino_fdelete);
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_casino1__Modulo_USCORECasino(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
+	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino_casino1__Modulo_USCORECasino, n, casino_fdelete);
 	(void)type; (void)arrayType; /* appease -Wall -Werror */
 	if (!cp)
 		return NULL;
 	if (n < 0)
-	{	cp->ptr = (void*)SOAP_NEW(ns1__validar_USCOREcasino);
+	{	cp->ptr = (void*)SOAP_NEW(casino1__Modulo_USCORECasino);
 		if (size)
-			*size = sizeof(ns1__validar_USCOREcasino);
-		((ns1__validar_USCOREcasino*)cp->ptr)->soap = soap;
+			*size = sizeof(casino1__Modulo_USCORECasino);
+		((casino1__Modulo_USCORECasino*)cp->ptr)->soap = soap;
 	}
 	else
-	{	cp->ptr = (void*)SOAP_NEW_ARRAY(ns1__validar_USCOREcasino, n);
+	{	cp->ptr = (void*)SOAP_NEW_ARRAY(casino1__Modulo_USCORECasino, n);
 		if (size)
-			*size = n * sizeof(ns1__validar_USCOREcasino);
+			*size = n * sizeof(casino1__Modulo_USCORECasino);
 		if (cp->ptr)
 			for (int i = 0; i < n; i++)
-				((ns1__validar_USCOREcasino*)cp->ptr)[i].soap = soap;
+				((casino1__Modulo_USCORECasino*)cp->ptr)[i].soap = soap;
 	}
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", cp->ptr));
 	if (!cp->ptr)
 		soap->error = SOAP_EOM;
-	return (ns1__validar_USCOREcasino*)cp->ptr;
+	return (casino1__Modulo_USCORECasino*)cp->ptr;
 }
 
-SOAP_FMAC3 void SOAP_FMAC4 soap_copy_ns1__validar_USCOREcasino(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
+SOAP_FMAC3 void SOAP_FMAC4 soap_copy_casino1__Modulo_USCORECasino(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
 {
 	(void)soap; (void)tt; (void)st; (void)len; (void)n; /* appease -Wall -Werror */
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying ns1__validar_USCOREcasino %p -> %p\n", q, p));
-	*(ns1__validar_USCOREcasino*)p = *(ns1__validar_USCOREcasino*)q;
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying casino1__Modulo_USCORECasino %p -> %p\n", q, p));
+	*(casino1__Modulo_USCORECasino*)p = *(casino1__Modulo_USCORECasino*)q;
 }
 
-void ns1__TransaccionesResponse::soap_default(struct soap *soap)
+void casino1__Modulo_USCOREAcceso_USCOREPuertaResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_std__vectorTemplateOfstd__string(soap, &this->ns1__TransaccionesResponse::return_);
+	this->casino1__Modulo_USCOREAcceso_USCOREPuertaResponse::return_ = NULL;
 	/* transient soap skipped */
 }
 
-void ns1__TransaccionesResponse::soap_serialize(struct soap *soap) const
+void casino1__Modulo_USCOREAcceso_USCOREPuertaResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_std__vectorTemplateOfstd__string(soap, &this->ns1__TransaccionesResponse::return_);
+	soap_serialize_PointerTostd__string(soap, &this->casino1__Modulo_USCOREAcceso_USCOREPuertaResponse::return_);
 	/* transient soap skipped */
 #endif
 }
 
-int ns1__TransaccionesResponse::soap_out(struct soap *soap, const char *tag, int id, const char *type) const
+int casino1__Modulo_USCOREAcceso_USCOREPuertaResponse::soap_out(struct soap *soap, const char *tag, int id, const char *type) const
 {
-	return soap_out_ns1__TransaccionesResponse(soap, tag, id, this, type);
+	return soap_out_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse(soap, tag, id, this, type);
 }
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns1__TransaccionesResponse(struct soap *soap, const char *tag, int id, const ns1__TransaccionesResponse *a, const char *type)
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse(struct soap *soap, const char *tag, int id, const casino1__Modulo_USCOREAcceso_USCOREPuertaResponse *a, const char *type)
 {
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
-	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE_casino_ns1__TransaccionesResponse), type))
+	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse), type))
 		return soap->error;
-	if (soap_out_std__vectorTemplateOfstd__string(soap, "return", -1, &(a->ns1__TransaccionesResponse::return_), ""))
+	if (soap_out_PointerTostd__string(soap, "return", -1, &(a->casino1__Modulo_USCOREAcceso_USCOREPuertaResponse::return_), ""))
 		return soap->error;
 	/* transient soap skipped */
 	return soap_element_end_out(soap, tag);
 }
 
-void *ns1__TransaccionesResponse::soap_in(struct soap *soap, const char *tag, const char *type)
-{	return soap_in_ns1__TransaccionesResponse(soap, tag, this, type);
+void *casino1__Modulo_USCOREAcceso_USCOREPuertaResponse::soap_in(struct soap *soap, const char *tag, const char *type)
+{	return soap_in_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse(soap, tag, this, type);
 }
 
-SOAP_FMAC3 ns1__TransaccionesResponse * SOAP_FMAC4 soap_in_ns1__TransaccionesResponse(struct soap *soap, const char *tag, ns1__TransaccionesResponse *a, const char *type)
+SOAP_FMAC3 casino1__Modulo_USCOREAcceso_USCOREPuertaResponse * SOAP_FMAC4 soap_in_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse(struct soap *soap, const char *tag, casino1__Modulo_USCOREAcceso_USCOREPuertaResponse *a, const char *type)
 {
 	(void)tag; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_in(soap, tag, 0, NULL))
 		return NULL;
-	a = (ns1__TransaccionesResponse *)soap_class_id_enter(soap, soap->id, a, SOAP_TYPE_casino_ns1__TransaccionesResponse, sizeof(ns1__TransaccionesResponse), soap->type, soap->arrayType);
+	a = (casino1__Modulo_USCOREAcceso_USCOREPuertaResponse *)soap_class_id_enter(soap, soap->id, a, SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse, sizeof(casino1__Modulo_USCOREAcceso_USCOREPuertaResponse), soap->type, soap->arrayType);
 	if (!a)
 		return NULL;
 	if (soap->alloced)
 	{	a->soap_default(soap);
-		if (soap->clist->type != SOAP_TYPE_casino_ns1__TransaccionesResponse)
+		if (soap->clist->type != SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse)
 		{	soap_revert(soap);
 			*soap->id = '\0';
-			return (ns1__TransaccionesResponse *)a->soap_in(soap, tag, type);
+			return (casino1__Modulo_USCOREAcceso_USCOREPuertaResponse *)a->soap_in(soap, tag, type);
 		}
 	}
+	size_t soap_flag_return_1 = 1;
 	if (soap->body && !*soap->href)
 	{
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
-			if (soap->error == SOAP_TAG_MISMATCH)
-				if (soap_in_std__vectorTemplateOfstd__string(soap, "return", &(a->ns1__TransaccionesResponse::return_), "xsd:string"))
+			if (soap_flag_return_1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
+				if (soap_in_PointerTostd__string(soap, "return", &(a->casino1__Modulo_USCOREAcceso_USCOREPuertaResponse::return_), "xsd:string"))
+				{	soap_flag_return_1--;
 					continue;
+				}
 			/* transient soap skipped */
 			if (soap->error == SOAP_TAG_MISMATCH)
 				soap->error = soap_ignore_element(soap);
@@ -1165,156 +1391,177 @@ SOAP_FMAC3 ns1__TransaccionesResponse * SOAP_FMAC4 soap_in_ns1__TransaccionesRes
 			return NULL;
 	}
 	else
-	{	a = (ns1__TransaccionesResponse *)soap_id_forward(soap, soap->href, (void*)a, 0, SOAP_TYPE_casino_ns1__TransaccionesResponse, 0, sizeof(ns1__TransaccionesResponse), 0, soap_copy_ns1__TransaccionesResponse);
+	{	a = (casino1__Modulo_USCOREAcceso_USCOREPuertaResponse *)soap_id_forward(soap, soap->href, (void*)a, 0, SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse, 0, sizeof(casino1__Modulo_USCOREAcceso_USCOREPuertaResponse), 0, soap_copy_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse);
 		if (soap->body && soap_element_end_in(soap, tag))
 			return NULL;
 	}
 	return a;
 }
 
-int ns1__TransaccionesResponse::soap_put(struct soap *soap, const char *tag, const  char *type) const
+int casino1__Modulo_USCOREAcceso_USCOREPuertaResponse::soap_put(struct soap *soap, const char *tag, const  char *type) const
 {
-	register int id = soap_embed(soap, (void*)this, NULL, 0, SOAP_TYPE_casino_ns1__TransaccionesResponse);
-	if (this->soap_out(soap, tag?tag:"ns1:TransaccionesResponse", id, type))
+	register int id = soap_embed(soap, (void*)this, NULL, 0, SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse);
+	if (this->soap_out(soap, tag?tag:"casino1:Modulo_Acceso_PuertaResponse", id, type))
 		return soap->error;
 	return soap_putindependent(soap);
 }
 
-void *ns1__TransaccionesResponse::soap_get(struct soap *soap, const char *tag, const char *type)
+void *casino1__Modulo_USCOREAcceso_USCOREPuertaResponse::soap_get(struct soap *soap, const char *tag, const char *type)
 {
-	return soap_get_ns1__TransaccionesResponse(soap, this, tag, type);
+	return soap_get_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse(soap, this, tag, type);
 }
 
-SOAP_FMAC3 ns1__TransaccionesResponse * SOAP_FMAC4 soap_get_ns1__TransaccionesResponse(struct soap *soap, ns1__TransaccionesResponse *p, const char *tag, const char *type)
+SOAP_FMAC3 casino1__Modulo_USCOREAcceso_USCOREPuertaResponse * SOAP_FMAC4 soap_get_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse(struct soap *soap, casino1__Modulo_USCOREAcceso_USCOREPuertaResponse *p, const char *tag, const char *type)
 {
-	if ((p = soap_in_ns1__TransaccionesResponse(soap, tag, p, type)))
+	if ((p = soap_in_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse(soap, tag, p, type)))
 		if (soap_getindependent(soap))
 			return NULL;
 	return p;
 }
 
-SOAP_FMAC1 ns1__TransaccionesResponse * SOAP_FMAC2 soap_instantiate_ns1__TransaccionesResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
+SOAP_FMAC1 casino1__Modulo_USCOREAcceso_USCOREPuertaResponse * SOAP_FMAC2 soap_instantiate_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_ns1__TransaccionesResponse(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
-	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino_ns1__TransaccionesResponse, n, casino_fdelete);
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
+	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse, n, casino_fdelete);
 	(void)type; (void)arrayType; /* appease -Wall -Werror */
 	if (!cp)
 		return NULL;
 	if (n < 0)
-	{	cp->ptr = (void*)SOAP_NEW(ns1__TransaccionesResponse);
+	{	cp->ptr = (void*)SOAP_NEW(casino1__Modulo_USCOREAcceso_USCOREPuertaResponse);
 		if (size)
-			*size = sizeof(ns1__TransaccionesResponse);
-		((ns1__TransaccionesResponse*)cp->ptr)->soap = soap;
+			*size = sizeof(casino1__Modulo_USCOREAcceso_USCOREPuertaResponse);
+		((casino1__Modulo_USCOREAcceso_USCOREPuertaResponse*)cp->ptr)->soap = soap;
 	}
 	else
-	{	cp->ptr = (void*)SOAP_NEW_ARRAY(ns1__TransaccionesResponse, n);
+	{	cp->ptr = (void*)SOAP_NEW_ARRAY(casino1__Modulo_USCOREAcceso_USCOREPuertaResponse, n);
 		if (size)
-			*size = n * sizeof(ns1__TransaccionesResponse);
+			*size = n * sizeof(casino1__Modulo_USCOREAcceso_USCOREPuertaResponse);
 		if (cp->ptr)
 			for (int i = 0; i < n; i++)
-				((ns1__TransaccionesResponse*)cp->ptr)[i].soap = soap;
+				((casino1__Modulo_USCOREAcceso_USCOREPuertaResponse*)cp->ptr)[i].soap = soap;
 	}
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", cp->ptr));
 	if (!cp->ptr)
 		soap->error = SOAP_EOM;
-	return (ns1__TransaccionesResponse*)cp->ptr;
+	return (casino1__Modulo_USCOREAcceso_USCOREPuertaResponse*)cp->ptr;
 }
 
-SOAP_FMAC3 void SOAP_FMAC4 soap_copy_ns1__TransaccionesResponse(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
+SOAP_FMAC3 void SOAP_FMAC4 soap_copy_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
 {
 	(void)soap; (void)tt; (void)st; (void)len; (void)n; /* appease -Wall -Werror */
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying ns1__TransaccionesResponse %p -> %p\n", q, p));
-	*(ns1__TransaccionesResponse*)p = *(ns1__TransaccionesResponse*)q;
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying casino1__Modulo_USCOREAcceso_USCOREPuertaResponse %p -> %p\n", q, p));
+	*(casino1__Modulo_USCOREAcceso_USCOREPuertaResponse*)p = *(casino1__Modulo_USCOREAcceso_USCOREPuertaResponse*)q;
 }
 
-void ns1__Transacciones::soap_default(struct soap *soap)
+void casino1__Modulo_USCOREAcceso_USCOREPuerta::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	this->ns1__Transacciones::rut = NULL;
-	this->ns1__Transacciones::casino = NULL;
-	soap_default_int(soap, &this->ns1__Transacciones::mes);
-	soap_default_int(soap, &this->ns1__Transacciones::a_x00f1o);
+	this->casino1__Modulo_USCOREAcceso_USCOREPuerta::rut = NULL;
+	this->casino1__Modulo_USCOREAcceso_USCOREPuerta::dato_USCORErecibido = NULL;
+	this->casino1__Modulo_USCOREAcceso_USCOREPuerta::fecha = NULL;
+	this->casino1__Modulo_USCOREAcceso_USCOREPuerta::numerodispositivo = NULL;
+	soap_default_int(soap, &this->casino1__Modulo_USCOREAcceso_USCOREPuerta::tipomarca);
+	this->casino1__Modulo_USCOREAcceso_USCOREPuerta::foto = NULL;
 	/* transient soap skipped */
 }
 
-void ns1__Transacciones::soap_serialize(struct soap *soap) const
+void casino1__Modulo_USCOREAcceso_USCOREPuerta::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_PointerTostd__string(soap, &this->ns1__Transacciones::rut);
-	soap_serialize_PointerTostd__string(soap, &this->ns1__Transacciones::casino);
+	soap_serialize_PointerTostd__string(soap, &this->casino1__Modulo_USCOREAcceso_USCOREPuerta::rut);
+	soap_serialize_PointerTostd__string(soap, &this->casino1__Modulo_USCOREAcceso_USCOREPuerta::dato_USCORErecibido);
+	soap_serialize_PointerTotime(soap, &this->casino1__Modulo_USCOREAcceso_USCOREPuerta::fecha);
+	soap_serialize_PointerTostd__string(soap, &this->casino1__Modulo_USCOREAcceso_USCOREPuerta::numerodispositivo);
+	soap_serialize_PointerToxsd__base64Binary(soap, &this->casino1__Modulo_USCOREAcceso_USCOREPuerta::foto);
 	/* transient soap skipped */
 #endif
 }
 
-int ns1__Transacciones::soap_out(struct soap *soap, const char *tag, int id, const char *type) const
+int casino1__Modulo_USCOREAcceso_USCOREPuerta::soap_out(struct soap *soap, const char *tag, int id, const char *type) const
 {
-	return soap_out_ns1__Transacciones(soap, tag, id, this, type);
+	return soap_out_casino1__Modulo_USCOREAcceso_USCOREPuerta(soap, tag, id, this, type);
 }
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns1__Transacciones(struct soap *soap, const char *tag, int id, const ns1__Transacciones *a, const char *type)
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_casino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, const char *tag, int id, const casino1__Modulo_USCOREAcceso_USCOREPuerta *a, const char *type)
 {
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
-	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE_casino_ns1__Transacciones), type))
+	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta), type))
 		return soap->error;
-	if (soap_out_PointerTostd__string(soap, "rut", -1, &(a->ns1__Transacciones::rut), ""))
+	if (soap_out_PointerTostd__string(soap, "rut", -1, &(a->casino1__Modulo_USCOREAcceso_USCOREPuerta::rut), ""))
 		return soap->error;
-	if (soap_out_PointerTostd__string(soap, "casino", -1, &(a->ns1__Transacciones::casino), ""))
+	if (soap_out_PointerTostd__string(soap, "dato_recibido", -1, &(a->casino1__Modulo_USCOREAcceso_USCOREPuerta::dato_USCORErecibido), ""))
 		return soap->error;
-	if (soap_out_int(soap, "mes", -1, &(a->ns1__Transacciones::mes), ""))
+	if (soap_out_PointerTotime(soap, "fecha", -1, &(a->casino1__Modulo_USCOREAcceso_USCOREPuerta::fecha), ""))
 		return soap->error;
-	if (soap_out_int(soap, "año", -1, &(a->ns1__Transacciones::a_x00f1o), ""))
+	if (soap_out_PointerTostd__string(soap, "numerodispositivo", -1, &(a->casino1__Modulo_USCOREAcceso_USCOREPuerta::numerodispositivo), ""))
+		return soap->error;
+	if (soap_out_int(soap, "tipomarca", -1, &(a->casino1__Modulo_USCOREAcceso_USCOREPuerta::tipomarca), ""))
+		return soap->error;
+	if (soap_out_PointerToxsd__base64Binary(soap, "foto", -1, &(a->casino1__Modulo_USCOREAcceso_USCOREPuerta::foto), ""))
 		return soap->error;
 	/* transient soap skipped */
 	return soap_element_end_out(soap, tag);
 }
 
-void *ns1__Transacciones::soap_in(struct soap *soap, const char *tag, const char *type)
-{	return soap_in_ns1__Transacciones(soap, tag, this, type);
+void *casino1__Modulo_USCOREAcceso_USCOREPuerta::soap_in(struct soap *soap, const char *tag, const char *type)
+{	return soap_in_casino1__Modulo_USCOREAcceso_USCOREPuerta(soap, tag, this, type);
 }
 
-SOAP_FMAC3 ns1__Transacciones * SOAP_FMAC4 soap_in_ns1__Transacciones(struct soap *soap, const char *tag, ns1__Transacciones *a, const char *type)
+SOAP_FMAC3 casino1__Modulo_USCOREAcceso_USCOREPuerta * SOAP_FMAC4 soap_in_casino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, const char *tag, casino1__Modulo_USCOREAcceso_USCOREPuerta *a, const char *type)
 {
 	(void)tag; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_in(soap, tag, 0, NULL))
 		return NULL;
-	a = (ns1__Transacciones *)soap_class_id_enter(soap, soap->id, a, SOAP_TYPE_casino_ns1__Transacciones, sizeof(ns1__Transacciones), soap->type, soap->arrayType);
+	a = (casino1__Modulo_USCOREAcceso_USCOREPuerta *)soap_class_id_enter(soap, soap->id, a, SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta, sizeof(casino1__Modulo_USCOREAcceso_USCOREPuerta), soap->type, soap->arrayType);
 	if (!a)
 		return NULL;
 	if (soap->alloced)
 	{	a->soap_default(soap);
-		if (soap->clist->type != SOAP_TYPE_casino_ns1__Transacciones)
+		if (soap->clist->type != SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta)
 		{	soap_revert(soap);
 			*soap->id = '\0';
-			return (ns1__Transacciones *)a->soap_in(soap, tag, type);
+			return (casino1__Modulo_USCOREAcceso_USCOREPuerta *)a->soap_in(soap, tag, type);
 		}
 	}
 	size_t soap_flag_rut1 = 1;
-	size_t soap_flag_casino1 = 1;
-	size_t soap_flag_mes1 = 1;
-	size_t soap_flag_a_x00f1o1 = 1;
+	size_t soap_flag_dato_USCORErecibido1 = 1;
+	size_t soap_flag_fecha1 = 1;
+	size_t soap_flag_numerodispositivo1 = 1;
+	size_t soap_flag_tipomarca1 = 1;
+	size_t soap_flag_foto1 = 1;
 	if (soap->body && !*soap->href)
 	{
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_rut1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-				if (soap_in_PointerTostd__string(soap, "rut", &(a->ns1__Transacciones::rut), "xsd:string"))
+				if (soap_in_PointerTostd__string(soap, "rut", &(a->casino1__Modulo_USCOREAcceso_USCOREPuerta::rut), "xsd:string"))
 				{	soap_flag_rut1--;
 					continue;
 				}
-			if (soap_flag_casino1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-				if (soap_in_PointerTostd__string(soap, "casino", &(a->ns1__Transacciones::casino), "xsd:string"))
-				{	soap_flag_casino1--;
+			if (soap_flag_dato_USCORErecibido1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
+				if (soap_in_PointerTostd__string(soap, "dato_recibido", &(a->casino1__Modulo_USCOREAcceso_USCOREPuerta::dato_USCORErecibido), "xsd:string"))
+				{	soap_flag_dato_USCORErecibido1--;
 					continue;
 				}
-			if (soap_flag_mes1 && soap->error == SOAP_TAG_MISMATCH)
-				if (soap_in_int(soap, "mes", &(a->ns1__Transacciones::mes), "xsd:int"))
-				{	soap_flag_mes1--;
+			if (soap_flag_fecha1 && soap->error == SOAP_TAG_MISMATCH)
+				if (soap_in_PointerTotime(soap, "fecha", &(a->casino1__Modulo_USCOREAcceso_USCOREPuerta::fecha), "xsd:dateTime"))
+				{	soap_flag_fecha1--;
 					continue;
 				}
-			if (soap_flag_a_x00f1o1 && soap->error == SOAP_TAG_MISMATCH)
-				if (soap_in_int(soap, "año", &(a->ns1__Transacciones::a_x00f1o), "xsd:int"))
-				{	soap_flag_a_x00f1o1--;
+			if (soap_flag_numerodispositivo1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
+				if (soap_in_PointerTostd__string(soap, "numerodispositivo", &(a->casino1__Modulo_USCOREAcceso_USCOREPuerta::numerodispositivo), "xsd:string"))
+				{	soap_flag_numerodispositivo1--;
+					continue;
+				}
+			if (soap_flag_tipomarca1 && soap->error == SOAP_TAG_MISMATCH)
+				if (soap_in_int(soap, "tipomarca", &(a->casino1__Modulo_USCOREAcceso_USCOREPuerta::tipomarca), "xsd:int"))
+				{	soap_flag_tipomarca1--;
+					continue;
+				}
+			if (soap_flag_foto1 && soap->error == SOAP_TAG_MISMATCH)
+				if (soap_in_PointerToxsd__base64Binary(soap, "foto", &(a->casino1__Modulo_USCOREAcceso_USCOREPuerta::foto), "xsd:base64Binary"))
+				{	soap_flag_foto1--;
 					continue;
 				}
 			/* transient soap skipped */
@@ -1329,70 +1576,806 @@ SOAP_FMAC3 ns1__Transacciones * SOAP_FMAC4 soap_in_ns1__Transacciones(struct soa
 			return NULL;
 	}
 	else
-	{	a = (ns1__Transacciones *)soap_id_forward(soap, soap->href, (void*)a, 0, SOAP_TYPE_casino_ns1__Transacciones, 0, sizeof(ns1__Transacciones), 0, soap_copy_ns1__Transacciones);
+	{	a = (casino1__Modulo_USCOREAcceso_USCOREPuerta *)soap_id_forward(soap, soap->href, (void*)a, 0, SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta, 0, sizeof(casino1__Modulo_USCOREAcceso_USCOREPuerta), 0, soap_copy_casino1__Modulo_USCOREAcceso_USCOREPuerta);
 		if (soap->body && soap_element_end_in(soap, tag))
 			return NULL;
 	}
-	if ((soap->mode & SOAP_XML_STRICT) && (soap_flag_mes1 > 0 || soap_flag_a_x00f1o1 > 0))
+	if ((soap->mode & SOAP_XML_STRICT) && (soap_flag_tipomarca1 > 0))
 	{	soap->error = SOAP_OCCURS;
 		return NULL;
 	}
 	return a;
 }
 
-int ns1__Transacciones::soap_put(struct soap *soap, const char *tag, const  char *type) const
+int casino1__Modulo_USCOREAcceso_USCOREPuerta::soap_put(struct soap *soap, const char *tag, const  char *type) const
 {
-	register int id = soap_embed(soap, (void*)this, NULL, 0, SOAP_TYPE_casino_ns1__Transacciones);
-	if (this->soap_out(soap, tag?tag:"ns1:Transacciones", id, type))
+	register int id = soap_embed(soap, (void*)this, NULL, 0, SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta);
+	if (this->soap_out(soap, tag?tag:"casino1:Modulo_Acceso_Puerta", id, type))
 		return soap->error;
 	return soap_putindependent(soap);
 }
 
-void *ns1__Transacciones::soap_get(struct soap *soap, const char *tag, const char *type)
+void *casino1__Modulo_USCOREAcceso_USCOREPuerta::soap_get(struct soap *soap, const char *tag, const char *type)
 {
-	return soap_get_ns1__Transacciones(soap, this, tag, type);
+	return soap_get_casino1__Modulo_USCOREAcceso_USCOREPuerta(soap, this, tag, type);
 }
 
-SOAP_FMAC3 ns1__Transacciones * SOAP_FMAC4 soap_get_ns1__Transacciones(struct soap *soap, ns1__Transacciones *p, const char *tag, const char *type)
+SOAP_FMAC3 casino1__Modulo_USCOREAcceso_USCOREPuerta * SOAP_FMAC4 soap_get_casino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, casino1__Modulo_USCOREAcceso_USCOREPuerta *p, const char *tag, const char *type)
 {
-	if ((p = soap_in_ns1__Transacciones(soap, tag, p, type)))
+	if ((p = soap_in_casino1__Modulo_USCOREAcceso_USCOREPuerta(soap, tag, p, type)))
 		if (soap_getindependent(soap))
 			return NULL;
 	return p;
 }
 
-SOAP_FMAC1 ns1__Transacciones * SOAP_FMAC2 soap_instantiate_ns1__Transacciones(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
+SOAP_FMAC1 casino1__Modulo_USCOREAcceso_USCOREPuerta * SOAP_FMAC2 soap_instantiate_casino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_ns1__Transacciones(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
-	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino_ns1__Transacciones, n, casino_fdelete);
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_casino1__Modulo_USCOREAcceso_USCOREPuerta(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
+	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta, n, casino_fdelete);
 	(void)type; (void)arrayType; /* appease -Wall -Werror */
 	if (!cp)
 		return NULL;
 	if (n < 0)
-	{	cp->ptr = (void*)SOAP_NEW(ns1__Transacciones);
+	{	cp->ptr = (void*)SOAP_NEW(casino1__Modulo_USCOREAcceso_USCOREPuerta);
 		if (size)
-			*size = sizeof(ns1__Transacciones);
-		((ns1__Transacciones*)cp->ptr)->soap = soap;
+			*size = sizeof(casino1__Modulo_USCOREAcceso_USCOREPuerta);
+		((casino1__Modulo_USCOREAcceso_USCOREPuerta*)cp->ptr)->soap = soap;
 	}
 	else
-	{	cp->ptr = (void*)SOAP_NEW_ARRAY(ns1__Transacciones, n);
+	{	cp->ptr = (void*)SOAP_NEW_ARRAY(casino1__Modulo_USCOREAcceso_USCOREPuerta, n);
 		if (size)
-			*size = n * sizeof(ns1__Transacciones);
+			*size = n * sizeof(casino1__Modulo_USCOREAcceso_USCOREPuerta);
 		if (cp->ptr)
 			for (int i = 0; i < n; i++)
-				((ns1__Transacciones*)cp->ptr)[i].soap = soap;
+				((casino1__Modulo_USCOREAcceso_USCOREPuerta*)cp->ptr)[i].soap = soap;
 	}
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", cp->ptr));
 	if (!cp->ptr)
 		soap->error = SOAP_EOM;
-	return (ns1__Transacciones*)cp->ptr;
+	return (casino1__Modulo_USCOREAcceso_USCOREPuerta*)cp->ptr;
 }
 
-SOAP_FMAC3 void SOAP_FMAC4 soap_copy_ns1__Transacciones(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
+SOAP_FMAC3 void SOAP_FMAC4 soap_copy_casino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
 {
 	(void)soap; (void)tt; (void)st; (void)len; (void)n; /* appease -Wall -Werror */
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying ns1__Transacciones %p -> %p\n", q, p));
-	*(ns1__Transacciones*)p = *(ns1__Transacciones*)q;
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying casino1__Modulo_USCOREAcceso_USCOREPuerta %p -> %p\n", q, p));
+	*(casino1__Modulo_USCOREAcceso_USCOREPuerta*)p = *(casino1__Modulo_USCOREAcceso_USCOREPuerta*)q;
+}
+
+void casino1__Modulo_USCOREobtener_USCOREhoraResponse::soap_default(struct soap *soap)
+{
+	this->soap = soap;
+	this->casino1__Modulo_USCOREobtener_USCOREhoraResponse::return_ = NULL;
+	/* transient soap skipped */
+}
+
+void casino1__Modulo_USCOREobtener_USCOREhoraResponse::soap_serialize(struct soap *soap) const
+{
+	(void)soap; /* appease -Wall -Werror */
+#ifndef WITH_NOIDREF
+	soap_serialize_PointerTotime(soap, &this->casino1__Modulo_USCOREobtener_USCOREhoraResponse::return_);
+	/* transient soap skipped */
+#endif
+}
+
+int casino1__Modulo_USCOREobtener_USCOREhoraResponse::soap_out(struct soap *soap, const char *tag, int id, const char *type) const
+{
+	return soap_out_casino1__Modulo_USCOREobtener_USCOREhoraResponse(soap, tag, id, this, type);
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_casino1__Modulo_USCOREobtener_USCOREhoraResponse(struct soap *soap, const char *tag, int id, const casino1__Modulo_USCOREobtener_USCOREhoraResponse *a, const char *type)
+{
+	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
+	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse), type))
+		return soap->error;
+	if (soap_out_PointerTotime(soap, "return", -1, &(a->casino1__Modulo_USCOREobtener_USCOREhoraResponse::return_), ""))
+		return soap->error;
+	/* transient soap skipped */
+	return soap_element_end_out(soap, tag);
+}
+
+void *casino1__Modulo_USCOREobtener_USCOREhoraResponse::soap_in(struct soap *soap, const char *tag, const char *type)
+{	return soap_in_casino1__Modulo_USCOREobtener_USCOREhoraResponse(soap, tag, this, type);
+}
+
+SOAP_FMAC3 casino1__Modulo_USCOREobtener_USCOREhoraResponse * SOAP_FMAC4 soap_in_casino1__Modulo_USCOREobtener_USCOREhoraResponse(struct soap *soap, const char *tag, casino1__Modulo_USCOREobtener_USCOREhoraResponse *a, const char *type)
+{
+	(void)tag; (void)type; /* appease -Wall -Werror */
+	if (soap_element_begin_in(soap, tag, 0, NULL))
+		return NULL;
+	a = (casino1__Modulo_USCOREobtener_USCOREhoraResponse *)soap_class_id_enter(soap, soap->id, a, SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse, sizeof(casino1__Modulo_USCOREobtener_USCOREhoraResponse), soap->type, soap->arrayType);
+	if (!a)
+		return NULL;
+	if (soap->alloced)
+	{	a->soap_default(soap);
+		if (soap->clist->type != SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse)
+		{	soap_revert(soap);
+			*soap->id = '\0';
+			return (casino1__Modulo_USCOREobtener_USCOREhoraResponse *)a->soap_in(soap, tag, type);
+		}
+	}
+	size_t soap_flag_return_1 = 1;
+	if (soap->body && !*soap->href)
+	{
+		for (;;)
+		{	soap->error = SOAP_TAG_MISMATCH;
+			if (soap_flag_return_1 && soap->error == SOAP_TAG_MISMATCH)
+				if (soap_in_PointerTotime(soap, "return", &(a->casino1__Modulo_USCOREobtener_USCOREhoraResponse::return_), "xsd:dateTime"))
+				{	soap_flag_return_1--;
+					continue;
+				}
+			/* transient soap skipped */
+			if (soap->error == SOAP_TAG_MISMATCH)
+				soap->error = soap_ignore_element(soap);
+			if (soap->error == SOAP_NO_TAG)
+				break;
+			if (soap->error)
+				return NULL;
+		}
+		if (soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	else
+	{	a = (casino1__Modulo_USCOREobtener_USCOREhoraResponse *)soap_id_forward(soap, soap->href, (void*)a, 0, SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse, 0, sizeof(casino1__Modulo_USCOREobtener_USCOREhoraResponse), 0, soap_copy_casino1__Modulo_USCOREobtener_USCOREhoraResponse);
+		if (soap->body && soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	return a;
+}
+
+int casino1__Modulo_USCOREobtener_USCOREhoraResponse::soap_put(struct soap *soap, const char *tag, const  char *type) const
+{
+	register int id = soap_embed(soap, (void*)this, NULL, 0, SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse);
+	if (this->soap_out(soap, tag?tag:"casino1:Modulo_obtener_horaResponse", id, type))
+		return soap->error;
+	return soap_putindependent(soap);
+}
+
+void *casino1__Modulo_USCOREobtener_USCOREhoraResponse::soap_get(struct soap *soap, const char *tag, const char *type)
+{
+	return soap_get_casino1__Modulo_USCOREobtener_USCOREhoraResponse(soap, this, tag, type);
+}
+
+SOAP_FMAC3 casino1__Modulo_USCOREobtener_USCOREhoraResponse * SOAP_FMAC4 soap_get_casino1__Modulo_USCOREobtener_USCOREhoraResponse(struct soap *soap, casino1__Modulo_USCOREobtener_USCOREhoraResponse *p, const char *tag, const char *type)
+{
+	if ((p = soap_in_casino1__Modulo_USCOREobtener_USCOREhoraResponse(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
+SOAP_FMAC1 casino1__Modulo_USCOREobtener_USCOREhoraResponse * SOAP_FMAC2 soap_instantiate_casino1__Modulo_USCOREobtener_USCOREhoraResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
+{
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_casino1__Modulo_USCOREobtener_USCOREhoraResponse(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
+	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse, n, casino_fdelete);
+	(void)type; (void)arrayType; /* appease -Wall -Werror */
+	if (!cp)
+		return NULL;
+	if (n < 0)
+	{	cp->ptr = (void*)SOAP_NEW(casino1__Modulo_USCOREobtener_USCOREhoraResponse);
+		if (size)
+			*size = sizeof(casino1__Modulo_USCOREobtener_USCOREhoraResponse);
+		((casino1__Modulo_USCOREobtener_USCOREhoraResponse*)cp->ptr)->soap = soap;
+	}
+	else
+	{	cp->ptr = (void*)SOAP_NEW_ARRAY(casino1__Modulo_USCOREobtener_USCOREhoraResponse, n);
+		if (size)
+			*size = n * sizeof(casino1__Modulo_USCOREobtener_USCOREhoraResponse);
+		if (cp->ptr)
+			for (int i = 0; i < n; i++)
+				((casino1__Modulo_USCOREobtener_USCOREhoraResponse*)cp->ptr)[i].soap = soap;
+	}
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", cp->ptr));
+	if (!cp->ptr)
+		soap->error = SOAP_EOM;
+	return (casino1__Modulo_USCOREobtener_USCOREhoraResponse*)cp->ptr;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_copy_casino1__Modulo_USCOREobtener_USCOREhoraResponse(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
+{
+	(void)soap; (void)tt; (void)st; (void)len; (void)n; /* appease -Wall -Werror */
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying casino1__Modulo_USCOREobtener_USCOREhoraResponse %p -> %p\n", q, p));
+	*(casino1__Modulo_USCOREobtener_USCOREhoraResponse*)p = *(casino1__Modulo_USCOREobtener_USCOREhoraResponse*)q;
+}
+
+void casino1__Modulo_USCOREobtener_USCOREhora::soap_default(struct soap *soap)
+{
+	this->soap = soap;
+	/* transient soap skipped */
+}
+
+void casino1__Modulo_USCOREobtener_USCOREhora::soap_serialize(struct soap *soap) const
+{
+	(void)soap; /* appease -Wall -Werror */
+#ifndef WITH_NOIDREF
+	/* transient soap skipped */
+#endif
+}
+
+int casino1__Modulo_USCOREobtener_USCOREhora::soap_out(struct soap *soap, const char *tag, int id, const char *type) const
+{
+	return soap_out_casino1__Modulo_USCOREobtener_USCOREhora(soap, tag, id, this, type);
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_casino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, const char *tag, int id, const casino1__Modulo_USCOREobtener_USCOREhora *a, const char *type)
+{
+	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
+	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora), type))
+		return soap->error;
+	/* transient soap skipped */
+	return soap_element_end_out(soap, tag);
+}
+
+void *casino1__Modulo_USCOREobtener_USCOREhora::soap_in(struct soap *soap, const char *tag, const char *type)
+{	return soap_in_casino1__Modulo_USCOREobtener_USCOREhora(soap, tag, this, type);
+}
+
+SOAP_FMAC3 casino1__Modulo_USCOREobtener_USCOREhora * SOAP_FMAC4 soap_in_casino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, const char *tag, casino1__Modulo_USCOREobtener_USCOREhora *a, const char *type)
+{
+	(void)tag; (void)type; /* appease -Wall -Werror */
+	if (soap_element_begin_in(soap, tag, 0, NULL))
+		return NULL;
+	a = (casino1__Modulo_USCOREobtener_USCOREhora *)soap_class_id_enter(soap, soap->id, a, SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora, sizeof(casino1__Modulo_USCOREobtener_USCOREhora), soap->type, soap->arrayType);
+	if (!a)
+		return NULL;
+	if (soap->alloced)
+	{	a->soap_default(soap);
+		if (soap->clist->type != SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora)
+		{	soap_revert(soap);
+			*soap->id = '\0';
+			return (casino1__Modulo_USCOREobtener_USCOREhora *)a->soap_in(soap, tag, type);
+		}
+	}
+	if (soap->body && !*soap->href)
+	{
+		for (;;)
+		{	soap->error = SOAP_TAG_MISMATCH;
+			/* transient soap skipped */
+			if (soap->error == SOAP_TAG_MISMATCH)
+				soap->error = soap_ignore_element(soap);
+			if (soap->error == SOAP_NO_TAG)
+				break;
+			if (soap->error)
+				return NULL;
+		}
+		if (soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	else
+	{	a = (casino1__Modulo_USCOREobtener_USCOREhora *)soap_id_forward(soap, soap->href, (void*)a, 0, SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora, 0, sizeof(casino1__Modulo_USCOREobtener_USCOREhora), 0, soap_copy_casino1__Modulo_USCOREobtener_USCOREhora);
+		if (soap->body && soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	return a;
+}
+
+int casino1__Modulo_USCOREobtener_USCOREhora::soap_put(struct soap *soap, const char *tag, const  char *type) const
+{
+	register int id = soap_embed(soap, (void*)this, NULL, 0, SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora);
+	if (this->soap_out(soap, tag?tag:"casino1:Modulo_obtener_hora", id, type))
+		return soap->error;
+	return soap_putindependent(soap);
+}
+
+void *casino1__Modulo_USCOREobtener_USCOREhora::soap_get(struct soap *soap, const char *tag, const char *type)
+{
+	return soap_get_casino1__Modulo_USCOREobtener_USCOREhora(soap, this, tag, type);
+}
+
+SOAP_FMAC3 casino1__Modulo_USCOREobtener_USCOREhora * SOAP_FMAC4 soap_get_casino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, casino1__Modulo_USCOREobtener_USCOREhora *p, const char *tag, const char *type)
+{
+	if ((p = soap_in_casino1__Modulo_USCOREobtener_USCOREhora(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
+SOAP_FMAC1 casino1__Modulo_USCOREobtener_USCOREhora * SOAP_FMAC2 soap_instantiate_casino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
+{
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_casino1__Modulo_USCOREobtener_USCOREhora(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
+	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora, n, casino_fdelete);
+	(void)type; (void)arrayType; /* appease -Wall -Werror */
+	if (!cp)
+		return NULL;
+	if (n < 0)
+	{	cp->ptr = (void*)SOAP_NEW(casino1__Modulo_USCOREobtener_USCOREhora);
+		if (size)
+			*size = sizeof(casino1__Modulo_USCOREobtener_USCOREhora);
+		((casino1__Modulo_USCOREobtener_USCOREhora*)cp->ptr)->soap = soap;
+	}
+	else
+	{	cp->ptr = (void*)SOAP_NEW_ARRAY(casino1__Modulo_USCOREobtener_USCOREhora, n);
+		if (size)
+			*size = n * sizeof(casino1__Modulo_USCOREobtener_USCOREhora);
+		if (cp->ptr)
+			for (int i = 0; i < n; i++)
+				((casino1__Modulo_USCOREobtener_USCOREhora*)cp->ptr)[i].soap = soap;
+	}
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", cp->ptr));
+	if (!cp->ptr)
+		soap->error = SOAP_EOM;
+	return (casino1__Modulo_USCOREobtener_USCOREhora*)cp->ptr;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_copy_casino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
+{
+	(void)soap; (void)tt; (void)st; (void)len; (void)n; /* appease -Wall -Werror */
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying casino1__Modulo_USCOREobtener_USCOREhora %p -> %p\n", q, p));
+	*(casino1__Modulo_USCOREobtener_USCOREhora*)p = *(casino1__Modulo_USCOREobtener_USCOREhora*)q;
+}
+
+void casino1__Modulo_USCOREAsistenciaResponse::soap_default(struct soap *soap)
+{
+	this->soap = soap;
+	this->casino1__Modulo_USCOREAsistenciaResponse::return_ = NULL;
+	/* transient soap skipped */
+}
+
+void casino1__Modulo_USCOREAsistenciaResponse::soap_serialize(struct soap *soap) const
+{
+	(void)soap; /* appease -Wall -Werror */
+#ifndef WITH_NOIDREF
+	soap_serialize_PointerTostd__string(soap, &this->casino1__Modulo_USCOREAsistenciaResponse::return_);
+	/* transient soap skipped */
+#endif
+}
+
+int casino1__Modulo_USCOREAsistenciaResponse::soap_out(struct soap *soap, const char *tag, int id, const char *type) const
+{
+	return soap_out_casino1__Modulo_USCOREAsistenciaResponse(soap, tag, id, this, type);
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_casino1__Modulo_USCOREAsistenciaResponse(struct soap *soap, const char *tag, int id, const casino1__Modulo_USCOREAsistenciaResponse *a, const char *type)
+{
+	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
+	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse), type))
+		return soap->error;
+	if (soap_out_PointerTostd__string(soap, "return", -1, &(a->casino1__Modulo_USCOREAsistenciaResponse::return_), ""))
+		return soap->error;
+	/* transient soap skipped */
+	return soap_element_end_out(soap, tag);
+}
+
+void *casino1__Modulo_USCOREAsistenciaResponse::soap_in(struct soap *soap, const char *tag, const char *type)
+{	return soap_in_casino1__Modulo_USCOREAsistenciaResponse(soap, tag, this, type);
+}
+
+SOAP_FMAC3 casino1__Modulo_USCOREAsistenciaResponse * SOAP_FMAC4 soap_in_casino1__Modulo_USCOREAsistenciaResponse(struct soap *soap, const char *tag, casino1__Modulo_USCOREAsistenciaResponse *a, const char *type)
+{
+	(void)tag; (void)type; /* appease -Wall -Werror */
+	if (soap_element_begin_in(soap, tag, 0, NULL))
+		return NULL;
+	a = (casino1__Modulo_USCOREAsistenciaResponse *)soap_class_id_enter(soap, soap->id, a, SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse, sizeof(casino1__Modulo_USCOREAsistenciaResponse), soap->type, soap->arrayType);
+	if (!a)
+		return NULL;
+	if (soap->alloced)
+	{	a->soap_default(soap);
+		if (soap->clist->type != SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse)
+		{	soap_revert(soap);
+			*soap->id = '\0';
+			return (casino1__Modulo_USCOREAsistenciaResponse *)a->soap_in(soap, tag, type);
+		}
+	}
+	size_t soap_flag_return_1 = 1;
+	if (soap->body && !*soap->href)
+	{
+		for (;;)
+		{	soap->error = SOAP_TAG_MISMATCH;
+			if (soap_flag_return_1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
+				if (soap_in_PointerTostd__string(soap, "return", &(a->casino1__Modulo_USCOREAsistenciaResponse::return_), "xsd:string"))
+				{	soap_flag_return_1--;
+					continue;
+				}
+			/* transient soap skipped */
+			if (soap->error == SOAP_TAG_MISMATCH)
+				soap->error = soap_ignore_element(soap);
+			if (soap->error == SOAP_NO_TAG)
+				break;
+			if (soap->error)
+				return NULL;
+		}
+		if (soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	else
+	{	a = (casino1__Modulo_USCOREAsistenciaResponse *)soap_id_forward(soap, soap->href, (void*)a, 0, SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse, 0, sizeof(casino1__Modulo_USCOREAsistenciaResponse), 0, soap_copy_casino1__Modulo_USCOREAsistenciaResponse);
+		if (soap->body && soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	return a;
+}
+
+int casino1__Modulo_USCOREAsistenciaResponse::soap_put(struct soap *soap, const char *tag, const  char *type) const
+{
+	register int id = soap_embed(soap, (void*)this, NULL, 0, SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse);
+	if (this->soap_out(soap, tag?tag:"casino1:Modulo_AsistenciaResponse", id, type))
+		return soap->error;
+	return soap_putindependent(soap);
+}
+
+void *casino1__Modulo_USCOREAsistenciaResponse::soap_get(struct soap *soap, const char *tag, const char *type)
+{
+	return soap_get_casino1__Modulo_USCOREAsistenciaResponse(soap, this, tag, type);
+}
+
+SOAP_FMAC3 casino1__Modulo_USCOREAsistenciaResponse * SOAP_FMAC4 soap_get_casino1__Modulo_USCOREAsistenciaResponse(struct soap *soap, casino1__Modulo_USCOREAsistenciaResponse *p, const char *tag, const char *type)
+{
+	if ((p = soap_in_casino1__Modulo_USCOREAsistenciaResponse(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
+SOAP_FMAC1 casino1__Modulo_USCOREAsistenciaResponse * SOAP_FMAC2 soap_instantiate_casino1__Modulo_USCOREAsistenciaResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
+{
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_casino1__Modulo_USCOREAsistenciaResponse(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
+	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse, n, casino_fdelete);
+	(void)type; (void)arrayType; /* appease -Wall -Werror */
+	if (!cp)
+		return NULL;
+	if (n < 0)
+	{	cp->ptr = (void*)SOAP_NEW(casino1__Modulo_USCOREAsistenciaResponse);
+		if (size)
+			*size = sizeof(casino1__Modulo_USCOREAsistenciaResponse);
+		((casino1__Modulo_USCOREAsistenciaResponse*)cp->ptr)->soap = soap;
+	}
+	else
+	{	cp->ptr = (void*)SOAP_NEW_ARRAY(casino1__Modulo_USCOREAsistenciaResponse, n);
+		if (size)
+			*size = n * sizeof(casino1__Modulo_USCOREAsistenciaResponse);
+		if (cp->ptr)
+			for (int i = 0; i < n; i++)
+				((casino1__Modulo_USCOREAsistenciaResponse*)cp->ptr)[i].soap = soap;
+	}
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", cp->ptr));
+	if (!cp->ptr)
+		soap->error = SOAP_EOM;
+	return (casino1__Modulo_USCOREAsistenciaResponse*)cp->ptr;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_copy_casino1__Modulo_USCOREAsistenciaResponse(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
+{
+	(void)soap; (void)tt; (void)st; (void)len; (void)n; /* appease -Wall -Werror */
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying casino1__Modulo_USCOREAsistenciaResponse %p -> %p\n", q, p));
+	*(casino1__Modulo_USCOREAsistenciaResponse*)p = *(casino1__Modulo_USCOREAsistenciaResponse*)q;
+}
+
+void casino1__Modulo_USCOREAsistencia::soap_default(struct soap *soap)
+{
+	this->soap = soap;
+	this->casino1__Modulo_USCOREAsistencia::rut = NULL;
+	this->casino1__Modulo_USCOREAsistencia::dato_USCORErecibido = NULL;
+	this->casino1__Modulo_USCOREAsistencia::hash_USCOREalternativo = NULL;
+	this->casino1__Modulo_USCOREAsistencia::fecha = NULL;
+	this->casino1__Modulo_USCOREAsistencia::numerodispositivo = NULL;
+	soap_default_int(soap, &this->casino1__Modulo_USCOREAsistencia::tipomarca);
+	this->casino1__Modulo_USCOREAsistencia::foto = NULL;
+	/* transient soap skipped */
+}
+
+void casino1__Modulo_USCOREAsistencia::soap_serialize(struct soap *soap) const
+{
+	(void)soap; /* appease -Wall -Werror */
+#ifndef WITH_NOIDREF
+	soap_serialize_PointerTostd__string(soap, &this->casino1__Modulo_USCOREAsistencia::rut);
+	soap_serialize_PointerTostd__string(soap, &this->casino1__Modulo_USCOREAsistencia::dato_USCORErecibido);
+	soap_serialize_PointerTostd__string(soap, &this->casino1__Modulo_USCOREAsistencia::hash_USCOREalternativo);
+	soap_serialize_PointerTotime(soap, &this->casino1__Modulo_USCOREAsistencia::fecha);
+	soap_serialize_PointerTostd__string(soap, &this->casino1__Modulo_USCOREAsistencia::numerodispositivo);
+	soap_serialize_PointerToxsd__base64Binary(soap, &this->casino1__Modulo_USCOREAsistencia::foto);
+	/* transient soap skipped */
+#endif
+}
+
+int casino1__Modulo_USCOREAsistencia::soap_out(struct soap *soap, const char *tag, int id, const char *type) const
+{
+	return soap_out_casino1__Modulo_USCOREAsistencia(soap, tag, id, this, type);
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_casino1__Modulo_USCOREAsistencia(struct soap *soap, const char *tag, int id, const casino1__Modulo_USCOREAsistencia *a, const char *type)
+{
+	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
+	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia), type))
+		return soap->error;
+	if (soap_out_PointerTostd__string(soap, "rut", -1, &(a->casino1__Modulo_USCOREAsistencia::rut), ""))
+		return soap->error;
+	if (soap_out_PointerTostd__string(soap, "dato_recibido", -1, &(a->casino1__Modulo_USCOREAsistencia::dato_USCORErecibido), ""))
+		return soap->error;
+	if (soap_out_PointerTostd__string(soap, "hash_alternativo", -1, &(a->casino1__Modulo_USCOREAsistencia::hash_USCOREalternativo), ""))
+		return soap->error;
+	if (soap_out_PointerTotime(soap, "fecha", -1, &(a->casino1__Modulo_USCOREAsistencia::fecha), ""))
+		return soap->error;
+	if (soap_out_PointerTostd__string(soap, "numerodispositivo", -1, &(a->casino1__Modulo_USCOREAsistencia::numerodispositivo), ""))
+		return soap->error;
+	if (soap_out_int(soap, "tipomarca", -1, &(a->casino1__Modulo_USCOREAsistencia::tipomarca), ""))
+		return soap->error;
+	if (soap_out_PointerToxsd__base64Binary(soap, "foto", -1, &(a->casino1__Modulo_USCOREAsistencia::foto), ""))
+		return soap->error;
+	/* transient soap skipped */
+	return soap_element_end_out(soap, tag);
+}
+
+void *casino1__Modulo_USCOREAsistencia::soap_in(struct soap *soap, const char *tag, const char *type)
+{	return soap_in_casino1__Modulo_USCOREAsistencia(soap, tag, this, type);
+}
+
+SOAP_FMAC3 casino1__Modulo_USCOREAsistencia * SOAP_FMAC4 soap_in_casino1__Modulo_USCOREAsistencia(struct soap *soap, const char *tag, casino1__Modulo_USCOREAsistencia *a, const char *type)
+{
+	(void)tag; (void)type; /* appease -Wall -Werror */
+	if (soap_element_begin_in(soap, tag, 0, NULL))
+		return NULL;
+	a = (casino1__Modulo_USCOREAsistencia *)soap_class_id_enter(soap, soap->id, a, SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia, sizeof(casino1__Modulo_USCOREAsistencia), soap->type, soap->arrayType);
+	if (!a)
+		return NULL;
+	if (soap->alloced)
+	{	a->soap_default(soap);
+		if (soap->clist->type != SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia)
+		{	soap_revert(soap);
+			*soap->id = '\0';
+			return (casino1__Modulo_USCOREAsistencia *)a->soap_in(soap, tag, type);
+		}
+	}
+	size_t soap_flag_rut1 = 1;
+	size_t soap_flag_dato_USCORErecibido1 = 1;
+	size_t soap_flag_hash_USCOREalternativo1 = 1;
+	size_t soap_flag_fecha1 = 1;
+	size_t soap_flag_numerodispositivo1 = 1;
+	size_t soap_flag_tipomarca1 = 1;
+	size_t soap_flag_foto1 = 1;
+	if (soap->body && !*soap->href)
+	{
+		for (;;)
+		{	soap->error = SOAP_TAG_MISMATCH;
+			if (soap_flag_rut1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
+				if (soap_in_PointerTostd__string(soap, "rut", &(a->casino1__Modulo_USCOREAsistencia::rut), "xsd:string"))
+				{	soap_flag_rut1--;
+					continue;
+				}
+			if (soap_flag_dato_USCORErecibido1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
+				if (soap_in_PointerTostd__string(soap, "dato_recibido", &(a->casino1__Modulo_USCOREAsistencia::dato_USCORErecibido), "xsd:string"))
+				{	soap_flag_dato_USCORErecibido1--;
+					continue;
+				}
+			if (soap_flag_hash_USCOREalternativo1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
+				if (soap_in_PointerTostd__string(soap, "hash_alternativo", &(a->casino1__Modulo_USCOREAsistencia::hash_USCOREalternativo), "xsd:string"))
+				{	soap_flag_hash_USCOREalternativo1--;
+					continue;
+				}
+			if (soap_flag_fecha1 && soap->error == SOAP_TAG_MISMATCH)
+				if (soap_in_PointerTotime(soap, "fecha", &(a->casino1__Modulo_USCOREAsistencia::fecha), "xsd:dateTime"))
+				{	soap_flag_fecha1--;
+					continue;
+				}
+			if (soap_flag_numerodispositivo1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
+				if (soap_in_PointerTostd__string(soap, "numerodispositivo", &(a->casino1__Modulo_USCOREAsistencia::numerodispositivo), "xsd:string"))
+				{	soap_flag_numerodispositivo1--;
+					continue;
+				}
+			if (soap_flag_tipomarca1 && soap->error == SOAP_TAG_MISMATCH)
+				if (soap_in_int(soap, "tipomarca", &(a->casino1__Modulo_USCOREAsistencia::tipomarca), "xsd:int"))
+				{	soap_flag_tipomarca1--;
+					continue;
+				}
+			if (soap_flag_foto1 && soap->error == SOAP_TAG_MISMATCH)
+				if (soap_in_PointerToxsd__base64Binary(soap, "foto", &(a->casino1__Modulo_USCOREAsistencia::foto), "xsd:base64Binary"))
+				{	soap_flag_foto1--;
+					continue;
+				}
+			/* transient soap skipped */
+			if (soap->error == SOAP_TAG_MISMATCH)
+				soap->error = soap_ignore_element(soap);
+			if (soap->error == SOAP_NO_TAG)
+				break;
+			if (soap->error)
+				return NULL;
+		}
+		if (soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	else
+	{	a = (casino1__Modulo_USCOREAsistencia *)soap_id_forward(soap, soap->href, (void*)a, 0, SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia, 0, sizeof(casino1__Modulo_USCOREAsistencia), 0, soap_copy_casino1__Modulo_USCOREAsistencia);
+		if (soap->body && soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	if ((soap->mode & SOAP_XML_STRICT) && (soap_flag_tipomarca1 > 0))
+	{	soap->error = SOAP_OCCURS;
+		return NULL;
+	}
+	return a;
+}
+
+int casino1__Modulo_USCOREAsistencia::soap_put(struct soap *soap, const char *tag, const  char *type) const
+{
+	register int id = soap_embed(soap, (void*)this, NULL, 0, SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia);
+	if (this->soap_out(soap, tag?tag:"casino1:Modulo_Asistencia", id, type))
+		return soap->error;
+	return soap_putindependent(soap);
+}
+
+void *casino1__Modulo_USCOREAsistencia::soap_get(struct soap *soap, const char *tag, const char *type)
+{
+	return soap_get_casino1__Modulo_USCOREAsistencia(soap, this, tag, type);
+}
+
+SOAP_FMAC3 casino1__Modulo_USCOREAsistencia * SOAP_FMAC4 soap_get_casino1__Modulo_USCOREAsistencia(struct soap *soap, casino1__Modulo_USCOREAsistencia *p, const char *tag, const char *type)
+{
+	if ((p = soap_in_casino1__Modulo_USCOREAsistencia(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
+SOAP_FMAC1 casino1__Modulo_USCOREAsistencia * SOAP_FMAC2 soap_instantiate_casino1__Modulo_USCOREAsistencia(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
+{
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_casino1__Modulo_USCOREAsistencia(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
+	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia, n, casino_fdelete);
+	(void)type; (void)arrayType; /* appease -Wall -Werror */
+	if (!cp)
+		return NULL;
+	if (n < 0)
+	{	cp->ptr = (void*)SOAP_NEW(casino1__Modulo_USCOREAsistencia);
+		if (size)
+			*size = sizeof(casino1__Modulo_USCOREAsistencia);
+		((casino1__Modulo_USCOREAsistencia*)cp->ptr)->soap = soap;
+	}
+	else
+	{	cp->ptr = (void*)SOAP_NEW_ARRAY(casino1__Modulo_USCOREAsistencia, n);
+		if (size)
+			*size = n * sizeof(casino1__Modulo_USCOREAsistencia);
+		if (cp->ptr)
+			for (int i = 0; i < n; i++)
+				((casino1__Modulo_USCOREAsistencia*)cp->ptr)[i].soap = soap;
+	}
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", cp->ptr));
+	if (!cp->ptr)
+		soap->error = SOAP_EOM;
+	return (casino1__Modulo_USCOREAsistencia*)cp->ptr;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_copy_casino1__Modulo_USCOREAsistencia(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
+{
+	(void)soap; (void)tt; (void)st; (void)len; (void)n; /* appease -Wall -Werror */
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying casino1__Modulo_USCOREAsistencia %p -> %p\n", q, p));
+	*(casino1__Modulo_USCOREAsistencia*)p = *(casino1__Modulo_USCOREAsistencia*)q;
+}
+
+void xsd__base64Binary::soap_default(struct soap *soap)
+{
+	this->soap = soap;
+	this->__size = 0;
+	this->__ptr = NULL;
+	this->id = NULL;
+	this->type = NULL;
+	this->options = NULL;
+}
+
+void xsd__base64Binary::soap_serialize(struct soap *soap) const
+{
+	(void)soap; /* appease -Wall -Werror */
+#ifndef WITH_NOIDREF
+	if (this->__ptr && !soap_array_reference(soap, this, (struct soap_array*)(void*)&this->__ptr, 1, SOAP_TYPE_casino_xsd__base64Binary))
+		if (this->id || this->type)
+			soap->mode |= SOAP_ENC_DIME;
+#endif
+}
+
+int xsd__base64Binary::soap_out(struct soap *soap, const char *tag, int id, const char *type) const
+{	return soap_out_xsd__base64Binary(soap, tag, id, this, type);
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_xsd__base64Binary(struct soap *soap, const char *tag, int id, const xsd__base64Binary *a, const char *type)
+{
+#ifndef WITH_LEANER
+	id = soap_attachment(soap, tag, id, a, (struct soap_array*)(void*)&a->__ptr, a->id, a->type, a->options, 1, type, SOAP_TYPE_casino_xsd__base64Binary);
+#else
+	id = soap_element_id(soap, tag, id, a, (struct soap_array*)(void*)&a->__ptr, 1, type, SOAP_TYPE_casino_xsd__base64Binary);
+#endif
+	if (id < 0)
+		return soap->error;
+	if (soap_element_begin_out(soap, tag, id, type))
+		return soap->error;
+	if (soap_putbase64(soap, a->__ptr, a->__size))
+		return soap->error;
+	return soap_element_end_out(soap, tag);
+}
+
+void *xsd__base64Binary::soap_in(struct soap *soap, const char *tag, const char *type)
+{	return soap_in_xsd__base64Binary(soap, tag, this, type);
+}
+
+SOAP_FMAC3 xsd__base64Binary * SOAP_FMAC4 soap_in_xsd__base64Binary(struct soap *soap, const char *tag, xsd__base64Binary *a, const char *type)
+{
+	(void)type; /* appease -Wall -Werror */
+	if (soap_element_begin_in(soap, tag, 1, NULL))
+		return NULL;
+	if (*soap->type && soap_match_tag(soap, soap->type, type) && soap_match_tag(soap, soap->type, ":base64Binary") && soap_match_tag(soap, soap->type, ":base64"))
+	{	soap->error = SOAP_TYPE;
+		return NULL;
+	}
+	a = (xsd__base64Binary *)soap_class_id_enter(soap, soap->id, a, SOAP_TYPE_casino_xsd__base64Binary, sizeof(xsd__base64Binary), soap->type, soap->arrayType);
+	if (!a)
+		return NULL;
+	if (soap->alloced)
+		a->soap_default(soap);
+	if (soap->body && !*soap->href)
+	{
+		a->__ptr = soap_getbase64(soap, &a->__size, 0);
+#ifndef WITH_LEANER
+		if (soap_xop_forward(soap, &a->__ptr, &a->__size, &a->id, &a->type, &a->options))
+			return NULL;
+#endif
+		if ((!a->__ptr && soap->error) || soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	else
+	{	
+#ifndef WITH_LEANER
+		if (*soap->href != '#')
+		{	if (soap_dime_forward(soap, &a->__ptr, &a->__size, &a->id, &a->type, &a->options))
+				return NULL;
+		}
+		else
+#endif
+			a = (xsd__base64Binary *)soap_id_forward(soap, soap->href, (void*)a, 0, SOAP_TYPE_casino_xsd__base64Binary, 0, sizeof(xsd__base64Binary), 0, soap_copy_xsd__base64Binary);
+		if (soap->body && soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	return a;
+}
+
+int xsd__base64Binary::soap_put(struct soap *soap, const char *tag, const  char *type) const
+{
+	register int id = soap_embed(soap, (void*)this, (struct soap_array*)(void*)&this->__ptr, 1, SOAP_TYPE_casino_xsd__base64Binary);
+	if (this->soap_out(soap, tag?tag:"xsd:base64Binary", id, type))
+		return soap->error;
+	return soap_putindependent(soap);
+}
+
+void *xsd__base64Binary::soap_get(struct soap *soap, const char *tag, const char *type)
+{
+	return soap_get_xsd__base64Binary(soap, this, tag, type);
+}
+
+SOAP_FMAC3 xsd__base64Binary * SOAP_FMAC4 soap_get_xsd__base64Binary(struct soap *soap, xsd__base64Binary *p, const char *tag, const char *type)
+{
+	if ((p = soap_in_xsd__base64Binary(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
+SOAP_FMAC1 xsd__base64Binary * SOAP_FMAC2 soap_instantiate_xsd__base64Binary(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
+{
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_xsd__base64Binary(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
+	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino_xsd__base64Binary, n, casino_fdelete);
+	(void)type; (void)arrayType; /* appease -Wall -Werror */
+	if (!cp)
+		return NULL;
+	if (n < 0)
+	{	cp->ptr = (void*)SOAP_NEW(xsd__base64Binary);
+		if (size)
+			*size = sizeof(xsd__base64Binary);
+		((xsd__base64Binary*)cp->ptr)->soap = soap;
+	}
+	else
+	{	cp->ptr = (void*)SOAP_NEW_ARRAY(xsd__base64Binary, n);
+		if (size)
+			*size = n * sizeof(xsd__base64Binary);
+		if (cp->ptr)
+			for (int i = 0; i < n; i++)
+				((xsd__base64Binary*)cp->ptr)[i].soap = soap;
+	}
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", cp->ptr));
+	if (!cp->ptr)
+		soap->error = SOAP_EOM;
+	return (xsd__base64Binary*)cp->ptr;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_copy_xsd__base64Binary(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
+{
+	(void)soap; (void)tt; (void)st; (void)len; (void)n; /* appease -Wall -Werror */
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying xsd__base64Binary %p -> %p\n", q, p));
+	*(xsd__base64Binary*)p = *(xsd__base64Binary*)q;
 }
 
 #ifndef WITH_NOGLOBAL
@@ -2038,42 +3021,42 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_copy_SOAP_ENV__Header(struct soap *soap, int st,
 
 #endif
 
-SOAP_FMAC3 void SOAP_FMAC4 soap_default___ns1__Transacciones(struct soap *soap, struct __ns1__Transacciones *a)
+SOAP_FMAC3 void SOAP_FMAC4 soap_default___casino1__Modulo_USCORECasino(struct soap *soap, struct __casino1__Modulo_USCORECasino *a)
 {
 	(void)soap; (void)a; /* appease -Wall -Werror */
-	a->ns1__Transacciones_ = NULL;
+	a->casino1__Modulo_USCORECasino_ = NULL;
 }
 
-SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___ns1__Transacciones(struct soap *soap, const struct __ns1__Transacciones *a)
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___casino1__Modulo_USCORECasino(struct soap *soap, const struct __casino1__Modulo_USCORECasino *a)
 {
 	(void)soap; (void)a; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_PointerTons1__Transacciones(soap, &a->ns1__Transacciones_);
+	soap_serialize_PointerTocasino1__Modulo_USCORECasino(soap, &a->casino1__Modulo_USCORECasino_);
 #endif
 }
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_out___ns1__Transacciones(struct soap *soap, const char *tag, int id, const struct __ns1__Transacciones *a, const char *type)
+SOAP_FMAC3 int SOAP_FMAC4 soap_out___casino1__Modulo_USCORECasino(struct soap *soap, const char *tag, int id, const struct __casino1__Modulo_USCORECasino *a, const char *type)
 {
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
-	if (soap_out_PointerTons1__Transacciones(soap, "ns1:Transacciones", -1, &a->ns1__Transacciones_, ""))
+	if (soap_out_PointerTocasino1__Modulo_USCORECasino(soap, "casino1:Modulo_Casino", -1, &a->casino1__Modulo_USCORECasino_, ""))
 		return soap->error;
 	return SOAP_OK;
 }
 
-SOAP_FMAC3 struct __ns1__Transacciones * SOAP_FMAC4 soap_in___ns1__Transacciones(struct soap *soap, const char *tag, struct __ns1__Transacciones *a, const char *type)
+SOAP_FMAC3 struct __casino1__Modulo_USCORECasino * SOAP_FMAC4 soap_in___casino1__Modulo_USCORECasino(struct soap *soap, const char *tag, struct __casino1__Modulo_USCORECasino *a, const char *type)
 {
-	size_t soap_flag_ns1__Transacciones_ = 1;
+	size_t soap_flag_casino1__Modulo_USCORECasino_ = 1;
 	short soap_flag;
 	(void)tag; (void)type; /* appease -Wall -Werror */
-	a = (struct __ns1__Transacciones *)soap_id_enter(soap, "", a, SOAP_TYPE_casino___ns1__Transacciones, sizeof(struct __ns1__Transacciones), 0, NULL, NULL, NULL);
+	a = (struct __casino1__Modulo_USCORECasino *)soap_id_enter(soap, "", a, SOAP_TYPE_casino___casino1__Modulo_USCORECasino, sizeof(struct __casino1__Modulo_USCORECasino), 0, NULL, NULL, NULL);
 	if (!a)
 		return NULL;
-	soap_default___ns1__Transacciones(soap, a);
+	soap_default___casino1__Modulo_USCORECasino(soap, a);
 		for (soap_flag = 0;; soap_flag = 1)
 		{	soap->error = SOAP_TAG_MISMATCH;
-			if (soap_flag_ns1__Transacciones_ && soap->error == SOAP_TAG_MISMATCH)
-				if (soap_in_PointerTons1__Transacciones(soap, "ns1:Transacciones", &a->ns1__Transacciones_, "ns1:Transacciones"))
-				{	soap_flag_ns1__Transacciones_--;
+			if (soap_flag_casino1__Modulo_USCORECasino_ && soap->error == SOAP_TAG_MISMATCH)
+				if (soap_in_PointerTocasino1__Modulo_USCORECasino(soap, "casino1:Modulo_Casino", &a->casino1__Modulo_USCORECasino_, "casino1:Modulo_Casino"))
+				{	soap_flag_casino1__Modulo_USCORECasino_--;
 					continue;
 				}
 			if (soap->error == SOAP_TAG_MISMATCH)
@@ -2089,88 +3072,88 @@ SOAP_FMAC3 struct __ns1__Transacciones * SOAP_FMAC4 soap_in___ns1__Transacciones
 	return a;
 }
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_put___ns1__Transacciones(struct soap *soap, const struct __ns1__Transacciones *a, const char *tag, const char *type)
+SOAP_FMAC3 int SOAP_FMAC4 soap_put___casino1__Modulo_USCORECasino(struct soap *soap, const struct __casino1__Modulo_USCORECasino *a, const char *tag, const char *type)
 {
 	register int id = 0;
-	if (soap_out___ns1__Transacciones(soap, tag?tag:"-ns1:Transacciones", id, a, type))
+	if (soap_out___casino1__Modulo_USCORECasino(soap, tag?tag:"-casino1:Modulo_Casino", id, a, type))
 		return soap->error;
 	return SOAP_OK;
 }
 
-SOAP_FMAC3 struct __ns1__Transacciones * SOAP_FMAC4 soap_get___ns1__Transacciones(struct soap *soap, struct __ns1__Transacciones *p, const char *tag, const char *type)
+SOAP_FMAC3 struct __casino1__Modulo_USCORECasino * SOAP_FMAC4 soap_get___casino1__Modulo_USCORECasino(struct soap *soap, struct __casino1__Modulo_USCORECasino *p, const char *tag, const char *type)
 {
-	if ((p = soap_in___ns1__Transacciones(soap, tag, p, type)))
+	if ((p = soap_in___casino1__Modulo_USCORECasino(soap, tag, p, type)))
 		if (soap_getindependent(soap))
 			return NULL;
 	return p;
 }
 
-SOAP_FMAC1 struct __ns1__Transacciones * SOAP_FMAC2 soap_instantiate___ns1__Transacciones(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
+SOAP_FMAC1 struct __casino1__Modulo_USCORECasino * SOAP_FMAC2 soap_instantiate___casino1__Modulo_USCORECasino(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___ns1__Transacciones(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
-	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino___ns1__Transacciones, n, casino_fdelete);
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___casino1__Modulo_USCORECasino(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
+	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino___casino1__Modulo_USCORECasino, n, casino_fdelete);
 	(void)type; (void)arrayType; /* appease -Wall -Werror */
 	if (!cp)
 		return NULL;
 	if (n < 0)
-	{	cp->ptr = (void*)SOAP_NEW(struct __ns1__Transacciones);
+	{	cp->ptr = (void*)SOAP_NEW(struct __casino1__Modulo_USCORECasino);
 		if (size)
-			*size = sizeof(struct __ns1__Transacciones);
+			*size = sizeof(struct __casino1__Modulo_USCORECasino);
 	}
 	else
-	{	cp->ptr = (void*)SOAP_NEW_ARRAY(struct __ns1__Transacciones, n);
+	{	cp->ptr = (void*)SOAP_NEW_ARRAY(struct __casino1__Modulo_USCORECasino, n);
 		if (size)
-			*size = n * sizeof(struct __ns1__Transacciones);
+			*size = n * sizeof(struct __casino1__Modulo_USCORECasino);
 	}
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", cp->ptr));
 	if (!cp->ptr)
 		soap->error = SOAP_EOM;
-	return (struct __ns1__Transacciones*)cp->ptr;
+	return (struct __casino1__Modulo_USCORECasino*)cp->ptr;
 }
 
-SOAP_FMAC3 void SOAP_FMAC4 soap_copy___ns1__Transacciones(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
+SOAP_FMAC3 void SOAP_FMAC4 soap_copy___casino1__Modulo_USCORECasino(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
 {
 	(void)soap; (void)tt; (void)st; (void)len; (void)n; /* appease -Wall -Werror */
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying struct __ns1__Transacciones %p -> %p\n", q, p));
-	*(struct __ns1__Transacciones*)p = *(struct __ns1__Transacciones*)q;
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying struct __casino1__Modulo_USCORECasino %p -> %p\n", q, p));
+	*(struct __casino1__Modulo_USCORECasino*)p = *(struct __casino1__Modulo_USCORECasino*)q;
 }
 
-SOAP_FMAC3 void SOAP_FMAC4 soap_default___ns1__validar_USCOREcasino(struct soap *soap, struct __ns1__validar_USCOREcasino *a)
+SOAP_FMAC3 void SOAP_FMAC4 soap_default___casino1__Modulo_USCOREAsistencia(struct soap *soap, struct __casino1__Modulo_USCOREAsistencia *a)
 {
 	(void)soap; (void)a; /* appease -Wall -Werror */
-	a->ns1__validar_USCOREcasino_ = NULL;
+	a->casino1__Modulo_USCOREAsistencia_ = NULL;
 }
 
-SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___ns1__validar_USCOREcasino(struct soap *soap, const struct __ns1__validar_USCOREcasino *a)
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___casino1__Modulo_USCOREAsistencia(struct soap *soap, const struct __casino1__Modulo_USCOREAsistencia *a)
 {
 	(void)soap; (void)a; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_PointerTons1__validar_USCOREcasino(soap, &a->ns1__validar_USCOREcasino_);
+	soap_serialize_PointerTocasino1__Modulo_USCOREAsistencia(soap, &a->casino1__Modulo_USCOREAsistencia_);
 #endif
 }
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_out___ns1__validar_USCOREcasino(struct soap *soap, const char *tag, int id, const struct __ns1__validar_USCOREcasino *a, const char *type)
+SOAP_FMAC3 int SOAP_FMAC4 soap_out___casino1__Modulo_USCOREAsistencia(struct soap *soap, const char *tag, int id, const struct __casino1__Modulo_USCOREAsistencia *a, const char *type)
 {
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
-	if (soap_out_PointerTons1__validar_USCOREcasino(soap, "ns1:validar_casino", -1, &a->ns1__validar_USCOREcasino_, ""))
+	if (soap_out_PointerTocasino1__Modulo_USCOREAsistencia(soap, "casino1:Modulo_Asistencia", -1, &a->casino1__Modulo_USCOREAsistencia_, ""))
 		return soap->error;
 	return SOAP_OK;
 }
 
-SOAP_FMAC3 struct __ns1__validar_USCOREcasino * SOAP_FMAC4 soap_in___ns1__validar_USCOREcasino(struct soap *soap, const char *tag, struct __ns1__validar_USCOREcasino *a, const char *type)
+SOAP_FMAC3 struct __casino1__Modulo_USCOREAsistencia * SOAP_FMAC4 soap_in___casino1__Modulo_USCOREAsistencia(struct soap *soap, const char *tag, struct __casino1__Modulo_USCOREAsistencia *a, const char *type)
 {
-	size_t soap_flag_ns1__validar_USCOREcasino_ = 1;
+	size_t soap_flag_casino1__Modulo_USCOREAsistencia_ = 1;
 	short soap_flag;
 	(void)tag; (void)type; /* appease -Wall -Werror */
-	a = (struct __ns1__validar_USCOREcasino *)soap_id_enter(soap, "", a, SOAP_TYPE_casino___ns1__validar_USCOREcasino, sizeof(struct __ns1__validar_USCOREcasino), 0, NULL, NULL, NULL);
+	a = (struct __casino1__Modulo_USCOREAsistencia *)soap_id_enter(soap, "", a, SOAP_TYPE_casino___casino1__Modulo_USCOREAsistencia, sizeof(struct __casino1__Modulo_USCOREAsistencia), 0, NULL, NULL, NULL);
 	if (!a)
 		return NULL;
-	soap_default___ns1__validar_USCOREcasino(soap, a);
+	soap_default___casino1__Modulo_USCOREAsistencia(soap, a);
 		for (soap_flag = 0;; soap_flag = 1)
 		{	soap->error = SOAP_TAG_MISMATCH;
-			if (soap_flag_ns1__validar_USCOREcasino_ && soap->error == SOAP_TAG_MISMATCH)
-				if (soap_in_PointerTons1__validar_USCOREcasino(soap, "ns1:validar_casino", &a->ns1__validar_USCOREcasino_, "ns1:validar_casino"))
-				{	soap_flag_ns1__validar_USCOREcasino_--;
+			if (soap_flag_casino1__Modulo_USCOREAsistencia_ && soap->error == SOAP_TAG_MISMATCH)
+				if (soap_in_PointerTocasino1__Modulo_USCOREAsistencia(soap, "casino1:Modulo_Asistencia", &a->casino1__Modulo_USCOREAsistencia_, "casino1:Modulo_Asistencia"))
+				{	soap_flag_casino1__Modulo_USCOREAsistencia_--;
 					continue;
 				}
 			if (soap->error == SOAP_TAG_MISMATCH)
@@ -2186,50 +3169,244 @@ SOAP_FMAC3 struct __ns1__validar_USCOREcasino * SOAP_FMAC4 soap_in___ns1__valida
 	return a;
 }
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_put___ns1__validar_USCOREcasino(struct soap *soap, const struct __ns1__validar_USCOREcasino *a, const char *tag, const char *type)
+SOAP_FMAC3 int SOAP_FMAC4 soap_put___casino1__Modulo_USCOREAsistencia(struct soap *soap, const struct __casino1__Modulo_USCOREAsistencia *a, const char *tag, const char *type)
 {
 	register int id = 0;
-	if (soap_out___ns1__validar_USCOREcasino(soap, tag?tag:"-ns1:validar_casino", id, a, type))
+	if (soap_out___casino1__Modulo_USCOREAsistencia(soap, tag?tag:"-casino1:Modulo_Asistencia", id, a, type))
 		return soap->error;
 	return SOAP_OK;
 }
 
-SOAP_FMAC3 struct __ns1__validar_USCOREcasino * SOAP_FMAC4 soap_get___ns1__validar_USCOREcasino(struct soap *soap, struct __ns1__validar_USCOREcasino *p, const char *tag, const char *type)
+SOAP_FMAC3 struct __casino1__Modulo_USCOREAsistencia * SOAP_FMAC4 soap_get___casino1__Modulo_USCOREAsistencia(struct soap *soap, struct __casino1__Modulo_USCOREAsistencia *p, const char *tag, const char *type)
 {
-	if ((p = soap_in___ns1__validar_USCOREcasino(soap, tag, p, type)))
+	if ((p = soap_in___casino1__Modulo_USCOREAsistencia(soap, tag, p, type)))
 		if (soap_getindependent(soap))
 			return NULL;
 	return p;
 }
 
-SOAP_FMAC1 struct __ns1__validar_USCOREcasino * SOAP_FMAC2 soap_instantiate___ns1__validar_USCOREcasino(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
+SOAP_FMAC1 struct __casino1__Modulo_USCOREAsistencia * SOAP_FMAC2 soap_instantiate___casino1__Modulo_USCOREAsistencia(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___ns1__validar_USCOREcasino(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
-	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino___ns1__validar_USCOREcasino, n, casino_fdelete);
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___casino1__Modulo_USCOREAsistencia(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
+	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino___casino1__Modulo_USCOREAsistencia, n, casino_fdelete);
 	(void)type; (void)arrayType; /* appease -Wall -Werror */
 	if (!cp)
 		return NULL;
 	if (n < 0)
-	{	cp->ptr = (void*)SOAP_NEW(struct __ns1__validar_USCOREcasino);
+	{	cp->ptr = (void*)SOAP_NEW(struct __casino1__Modulo_USCOREAsistencia);
 		if (size)
-			*size = sizeof(struct __ns1__validar_USCOREcasino);
+			*size = sizeof(struct __casino1__Modulo_USCOREAsistencia);
 	}
 	else
-	{	cp->ptr = (void*)SOAP_NEW_ARRAY(struct __ns1__validar_USCOREcasino, n);
+	{	cp->ptr = (void*)SOAP_NEW_ARRAY(struct __casino1__Modulo_USCOREAsistencia, n);
 		if (size)
-			*size = n * sizeof(struct __ns1__validar_USCOREcasino);
+			*size = n * sizeof(struct __casino1__Modulo_USCOREAsistencia);
 	}
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", cp->ptr));
 	if (!cp->ptr)
 		soap->error = SOAP_EOM;
-	return (struct __ns1__validar_USCOREcasino*)cp->ptr;
+	return (struct __casino1__Modulo_USCOREAsistencia*)cp->ptr;
 }
 
-SOAP_FMAC3 void SOAP_FMAC4 soap_copy___ns1__validar_USCOREcasino(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
+SOAP_FMAC3 void SOAP_FMAC4 soap_copy___casino1__Modulo_USCOREAsistencia(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
 {
 	(void)soap; (void)tt; (void)st; (void)len; (void)n; /* appease -Wall -Werror */
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying struct __ns1__validar_USCOREcasino %p -> %p\n", q, p));
-	*(struct __ns1__validar_USCOREcasino*)p = *(struct __ns1__validar_USCOREcasino*)q;
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying struct __casino1__Modulo_USCOREAsistencia %p -> %p\n", q, p));
+	*(struct __casino1__Modulo_USCOREAsistencia*)p = *(struct __casino1__Modulo_USCOREAsistencia*)q;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_default___casino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, struct __casino1__Modulo_USCOREobtener_USCOREhora *a)
+{
+	(void)soap; (void)a; /* appease -Wall -Werror */
+	a->casino1__Modulo_USCOREobtener_USCOREhora_ = NULL;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___casino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, const struct __casino1__Modulo_USCOREobtener_USCOREhora *a)
+{
+	(void)soap; (void)a; /* appease -Wall -Werror */
+#ifndef WITH_NOIDREF
+	soap_serialize_PointerTocasino1__Modulo_USCOREobtener_USCOREhora(soap, &a->casino1__Modulo_USCOREobtener_USCOREhora_);
+#endif
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out___casino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, const char *tag, int id, const struct __casino1__Modulo_USCOREobtener_USCOREhora *a, const char *type)
+{
+	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
+	if (soap_out_PointerTocasino1__Modulo_USCOREobtener_USCOREhora(soap, "casino1:Modulo_obtener_hora", -1, &a->casino1__Modulo_USCOREobtener_USCOREhora_, ""))
+		return soap->error;
+	return SOAP_OK;
+}
+
+SOAP_FMAC3 struct __casino1__Modulo_USCOREobtener_USCOREhora * SOAP_FMAC4 soap_in___casino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, const char *tag, struct __casino1__Modulo_USCOREobtener_USCOREhora *a, const char *type)
+{
+	size_t soap_flag_casino1__Modulo_USCOREobtener_USCOREhora_ = 1;
+	short soap_flag;
+	(void)tag; (void)type; /* appease -Wall -Werror */
+	a = (struct __casino1__Modulo_USCOREobtener_USCOREhora *)soap_id_enter(soap, "", a, SOAP_TYPE_casino___casino1__Modulo_USCOREobtener_USCOREhora, sizeof(struct __casino1__Modulo_USCOREobtener_USCOREhora), 0, NULL, NULL, NULL);
+	if (!a)
+		return NULL;
+	soap_default___casino1__Modulo_USCOREobtener_USCOREhora(soap, a);
+		for (soap_flag = 0;; soap_flag = 1)
+		{	soap->error = SOAP_TAG_MISMATCH;
+			if (soap_flag_casino1__Modulo_USCOREobtener_USCOREhora_ && soap->error == SOAP_TAG_MISMATCH)
+				if (soap_in_PointerTocasino1__Modulo_USCOREobtener_USCOREhora(soap, "casino1:Modulo_obtener_hora", &a->casino1__Modulo_USCOREobtener_USCOREhora_, "casino1:Modulo_obtener_hora"))
+				{	soap_flag_casino1__Modulo_USCOREobtener_USCOREhora_--;
+					continue;
+				}
+			if (soap->error == SOAP_TAG_MISMATCH)
+				if (soap_flag)
+				{	soap->error = SOAP_OK;
+					break;
+				}
+			if (soap_flag && soap->error == SOAP_NO_TAG)
+				break;
+			if (soap->error)
+				return NULL;
+		}
+	return a;
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put___casino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, const struct __casino1__Modulo_USCOREobtener_USCOREhora *a, const char *tag, const char *type)
+{
+	register int id = 0;
+	if (soap_out___casino1__Modulo_USCOREobtener_USCOREhora(soap, tag?tag:"-casino1:Modulo_obtener_hora", id, a, type))
+		return soap->error;
+	return SOAP_OK;
+}
+
+SOAP_FMAC3 struct __casino1__Modulo_USCOREobtener_USCOREhora * SOAP_FMAC4 soap_get___casino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, struct __casino1__Modulo_USCOREobtener_USCOREhora *p, const char *tag, const char *type)
+{
+	if ((p = soap_in___casino1__Modulo_USCOREobtener_USCOREhora(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
+SOAP_FMAC1 struct __casino1__Modulo_USCOREobtener_USCOREhora * SOAP_FMAC2 soap_instantiate___casino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
+{
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___casino1__Modulo_USCOREobtener_USCOREhora(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
+	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino___casino1__Modulo_USCOREobtener_USCOREhora, n, casino_fdelete);
+	(void)type; (void)arrayType; /* appease -Wall -Werror */
+	if (!cp)
+		return NULL;
+	if (n < 0)
+	{	cp->ptr = (void*)SOAP_NEW(struct __casino1__Modulo_USCOREobtener_USCOREhora);
+		if (size)
+			*size = sizeof(struct __casino1__Modulo_USCOREobtener_USCOREhora);
+	}
+	else
+	{	cp->ptr = (void*)SOAP_NEW_ARRAY(struct __casino1__Modulo_USCOREobtener_USCOREhora, n);
+		if (size)
+			*size = n * sizeof(struct __casino1__Modulo_USCOREobtener_USCOREhora);
+	}
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", cp->ptr));
+	if (!cp->ptr)
+		soap->error = SOAP_EOM;
+	return (struct __casino1__Modulo_USCOREobtener_USCOREhora*)cp->ptr;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_copy___casino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
+{
+	(void)soap; (void)tt; (void)st; (void)len; (void)n; /* appease -Wall -Werror */
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying struct __casino1__Modulo_USCOREobtener_USCOREhora %p -> %p\n", q, p));
+	*(struct __casino1__Modulo_USCOREobtener_USCOREhora*)p = *(struct __casino1__Modulo_USCOREobtener_USCOREhora*)q;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_default___casino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, struct __casino1__Modulo_USCOREAcceso_USCOREPuerta *a)
+{
+	(void)soap; (void)a; /* appease -Wall -Werror */
+	a->casino1__Modulo_USCOREAcceso_USCOREPuerta_ = NULL;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___casino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, const struct __casino1__Modulo_USCOREAcceso_USCOREPuerta *a)
+{
+	(void)soap; (void)a; /* appease -Wall -Werror */
+#ifndef WITH_NOIDREF
+	soap_serialize_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta(soap, &a->casino1__Modulo_USCOREAcceso_USCOREPuerta_);
+#endif
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out___casino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, const char *tag, int id, const struct __casino1__Modulo_USCOREAcceso_USCOREPuerta *a, const char *type)
+{
+	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
+	if (soap_out_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta(soap, "casino1:Modulo_Acceso_Puerta", -1, &a->casino1__Modulo_USCOREAcceso_USCOREPuerta_, ""))
+		return soap->error;
+	return SOAP_OK;
+}
+
+SOAP_FMAC3 struct __casino1__Modulo_USCOREAcceso_USCOREPuerta * SOAP_FMAC4 soap_in___casino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, const char *tag, struct __casino1__Modulo_USCOREAcceso_USCOREPuerta *a, const char *type)
+{
+	size_t soap_flag_casino1__Modulo_USCOREAcceso_USCOREPuerta_ = 1;
+	short soap_flag;
+	(void)tag; (void)type; /* appease -Wall -Werror */
+	a = (struct __casino1__Modulo_USCOREAcceso_USCOREPuerta *)soap_id_enter(soap, "", a, SOAP_TYPE_casino___casino1__Modulo_USCOREAcceso_USCOREPuerta, sizeof(struct __casino1__Modulo_USCOREAcceso_USCOREPuerta), 0, NULL, NULL, NULL);
+	if (!a)
+		return NULL;
+	soap_default___casino1__Modulo_USCOREAcceso_USCOREPuerta(soap, a);
+		for (soap_flag = 0;; soap_flag = 1)
+		{	soap->error = SOAP_TAG_MISMATCH;
+			if (soap_flag_casino1__Modulo_USCOREAcceso_USCOREPuerta_ && soap->error == SOAP_TAG_MISMATCH)
+				if (soap_in_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta(soap, "casino1:Modulo_Acceso_Puerta", &a->casino1__Modulo_USCOREAcceso_USCOREPuerta_, "casino1:Modulo_Acceso_Puerta"))
+				{	soap_flag_casino1__Modulo_USCOREAcceso_USCOREPuerta_--;
+					continue;
+				}
+			if (soap->error == SOAP_TAG_MISMATCH)
+				if (soap_flag)
+				{	soap->error = SOAP_OK;
+					break;
+				}
+			if (soap_flag && soap->error == SOAP_NO_TAG)
+				break;
+			if (soap->error)
+				return NULL;
+		}
+	return a;
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put___casino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, const struct __casino1__Modulo_USCOREAcceso_USCOREPuerta *a, const char *tag, const char *type)
+{
+	register int id = 0;
+	if (soap_out___casino1__Modulo_USCOREAcceso_USCOREPuerta(soap, tag?tag:"-casino1:Modulo_Acceso_Puerta", id, a, type))
+		return soap->error;
+	return SOAP_OK;
+}
+
+SOAP_FMAC3 struct __casino1__Modulo_USCOREAcceso_USCOREPuerta * SOAP_FMAC4 soap_get___casino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, struct __casino1__Modulo_USCOREAcceso_USCOREPuerta *p, const char *tag, const char *type)
+{
+	if ((p = soap_in___casino1__Modulo_USCOREAcceso_USCOREPuerta(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
+SOAP_FMAC1 struct __casino1__Modulo_USCOREAcceso_USCOREPuerta * SOAP_FMAC2 soap_instantiate___casino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
+{
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___casino1__Modulo_USCOREAcceso_USCOREPuerta(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
+	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino___casino1__Modulo_USCOREAcceso_USCOREPuerta, n, casino_fdelete);
+	(void)type; (void)arrayType; /* appease -Wall -Werror */
+	if (!cp)
+		return NULL;
+	if (n < 0)
+	{	cp->ptr = (void*)SOAP_NEW(struct __casino1__Modulo_USCOREAcceso_USCOREPuerta);
+		if (size)
+			*size = sizeof(struct __casino1__Modulo_USCOREAcceso_USCOREPuerta);
+	}
+	else
+	{	cp->ptr = (void*)SOAP_NEW_ARRAY(struct __casino1__Modulo_USCOREAcceso_USCOREPuerta, n);
+		if (size)
+			*size = n * sizeof(struct __casino1__Modulo_USCOREAcceso_USCOREPuerta);
+	}
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", cp->ptr));
+	if (!cp->ptr)
+		soap->error = SOAP_EOM;
+	return (struct __casino1__Modulo_USCOREAcceso_USCOREPuerta*)cp->ptr;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_copy___casino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
+{
+	(void)soap; (void)tt; (void)st; (void)len; (void)n; /* appease -Wall -Werror */
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying struct __casino1__Modulo_USCOREAcceso_USCOREPuerta %p -> %p\n", q, p));
+	*(struct __casino1__Modulo_USCOREAcceso_USCOREPuerta*)p = *(struct __casino1__Modulo_USCOREAcceso_USCOREPuerta*)q;
 }
 
 #ifndef WITH_NOGLOBAL
@@ -2409,42 +3586,42 @@ SOAP_FMAC3 struct SOAP_ENV__Code ** SOAP_FMAC4 soap_get_PointerToSOAP_ENV__Code(
 
 #endif
 
-SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTons1__Transacciones(struct soap *soap, ns1__Transacciones *const*a)
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTocasino1__Modulo_USCORECasino(struct soap *soap, casino1__Modulo_USCORECasino *const*a)
 {
 #ifndef WITH_NOIDREF
-	if (!soap_reference(soap, *a, SOAP_TYPE_casino_ns1__Transacciones))
+	if (!soap_reference(soap, *a, SOAP_TYPE_casino_casino1__Modulo_USCORECasino))
 		(*a)->soap_serialize(soap);
 #endif
 }
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTons1__Transacciones(struct soap *soap, const char *tag, int id, ns1__Transacciones *const*a, const char *type)
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTocasino1__Modulo_USCORECasino(struct soap *soap, const char *tag, int id, casino1__Modulo_USCORECasino *const*a, const char *type)
 {
-	id = soap_element_id(soap, tag, id, *a, NULL, 0, type, SOAP_TYPE_casino_ns1__Transacciones);
+	id = soap_element_id(soap, tag, id, *a, NULL, 0, type, SOAP_TYPE_casino_casino1__Modulo_USCORECasino);
 	if (id < 0)
 		return soap->error;
 	return (*a)->soap_out(soap, tag, id, type);
 }
 
-SOAP_FMAC3 ns1__Transacciones ** SOAP_FMAC4 soap_in_PointerTons1__Transacciones(struct soap *soap, const char *tag, ns1__Transacciones **a, const char *type)
+SOAP_FMAC3 casino1__Modulo_USCORECasino ** SOAP_FMAC4 soap_in_PointerTocasino1__Modulo_USCORECasino(struct soap *soap, const char *tag, casino1__Modulo_USCORECasino **a, const char *type)
 {
 	(void)type; /* appease -Wall -Werror */
 	
 	if (soap_element_begin_in(soap, tag, 1, NULL))
 		return NULL;
 	if (!a)
-		if (!(a = (ns1__Transacciones **)soap_malloc(soap, sizeof(ns1__Transacciones *))))
+		if (!(a = (casino1__Modulo_USCORECasino **)soap_malloc(soap, sizeof(casino1__Modulo_USCORECasino *))))
 			return NULL;
 	*a = NULL;
 	if (!soap->null && *soap->href != '#')
 	{	soap_revert(soap);
-		if (!(*a = (ns1__Transacciones *)soap_instantiate_ns1__Transacciones(soap, -1, soap->type, soap->arrayType, NULL)))
+		if (!(*a = (casino1__Modulo_USCORECasino *)soap_instantiate_casino1__Modulo_USCORECasino(soap, -1, soap->type, soap->arrayType, NULL)))
 			return NULL;
 		(*a)->soap_default(soap);
 		if (!(*a)->soap_in(soap, tag, NULL))
 			return NULL;
 	}
 	else
-	{	ns1__Transacciones ** p = (ns1__Transacciones **)soap_id_lookup(soap, soap->href, (void**)a, SOAP_TYPE_casino_ns1__Transacciones, sizeof(ns1__Transacciones), 0);
+	{	casino1__Modulo_USCORECasino ** p = (casino1__Modulo_USCORECasino **)soap_id_lookup(soap, soap->href, (void**)a, SOAP_TYPE_casino_casino1__Modulo_USCORECasino, sizeof(casino1__Modulo_USCORECasino), 0);
 		a = p;
 		if (soap->body && soap_element_end_in(soap, tag))
 			return NULL;
@@ -2452,58 +3629,58 @@ SOAP_FMAC3 ns1__Transacciones ** SOAP_FMAC4 soap_in_PointerTons1__Transacciones(
 	return a;
 }
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTons1__Transacciones(struct soap *soap, ns1__Transacciones *const*a, const char *tag, const char *type)
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTocasino1__Modulo_USCORECasino(struct soap *soap, casino1__Modulo_USCORECasino *const*a, const char *tag, const char *type)
 {
-	register int id = soap_embed(soap, (void*)a, NULL, 0, SOAP_TYPE_casino_PointerTons1__Transacciones);
-	if (soap_out_PointerTons1__Transacciones(soap, tag?tag:"ns1:Transacciones", id, a, type))
+	register int id = soap_embed(soap, (void*)a, NULL, 0, SOAP_TYPE_casino_PointerTocasino1__Modulo_USCORECasino);
+	if (soap_out_PointerTocasino1__Modulo_USCORECasino(soap, tag?tag:"casino1:Modulo_Casino", id, a, type))
 		return soap->error;
 	return soap_putindependent(soap);
 }
 
-SOAP_FMAC3 ns1__Transacciones ** SOAP_FMAC4 soap_get_PointerTons1__Transacciones(struct soap *soap, ns1__Transacciones **p, const char *tag, const char *type)
+SOAP_FMAC3 casino1__Modulo_USCORECasino ** SOAP_FMAC4 soap_get_PointerTocasino1__Modulo_USCORECasino(struct soap *soap, casino1__Modulo_USCORECasino **p, const char *tag, const char *type)
 {
-	if ((p = soap_in_PointerTons1__Transacciones(soap, tag, p, type)))
+	if ((p = soap_in_PointerTocasino1__Modulo_USCORECasino(soap, tag, p, type)))
 		if (soap_getindependent(soap))
 			return NULL;
 	return p;
 }
 
-SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTons1__validar_USCOREcasino(struct soap *soap, ns1__validar_USCOREcasino *const*a)
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTocasino1__Modulo_USCOREAsistencia(struct soap *soap, casino1__Modulo_USCOREAsistencia *const*a)
 {
 #ifndef WITH_NOIDREF
-	if (!soap_reference(soap, *a, SOAP_TYPE_casino_ns1__validar_USCOREcasino))
+	if (!soap_reference(soap, *a, SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia))
 		(*a)->soap_serialize(soap);
 #endif
 }
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTons1__validar_USCOREcasino(struct soap *soap, const char *tag, int id, ns1__validar_USCOREcasino *const*a, const char *type)
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTocasino1__Modulo_USCOREAsistencia(struct soap *soap, const char *tag, int id, casino1__Modulo_USCOREAsistencia *const*a, const char *type)
 {
-	id = soap_element_id(soap, tag, id, *a, NULL, 0, type, SOAP_TYPE_casino_ns1__validar_USCOREcasino);
+	id = soap_element_id(soap, tag, id, *a, NULL, 0, type, SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia);
 	if (id < 0)
 		return soap->error;
 	return (*a)->soap_out(soap, tag, id, type);
 }
 
-SOAP_FMAC3 ns1__validar_USCOREcasino ** SOAP_FMAC4 soap_in_PointerTons1__validar_USCOREcasino(struct soap *soap, const char *tag, ns1__validar_USCOREcasino **a, const char *type)
+SOAP_FMAC3 casino1__Modulo_USCOREAsistencia ** SOAP_FMAC4 soap_in_PointerTocasino1__Modulo_USCOREAsistencia(struct soap *soap, const char *tag, casino1__Modulo_USCOREAsistencia **a, const char *type)
 {
 	(void)type; /* appease -Wall -Werror */
 	
 	if (soap_element_begin_in(soap, tag, 1, NULL))
 		return NULL;
 	if (!a)
-		if (!(a = (ns1__validar_USCOREcasino **)soap_malloc(soap, sizeof(ns1__validar_USCOREcasino *))))
+		if (!(a = (casino1__Modulo_USCOREAsistencia **)soap_malloc(soap, sizeof(casino1__Modulo_USCOREAsistencia *))))
 			return NULL;
 	*a = NULL;
 	if (!soap->null && *soap->href != '#')
 	{	soap_revert(soap);
-		if (!(*a = (ns1__validar_USCOREcasino *)soap_instantiate_ns1__validar_USCOREcasino(soap, -1, soap->type, soap->arrayType, NULL)))
+		if (!(*a = (casino1__Modulo_USCOREAsistencia *)soap_instantiate_casino1__Modulo_USCOREAsistencia(soap, -1, soap->type, soap->arrayType, NULL)))
 			return NULL;
 		(*a)->soap_default(soap);
 		if (!(*a)->soap_in(soap, tag, NULL))
 			return NULL;
 	}
 	else
-	{	ns1__validar_USCOREcasino ** p = (ns1__validar_USCOREcasino **)soap_id_lookup(soap, soap->href, (void**)a, SOAP_TYPE_casino_ns1__validar_USCOREcasino, sizeof(ns1__validar_USCOREcasino), 0);
+	{	casino1__Modulo_USCOREAsistencia ** p = (casino1__Modulo_USCOREAsistencia **)soap_id_lookup(soap, soap->href, (void**)a, SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia, sizeof(casino1__Modulo_USCOREAsistencia), 0);
 		a = p;
 		if (soap->body && soap_element_end_in(soap, tag))
 			return NULL;
@@ -2511,17 +3688,194 @@ SOAP_FMAC3 ns1__validar_USCOREcasino ** SOAP_FMAC4 soap_in_PointerTons1__validar
 	return a;
 }
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTons1__validar_USCOREcasino(struct soap *soap, ns1__validar_USCOREcasino *const*a, const char *tag, const char *type)
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTocasino1__Modulo_USCOREAsistencia(struct soap *soap, casino1__Modulo_USCOREAsistencia *const*a, const char *tag, const char *type)
 {
-	register int id = soap_embed(soap, (void*)a, NULL, 0, SOAP_TYPE_casino_PointerTons1__validar_USCOREcasino);
-	if (soap_out_PointerTons1__validar_USCOREcasino(soap, tag?tag:"ns1:validar_casino", id, a, type))
+	register int id = soap_embed(soap, (void*)a, NULL, 0, SOAP_TYPE_casino_PointerTocasino1__Modulo_USCOREAsistencia);
+	if (soap_out_PointerTocasino1__Modulo_USCOREAsistencia(soap, tag?tag:"casino1:Modulo_Asistencia", id, a, type))
 		return soap->error;
 	return soap_putindependent(soap);
 }
 
-SOAP_FMAC3 ns1__validar_USCOREcasino ** SOAP_FMAC4 soap_get_PointerTons1__validar_USCOREcasino(struct soap *soap, ns1__validar_USCOREcasino **p, const char *tag, const char *type)
+SOAP_FMAC3 casino1__Modulo_USCOREAsistencia ** SOAP_FMAC4 soap_get_PointerTocasino1__Modulo_USCOREAsistencia(struct soap *soap, casino1__Modulo_USCOREAsistencia **p, const char *tag, const char *type)
 {
-	if ((p = soap_in_PointerTons1__validar_USCOREcasino(soap, tag, p, type)))
+	if ((p = soap_in_PointerTocasino1__Modulo_USCOREAsistencia(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTocasino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, casino1__Modulo_USCOREobtener_USCOREhora *const*a)
+{
+#ifndef WITH_NOIDREF
+	if (!soap_reference(soap, *a, SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora))
+		(*a)->soap_serialize(soap);
+#endif
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTocasino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, const char *tag, int id, casino1__Modulo_USCOREobtener_USCOREhora *const*a, const char *type)
+{
+	id = soap_element_id(soap, tag, id, *a, NULL, 0, type, SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora);
+	if (id < 0)
+		return soap->error;
+	return (*a)->soap_out(soap, tag, id, type);
+}
+
+SOAP_FMAC3 casino1__Modulo_USCOREobtener_USCOREhora ** SOAP_FMAC4 soap_in_PointerTocasino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, const char *tag, casino1__Modulo_USCOREobtener_USCOREhora **a, const char *type)
+{
+	(void)type; /* appease -Wall -Werror */
+	
+	if (soap_element_begin_in(soap, tag, 1, NULL))
+		return NULL;
+	if (!a)
+		if (!(a = (casino1__Modulo_USCOREobtener_USCOREhora **)soap_malloc(soap, sizeof(casino1__Modulo_USCOREobtener_USCOREhora *))))
+			return NULL;
+	*a = NULL;
+	if (!soap->null && *soap->href != '#')
+	{	soap_revert(soap);
+		if (!(*a = (casino1__Modulo_USCOREobtener_USCOREhora *)soap_instantiate_casino1__Modulo_USCOREobtener_USCOREhora(soap, -1, soap->type, soap->arrayType, NULL)))
+			return NULL;
+		(*a)->soap_default(soap);
+		if (!(*a)->soap_in(soap, tag, NULL))
+			return NULL;
+	}
+	else
+	{	casino1__Modulo_USCOREobtener_USCOREhora ** p = (casino1__Modulo_USCOREobtener_USCOREhora **)soap_id_lookup(soap, soap->href, (void**)a, SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora, sizeof(casino1__Modulo_USCOREobtener_USCOREhora), 0);
+		a = p;
+		if (soap->body && soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	return a;
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTocasino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, casino1__Modulo_USCOREobtener_USCOREhora *const*a, const char *tag, const char *type)
+{
+	register int id = soap_embed(soap, (void*)a, NULL, 0, SOAP_TYPE_casino_PointerTocasino1__Modulo_USCOREobtener_USCOREhora);
+	if (soap_out_PointerTocasino1__Modulo_USCOREobtener_USCOREhora(soap, tag?tag:"casino1:Modulo_obtener_hora", id, a, type))
+		return soap->error;
+	return soap_putindependent(soap);
+}
+
+SOAP_FMAC3 casino1__Modulo_USCOREobtener_USCOREhora ** SOAP_FMAC4 soap_get_PointerTocasino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, casino1__Modulo_USCOREobtener_USCOREhora **p, const char *tag, const char *type)
+{
+	if ((p = soap_in_PointerTocasino1__Modulo_USCOREobtener_USCOREhora(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, casino1__Modulo_USCOREAcceso_USCOREPuerta *const*a)
+{
+#ifndef WITH_NOIDREF
+	if (!soap_reference(soap, *a, SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta))
+		(*a)->soap_serialize(soap);
+#endif
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, const char *tag, int id, casino1__Modulo_USCOREAcceso_USCOREPuerta *const*a, const char *type)
+{
+	id = soap_element_id(soap, tag, id, *a, NULL, 0, type, SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta);
+	if (id < 0)
+		return soap->error;
+	return (*a)->soap_out(soap, tag, id, type);
+}
+
+SOAP_FMAC3 casino1__Modulo_USCOREAcceso_USCOREPuerta ** SOAP_FMAC4 soap_in_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, const char *tag, casino1__Modulo_USCOREAcceso_USCOREPuerta **a, const char *type)
+{
+	(void)type; /* appease -Wall -Werror */
+	
+	if (soap_element_begin_in(soap, tag, 1, NULL))
+		return NULL;
+	if (!a)
+		if (!(a = (casino1__Modulo_USCOREAcceso_USCOREPuerta **)soap_malloc(soap, sizeof(casino1__Modulo_USCOREAcceso_USCOREPuerta *))))
+			return NULL;
+	*a = NULL;
+	if (!soap->null && *soap->href != '#')
+	{	soap_revert(soap);
+		if (!(*a = (casino1__Modulo_USCOREAcceso_USCOREPuerta *)soap_instantiate_casino1__Modulo_USCOREAcceso_USCOREPuerta(soap, -1, soap->type, soap->arrayType, NULL)))
+			return NULL;
+		(*a)->soap_default(soap);
+		if (!(*a)->soap_in(soap, tag, NULL))
+			return NULL;
+	}
+	else
+	{	casino1__Modulo_USCOREAcceso_USCOREPuerta ** p = (casino1__Modulo_USCOREAcceso_USCOREPuerta **)soap_id_lookup(soap, soap->href, (void**)a, SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta, sizeof(casino1__Modulo_USCOREAcceso_USCOREPuerta), 0);
+		a = p;
+		if (soap->body && soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	return a;
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, casino1__Modulo_USCOREAcceso_USCOREPuerta *const*a, const char *tag, const char *type)
+{
+	register int id = soap_embed(soap, (void*)a, NULL, 0, SOAP_TYPE_casino_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta);
+	if (soap_out_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta(soap, tag?tag:"casino1:Modulo_Acceso_Puerta", id, a, type))
+		return soap->error;
+	return soap_putindependent(soap);
+}
+
+SOAP_FMAC3 casino1__Modulo_USCOREAcceso_USCOREPuerta ** SOAP_FMAC4 soap_get_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, casino1__Modulo_USCOREAcceso_USCOREPuerta **p, const char *tag, const char *type)
+{
+	if ((p = soap_in_PointerTocasino1__Modulo_USCOREAcceso_USCOREPuerta(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerToxsd__base64Binary(struct soap *soap, xsd__base64Binary *const*a)
+{
+#ifndef WITH_NOIDREF
+	if (*a)
+		(*a)->soap_serialize(soap);
+#endif
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerToxsd__base64Binary(struct soap *soap, const char *tag, int id, xsd__base64Binary *const*a, const char *type)
+{
+	id = soap_element_id(soap, tag, id, *a, (struct soap_array*)(void*)&(*a)->__ptr, 1, type, SOAP_TYPE_casino_xsd__base64Binary);
+	if (id < 0)
+		return soap->error;
+	return (*a)->soap_out(soap, tag, id, type);
+}
+
+SOAP_FMAC3 xsd__base64Binary ** SOAP_FMAC4 soap_in_PointerToxsd__base64Binary(struct soap *soap, const char *tag, xsd__base64Binary **a, const char *type)
+{
+	(void)type; /* appease -Wall -Werror */
+	
+	if (soap_element_begin_in(soap, tag, 1, NULL))
+		return NULL;
+	if (!a)
+		if (!(a = (xsd__base64Binary **)soap_malloc(soap, sizeof(xsd__base64Binary *))))
+			return NULL;
+	*a = NULL;
+	if (!soap->null && *soap->href != '#')
+	{	soap_revert(soap);
+		if (!(*a = (xsd__base64Binary *)soap_instantiate_xsd__base64Binary(soap, -1, soap->type, soap->arrayType, NULL)))
+			return NULL;
+		(*a)->soap_default(soap);
+		if (!(*a)->soap_in(soap, tag, NULL))
+			return NULL;
+	}
+	else
+	{	xsd__base64Binary ** p = (xsd__base64Binary **)soap_id_lookup(soap, soap->href, (void**)a, SOAP_TYPE_casino_xsd__base64Binary, sizeof(xsd__base64Binary), 0);
+		a = p;
+		if (soap->body && soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	return a;
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerToxsd__base64Binary(struct soap *soap, xsd__base64Binary *const*a, const char *tag, const char *type)
+{
+	register int id = soap_embed(soap, (void*)a, NULL, 0, SOAP_TYPE_casino_PointerToxsd__base64Binary);
+	if (soap_out_PointerToxsd__base64Binary(soap, tag?tag:"xsd:base64Binary", id, a, type))
+		return soap->error;
+	return soap_putindependent(soap);
+}
+
+SOAP_FMAC3 xsd__base64Binary ** SOAP_FMAC4 soap_get_PointerToxsd__base64Binary(struct soap *soap, xsd__base64Binary **p, const char *tag, const char *type)
+{
+	if ((p = soap_in_PointerToxsd__base64Binary(soap, tag, p, type)))
 		if (soap_getindependent(soap))
 			return NULL;
 	return p;
@@ -2636,6 +3990,60 @@ SOAP_FMAC3 std::string ** SOAP_FMAC4 soap_get_PointerTostd__string(struct soap *
 	return p;
 }
 
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTounsignedByte(struct soap *soap, unsigned char *const*a)
+{
+#ifndef WITH_NOIDREF
+	soap_reference(soap, *a, SOAP_TYPE_casino_unsignedByte);
+#endif
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTounsignedByte(struct soap *soap, const char *tag, int id, unsigned char *const*a, const char *type)
+{
+	id = soap_element_id(soap, tag, id, *a, NULL, 0, type, SOAP_TYPE_casino_unsignedByte);
+	if (id < 0)
+		return soap->error;
+	return soap_out_unsignedByte(soap, tag, id, *a, type);
+}
+
+SOAP_FMAC3 unsigned char ** SOAP_FMAC4 soap_in_PointerTounsignedByte(struct soap *soap, const char *tag, unsigned char **a, const char *type)
+{
+	(void)type; /* appease -Wall -Werror */
+	
+	if (soap_element_begin_in(soap, tag, 1, NULL))
+		return NULL;
+	if (!a)
+		if (!(a = (unsigned char **)soap_malloc(soap, sizeof(unsigned char *))))
+			return NULL;
+	*a = NULL;
+	if (!soap->null && *soap->href != '#')
+	{	soap_revert(soap);
+		if (!(*a = soap_in_unsignedByte(soap, tag, *a, type)))
+			return NULL;
+	}
+	else
+	{	a = (unsigned char **)soap_id_lookup(soap, soap->href, (void**)a, SOAP_TYPE_casino_unsignedByte, sizeof(unsigned char), 0);
+		if (soap->body && soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	return a;
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTounsignedByte(struct soap *soap, unsigned char *const*a, const char *tag, const char *type)
+{
+	register int id = soap_embed(soap, (void*)a, NULL, 0, SOAP_TYPE_casino_PointerTounsignedByte);
+	if (soap_out_PointerTounsignedByte(soap, tag?tag:"unsignedByte", id, a, type))
+		return soap->error;
+	return soap_putindependent(soap);
+}
+
+SOAP_FMAC3 unsigned char ** SOAP_FMAC4 soap_get_PointerTounsignedByte(struct soap *soap, unsigned char **p, const char *tag, const char *type)
+{
+	if ((p = soap_in_PointerTounsignedByte(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize__QName(struct soap *soap, char *const*a)
 {
 #ifndef WITH_NOIDREF
@@ -2712,95 +4120,6 @@ SOAP_FMAC3 char ** SOAP_FMAC4 soap_get_string(struct soap *soap, char **p, const
 		if (soap_getindependent(soap))
 			return NULL;
 	return p;
-}
-
-SOAP_FMAC3 void SOAP_FMAC4 soap_default_std__vectorTemplateOfstd__string(struct soap *soap, std::vector<std::string >*p)
-{
-	(void)soap; /* appease -Wall -Werror */
-	p->clear();
-}
-
-SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_std__vectorTemplateOfstd__string(struct soap *soap, const std::vector<std::string >*a)
-{
-	(void)soap; (void)a;/* appease -Wall -Werror */
-#ifndef WITH_NOIDREF
-	for (std::vector<std::string >::const_iterator i = a->begin(); i != a->end(); ++i)
-		soap_serialize_std__string(soap, &(*i));
-#endif
-}
-
-SOAP_FMAC3 int SOAP_FMAC4 soap_out_std__vectorTemplateOfstd__string(struct soap *soap, const char *tag, int id, const std::vector<std::string >*a, const char *type)
-{
-	(void)id; (void)type; /* appease -Wall -Werror */
-	for (std::vector<std::string >::const_iterator i = a->begin(); i != a->end(); ++i)
-	{
-		if (soap_out_std__string(soap, tag, id, &(*i), ""))
-			return soap->error;
-	}
-	return SOAP_OK;
-}
-
-SOAP_FMAC3 std::vector<std::string >* SOAP_FMAC4 soap_in_std__vectorTemplateOfstd__string(struct soap *soap, const char *tag, std::vector<std::string >*a, const char *type)
-{
-	short soap_flag;
-	(void)type; /* appease -Wall -Werror */
-	for (soap_flag = 0;; soap_flag = 1)
-	{	std::string n;
-		if (tag && *tag != '-')
-		{	if (soap_element_begin_in(soap, tag, 1, NULL))
-				break;
-			soap_revert(soap);
-		}
-		soap_default_std__string(soap, &n);
-		if (tag && *tag != '-' && (*soap->id || *soap->href))
-		{	if (!soap_container_id_forward(soap, *soap->id?soap->id:soap->href, a, (size_t)a->size(), SOAP_TYPE_casino_std__string, SOAP_TYPE_casino_std__vectorTemplateOfstd__string, sizeof(std::string), 0))
-				break;
-			if (!soap_in_std__string(soap, tag, NULL, "xsd:string"))
-				break;
-		}
-		else if (!soap_in_std__string(soap, tag, &n, "xsd:string"))
-			break;
-		if (!a && !(a = soap_new_std__vectorTemplateOfstd__string(soap, -1)))
-			return NULL;
-		soap_update_pointers(soap, (char*)&n, (char*)&n + sizeof(n), (char*)&(*a->insert(a->end(), n)), (char*)&n);
-		if (!tag || *tag == '-')
-			return a;
-	}
-	if (soap_flag && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-	{	soap->error = SOAP_OK;
-		return a;
-	}
-	return NULL;
-}
-
-SOAP_FMAC1 std::vector<std::string > * SOAP_FMAC2 soap_instantiate_std__vectorTemplateOfstd__string(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
-{
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_std__vectorTemplateOfstd__string(%d, %s, %s)\n", n, type?type:"", arrayType?arrayType:""));
-	struct soap_clist *cp = soap_link(soap, NULL, SOAP_TYPE_casino_std__vectorTemplateOfstd__string, n, casino_fdelete);
-	(void)type; (void)arrayType; /* appease -Wall -Werror */
-	if (!cp)
-		return NULL;
-	if (n < 0)
-	{	cp->ptr = (void*)SOAP_NEW(std::vector<std::string >);
-		if (size)
-			*size = sizeof(std::vector<std::string >);
-	}
-	else
-	{	cp->ptr = (void*)SOAP_NEW_ARRAY(std::vector<std::string >, n);
-		if (size)
-			*size = n * sizeof(std::vector<std::string >);
-	}
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", cp->ptr));
-	if (!cp->ptr)
-		soap->error = SOAP_EOM;
-	return (std::vector<std::string >*)cp->ptr;
-}
-
-SOAP_FMAC3 void SOAP_FMAC4 soap_copy_std__vectorTemplateOfstd__string(struct soap *soap, int st, int tt, void *p, size_t len, const void *q, size_t n)
-{
-	(void)soap; (void)tt; (void)st; (void)len; (void)n; /* appease -Wall -Werror */
-	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copying std::vector<std::string > %p -> %p\n", q, p));
-	*(std::vector<std::string >*)p = *(std::vector<std::string >*)q;
 }
 
 } // namespace casino

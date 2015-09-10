@@ -13,6 +13,7 @@
 #include <web-service/foto/fotoH.h>
 #include <web-service/acceso/accesoH.h>
 #include <envH.h>
+#include <qprocess.h>
 
 class SoapClient : public QObject
 {
@@ -20,13 +21,13 @@ class SoapClient : public QObject
 public:
     explicit SoapClient(QObject *parent = 0);
     bool init();
-    bool syncro(Persona *persona,Acceso &acceso, QDateTime dateTime);
+    bool syncro(Persona *persona, Acceso *acceso, QDateTime dateTime);
 
     // Web service action :
-    void actionValidarCasino(Persona *persona, Acceso &acceso, QDateTime dateTime = QDateTime::currentDateTime());
+    void actionValidarCasino(Persona *persona, Acceso *acceso, QDateTime dateTime = QDateTime::currentDateTime(), bool sync = false);
     void actionInfoAcceso(Persona *persona,Acceso &acceso, QDateTime dateTime = QDateTime::currentDateTime());
     QByteArray actionGetFoto(QString rut);
-    void error(struct soap *soap);
+    void error(struct soap *soap, QString WebServiceName = "", QMap<QString,QString> inputValues = QMap<QString,QString>(), QString response = "");
 
 private:
     QString timeout;

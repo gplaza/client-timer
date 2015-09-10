@@ -1,26 +1,24 @@
 #include "serviceaccess.h"
-#include "credencial.h"
 
-ServiceAccess::ServiceAccess(SoapClient *soapClient,QObject *objectView, QObject *parent) : QObject(parent)
+ServiceAccess::ServiceAccess(SoapClient *soapClient, Acceso *acceso, QObject *parent) : soapClient(soapClient), acceso(acceso), QObject(parent)
 {
-    this->soapClient = soapClient;
-    this->objectView = objectView;
-
     connect(this, &ServiceAccess::onLine,this, &ServiceAccess::on_online);
     connect(this, &ServiceAccess::offLine,this, &ServiceAccess::on_offline);
 
     printer = new Printer("1d90","2060");
 }
 
-void ServiceAccess::check(QString &id)
+void ServiceAccess::check(const QString id)
 {
+    usePrinter = Configurator::instance()->getConfig("printer").toLower() == "si";
+
     QObject* obj = sender();
     const QMetaObject *meta = obj->metaObject();
     QString caller = QString::fromUtf8(meta->className());
 
     // Check Paper & state of printer
-    bool status = printer->checkStatus();
-    QMetaObject::invokeMethod(objectView, "changeStatusPrinter", Q_ARG(QVariant, status));
+    bool status = usePrinter? printer->checkStatus() : true;
+    // QMetaObject::invokeMethod(objectView, "changeStatusPrinter", Q_ARG(QVariant, status));
 
     if(!status)
     {
@@ -35,29 +33,30 @@ void ServiceAccess::check(QString &id)
         timer->start(1000);
 
         QStringList parameter;
+
         parameter << Configurator::instance()->getConfig("emailPrinterError");
 
-        if (!QProcess::startDetached("/root/emailPrinter.sh", parameter))
+        if (!QProcess::startDetached("/var/lib/QProcess/emailPrinter.sh", parameter))
             qDebug() << "Error to send email";
 
     } else {
 
         if(caller == "Credencial")
         {
-            QByteArray foto;
             persona.setUuid(id);
             persona.setRut(""); // TODO : change to pointer the object Persona.
-            persona.setFoto(foto);
             persona.setTipoMarca(Persona::MARCA_RFID);
 
             QSqlRecord record = Bdd::identificationCredencial(id);
 
             if(!record.isEmpty()) {
 
+                qDebug() << "User finded in local database ...";
                 persona.setRut(record.value("rut").toString());
-                persona.setFoto(record.value("image").toByteArray());
+                persona.setExistFoto(!record.value("foto").toString().isEmpty());
                 persona.setFingerprintID(record.value("id_huella").toInt());
             }
+
         }
 
         if(caller == "Fingerprint")
@@ -66,7 +65,7 @@ void ServiceAccess::check(QString &id)
 
             persona.setRut(fingerprint.value("rut").toString());
             persona.setUuid(fingerprint.value("hash").toString());
-            persona.setFoto(fingerprint.value("image").toByteArray());
+            persona.setExistFoto(!fingerprint.value("foto").toString().isEmpty());
             persona.setFingerprintID(id.toInt());
 
             persona.setTipoMarca(Persona::MARCA_FINGER);
@@ -89,15 +88,13 @@ void ServiceAccess::check(QString &id)
 void ServiceAccess::on_online()
 {
     qDebug() << "Online WebService";
-
-    Acceso acceso;
-
     soapClient->actionValidarCasino(&persona,acceso);
 
-    if(acceso.idAuth() == -1)
+    if(acceso->idAuth() == -1)
     {
         qCritical() << "Synchronise for retry request (WebService Error)";
-        emit synchroniseOffLine(acceso,persona);
+        emit offLine();
+        return;
 
     } else {
 
@@ -105,125 +102,75 @@ void ServiceAccess::on_online()
         emit synchroniseOnLine(acceso,persona);
     }
 
-    if(persona.foto().isEmpty() && acceso.idAuth() != Acceso::PERSON_NO_EXIST && acceso.idAuth() != Acceso::PERSON_CRED_NO_EXIST) {
-        QByteArray foto = soapClient->actionGetFoto(acceso.rut());
+    if(persona.existFoto() == false && acceso->idAuth() != Acceso::PERSON_NO_EXIST && acceso->idAuth() != Acceso::PERSON_CRED_NO_EXIST) {
+        QByteArray foto = soapClient->actionGetFoto(acceso->rut());
         if(!foto.isEmpty())
-            Bdd::setImage(acceso.rut(),foto);
+        {
+            Bdd::setImage(acceso->rut(),foto);
+            emit fotoChanged();
+        }
     }
 
-    finalizeResponse(acceso);
+    finalizeResponse();
 }
 
 void ServiceAccess::on_offline()
 {
     qDebug() << "Offline WebService";
 
-    Acceso acceso;
+    QString casinoName = Configurator::instance()->getConfig("casinoName");
 
-    acceso.setRut(persona.rut());
-    acceso.setUuid(persona.uuid());
-    acceso.setDate(QDateTime::currentDateTime());
+    acceso->setRut(persona.rut());
+    acceso->setUuid(persona.uuid());
+    acceso->setDate(QDateTime::currentDateTime());
+    acceso->setCasinoName(casinoName);
 
-    if(persona.rut().isEmpty()) {
+    if(persona.rut().isEmpty() && persona.uuid().isEmpty()) {
 
-        acceso.setIdAuth(Acceso::PERSON_NO_EXIST);
-        acceso.setName("No existe");
+        acceso->setIdAuth(Acceso::PERSON_NO_EXIST);
+        acceso->setName("No existe");
+        acceso->setCount_casino(0);
 
     } else {
 
-        QSqlRecord identity = Bdd::identificationOffline(persona.rut());
+        QSqlRecord identity = (!persona.rut().isEmpty())? Bdd::identificationOfflineByRut(persona.rut()) : Bdd::identificationOfflineByUuid(persona.uuid());
 
-        acceso.setIdAuth(identity.value("autorizado").toInt());
-        acceso.setName(identity.value("nombre").toString());
-        acceso.setCount_lunch(identity.value("count_lunch").toInt());
-        acceso.setCount_dinner(identity.value("count_dinner").toInt());
+        acceso->setIdAuth(identity.value("autorizado").toInt());
+        acceso->setName(identity.value("nombre").toString());
+        acceso->setCount_lunch(identity.value("count_lunch").toInt());
+        acceso->setCount_dinner(identity.value("count_dinner").toInt());
     }
 
-    // TODO : last counter casino
-    acceso.setCount_casino(0);
-    acceso.setTextAuth(Bdd::textAuthentication(acceso));
+    acceso->setCount_casino(Bdd::casinoService());
+    acceso->setTextAuth(Bdd::textAuthentication(acceso));
 
     emit synchroniseOffLine(acceso,persona);
-    finalizeResponse(acceso);
+    finalizeResponse();
 }
 
-void ServiceAccess::finalizeResponse(Acceso &acceso)
+void ServiceAccess::finalizeResponse()
 {
-    LOG_INFO("Resultado Local : " + acceso.toString());
-    emit sendToScreen(acceso.textAuth());
+    LOG_INFO("Resultado Local : " + acceso->toString());
+    emit sendToScreen(acceso->textAuth());
 
-    QObject *casinoName = objectView->findChild<QObject*>("casinoName");
-    QString currentCasinoName = casinoName->property("text").toString();
-    QString newName = Configurator::instance()->getConfig("casinoName");
+    bool ok;
+    QString tUser = Configurator::instance()->getConfig("timeShowUser");
+    tUser.toInt(&ok);
+    acceso->setTimeShow((ok == false)? 1000 : tUser.toInt() * 1000);
 
-    if(currentCasinoName != newName)
-        casinoName->setProperty("text",newName);
-
-    QObject *fotoStudent = objectView->findChild<QObject*>("fotoStudent");
-    fotoStudent->setProperty("source", "image://getimagebyrut/" + acceso.rut());
-
-    QObject *lunchInfo = objectView->findChild<QObject*>("lunchInfo");
-    lunchInfo->setProperty("text", "Almuerzos disponibles : " + QString::number(acceso.count_lunch()));
-    QObject *dinnerInfo = objectView->findChild<QObject*>("dinnerInfo");
-    dinnerInfo->setProperty("text", "Cenas disponibles : " + QString::number(acceso.count_dinner()));
-
-    QObject *rutText = objectView->findChild<QObject*>("rutText");
-    QString rutString = !acceso.rut().isEmpty()? "RUT : " + acceso.rutFormated() : "";
-    rutText->setProperty("text", rutString);
-
-    QObject *nameText = objectView->findChild<QObject*>("nameText");
-    QString nameString = !acceso.name().isEmpty()? "Nombre : " + acceso.name().toLower() : "";
-    nameText->setProperty("text", nameString);
-
-    if(!acceso.rut().isEmpty())
-
-        // TODO : what state show counter casino ?
-        if(acceso.idAuth() == Acceso::PERSON_OK || acceso.idAuth() == Acceso::PERSON_SERVICE_USED || acceso.idAuth() == Acceso::PERSON_NO_LUNCH)
-        {
-            QObject *casinoCount = objectView->findChild<QObject*>("casinoCount");
-            casinoCount->setProperty("text", acceso.count_casino());
-        }
-
-    if(acceso.idAuth() == Acceso::PERSON_OK)
+    if(acceso->idAuth() == Acceso::PERSON_OK && usePrinter)
     {
-        QObject *errorMsg = objectView->findChild<QObject*>("errorMsg");
-        errorMsg->setProperty("text", "");
+        QString formatedDate = QDateTime::currentDateTime().toString("dd/MM/yy - hh:mm:ss");
+        QString name = acceso->name();
 
-        QString formatedDate = acceso.dateFormated("dd/MM/yy - hh:mm:ss");
-        QString name = acceso.name();
-
-        printer->setLine("*** UTFSM USM:" + Configurator::instance()->getConfig("usm") + ' ' + Configurator::instance()->getConfig("casinoName") + " ***");
+        printer->setLine("*** UTFSM USM:" + Configurator::instance()->getConfig("usm") + ' ' + acceso->casinoName() + " ***");
         printer->setLine("Fecha    : " + formatedDate);
         printer->setLine("Nombre   : " + name.leftJustified(31, ' ', true));
-        printer->setLine("RUT/Tip. : " + acceso.rutFormated() + ' ' + acceso.info_print());
-        printer->setLine("Beca : " + acceso.beca_print());
+        printer->setLine("RUT/Tip. : " + acceso->rutFormat() + ' ' + acceso->info_print());
+        printer->setLine("Beca : " + acceso->beca_print());
 
         printer->print();
-
-    } else {
-
-        QString msgPrefix = "Mensaje : ";
-
-        QObject *errorMsg = objectView->findChild<QObject*>("errorMsg");
-        errorMsg->setProperty("text", msgPrefix + acceso.textAuth());
-
     }
 
-    QMetaObject::invokeMethod(objectView,"toggle");
-
-    QString tUser = Configurator::instance()->getConfig("timeShowUser");
-    bool ok;
-    tUser.toInt(&ok);
-    int timeShow = (ok == false)? 1000 : tUser.toInt() * 1000;
-
-    QTimer *timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &ServiceAccess::finished);
-    connect(timer, &QTimer::timeout, this, &ServiceAccess::initUi);
-    connect(this, &ServiceAccess::finished, timer, &QTimer::deleteLater);
-    timer->start(1000 + timeShow);
-}
-
-void ServiceAccess::initUi()
-{
-    QMetaObject::invokeMethod(objectView,"toggle");
+    emit finished();
 }

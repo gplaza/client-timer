@@ -31,7 +31,7 @@ public slots:
 
         while(!date.isNull())
         {
-            Acceso acceso;
+            Acceso *acceso = new Acceso();
             bool result = soapClient->syncro(&persona,acceso,date);
 
             if(!result)
@@ -68,8 +68,8 @@ private:
     SoapClient *soapClient;
 
 public slots:
-    void onLine(Acceso &acceso, Persona &persona);
-    void offLine(Acceso &acceso, Persona &persona);
+    void onLine(Acceso *acceso, Persona &persona);
+    void offLine(Acceso *acceso, Persona &persona);
 
 };
 

@@ -5,6 +5,7 @@
 #include <QtQuick>
 #include <QtGui>
 
+#include <fotoprovider.h>
 #include <protector.h>
 #include <synchroniser.h>
 #include <soapclient.h>
@@ -15,7 +16,6 @@
 #include <fingerprint.h>
 #include <bdd.h>
 #include <configurator.h>
-#include <fotoprovider.h>
 #include <configuratoradapter.h>
 #include <stdsoap2.h>
 
@@ -37,12 +37,13 @@ int main(int argc, char *argv[])
     consoleAppender->setDetailsLevel("debug");
     Logger::registerAppender(consoleAppender);
 
-    ConfiguratorAdapter *configAdapt = new ConfiguratorAdapter();
-    Configurator::instance()->setDB("/usr/share/nginx/www/protected/data/config.db",true);
+    ConfiguratorAdapter *configAdapt = new ConfiguratorAdapter(&view);
+    Configurator::instance()->init("/usr/share/nginx/www/protected/data/config.db");
 
     QSet<QString> confs;
     confs << "timeout";
     confs << "timeShowUser";
+    confs << "casinoName";
     confs << "emailPrinterError";
     confs << "endPointCasino";
     confs << "soapActionCasinoValidar";
@@ -55,17 +56,10 @@ int main(int argc, char *argv[])
     confs << "logFormat";
 
     QMap<QString,QString> config = Configurator::instance()->getConfigs(confs);
-
     consoleAppender->setDetailsLevel(config["logLevel"]);
 
     qDebug() << "Init parameters : ";
-
-    QMapIterator<QString,QString> i(config);
-    while (i.hasNext()) {
-        i.next();
-        qDebug() << i.key().leftJustified(30,' ') + " : " << i.value();
-    }
-
+    Configurator::instance()->getCacheConfigToDebug();
     Protector licence(config["serial"]);
 
     if(!licence.isValid())
@@ -75,20 +69,20 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    //Init database;
+    //Init DAL;
     Bdd bdd;
     bdd.openDatabase();
+    QString casinoName = config["casinoName"];
+    Acceso *acceso = new Acceso(casinoName, &view);
 
-    //Init UI (warinig : order !!)
+    //Init UI (warning : order !!)
     view.engine()->addImageProvider(QLatin1String("getimagebyrut"), new FotoProvider);
-    view.engine()->addImportPath(QCoreApplication::applicationDirPath() + "/qml");
-    view.setSource(QUrl(QCoreApplication::applicationDirPath() + "/qml/main.qml"));
-    QObject *objectView = view.rootObject();
-    view.show();
+    view.rootContext()->setContextProperty("accesoData", acceso);
+    view.setSource(QUrl(QStringLiteral("qrc:///qml/main.qml")));
 
     //Init Web service component
-    SoapClient *soapClient = new SoapClient();
-    ServiceAccess serviceAccess(soapClient,objectView);
+    SoapClient *soapClient = new SoapClient(&view);
+    ServiceAccess serviceAccess(soapClient, acceso);
     Synchroniser sync(soapClient);
     Screen display;
 
@@ -97,19 +91,32 @@ int main(int argc, char *argv[])
     Fingerprint fingerprint("/dev/ttyAMA0");
 
     // Manage fingerPrintReader
+    // ** detected **
     QObject::connect(&fingerprint, &Fingerprint::fingerDetected, &fingerprint, &Fingerprint::processDataFingerprint);
+    // ** detected unknown **
+    QObject::connect(&fingerprint, &Fingerprint::unknownFinger, &fingerprint, &Fingerprint::waitForFinger);
 
-    // Manage screen message
+    QObject::connect(&serviceAccess, &ServiceAccess::fotoChanged, acceso, &Acceso::fotoChanged);
+
+    // Manage display message
     QObject::connect(&credencial, &Credencial::sendToScreen, &display, &Screen::showMessage);
     QObject::connect(&serviceAccess, &ServiceAccess::sendToScreen, &display, &Screen::showMessage);
     QObject::connect(&fingerprint, &Fingerprint::sendToScreen, &display, &Screen::showMessage);
 
-    // End device reading
-    QObject::connect(&credencial, &Credencial::endReadRFID, &serviceAccess, &ServiceAccess::check);
-    QObject::connect(&fingerprint, &Fingerprint::endReadFingerprint, &serviceAccess, &ServiceAccess::check);
-    QObject::connect(&serviceAccess, &ServiceAccess::finished, &credencial, &Credencial::WaitForTag);
-    //QObject::connect(&fingerprint, &Fingerprint::finished, &credencial, &Credencial::WaitForTag);
-    //QObject::connect(&fingerprint, &Fingerprint::finished, &screen, &Screen::showTime); ??necesary ??
+    // Data ready on device
+    // ** data on rfid **
+    QObject::connect(&credencial, &Credencial::dataReady, &fingerprint, &Fingerprint::stopWaitForFinger);
+    QObject::connect(&credencial, &Credencial::dataReady, &credencial, &Credencial::stopWaitForTag);
+    QObject::connect(&credencial, &Credencial::dataReady, &serviceAccess, &ServiceAccess::check);
+    // ** data on fingerPrintReader **
+    QObject::connect(&fingerprint, &Fingerprint::dataReady, &fingerprint, &Fingerprint::stopWaitForFinger);
+    QObject::connect(&fingerprint, &Fingerprint::dataReady, &credencial, &Credencial::stopWaitForTag);
+    QObject::connect(&fingerprint, &Fingerprint::dataReady, &serviceAccess, &ServiceAccess::check);
+
+    // End process :
+    QObject::connect(&serviceAccess, &ServiceAccess::finished, acceso, &Acceso::dataChanged);
+    QObject::connect(acceso, &Acceso::finishedProcess, &credencial, &Credencial::waitForTag);
+    QObject::connect(acceso, &Acceso::finishedProcess, &fingerprint, &Fingerprint::waitForFinger);
 
     // Syncro process
     QObject::connect(&serviceAccess, &ServiceAccess::onLine, &display, &Screen::onLine);
@@ -124,62 +131,10 @@ int main(int argc, char *argv[])
     QObject::connect(configAdapt,&ConfiguratorAdapter::updateFingerPrint,&fingerprint,&Fingerprint::externUpdateUser);
     QObject::connect(&fingerprint,&Fingerprint::responseRegister,configAdapt,&ConfiguratorAdapter::response);
 
-    return app.exec();
-
-    /*
-    QStringList cmdlineArgs = QCoreApplication::arguments();
-
-    if(cmdlineArgs.size() == 2 && cmdlineArgs[1].startsWith("--test"))
-    {
-        QString param = cmdlineArgs[1];
-
-        if (param.contains("bdd") || param.contains("all"))
-        {
-            TestBdd testBdd;
-            QTest::qExec(&testBdd);
-        }
-        if (param.contains("service") || param.contains("all"))
-        {
-            TestServiceAccess testService;
-            QTest::qExec(&testService);
-        }
-        if (param.contains("finger") || param.contains("all"))
-        {
-            TestFingerprint testFingerprint;
-            QTest::qExec(&testFingerprint);
-        }
-
-        QCoreApplication::exit(0);
-        return 0;
-    }
-    */
-
-    /*
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    view.setSource(QUrl(QCoreApplication::applicationDirPath() + "/qml/main.qml"));
+    // Save connection
+    QObject::connect(Configurator::instance(),&Configurator::configurationChanged,&bdd,&Bdd::dataBaseChanged);
+    QObject::connect(configAdapt,&ConfiguratorAdapter::userChanged,&bdd,&Bdd::dataBaseChanged);
 
     view.show();
     return app.exec();
-    */
 }

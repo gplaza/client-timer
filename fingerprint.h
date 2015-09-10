@@ -19,23 +19,19 @@ public slots:
     void checkFingerTouch();
     void processDataFingerprint();
     // -- function for API --
-    void externInsertUser(QString &hash);
+    void externInsertUser(QString &hash, int typeHash);
     void externDeleteUser(int userID);
-    void externUpdateUser(QString &hash, int userID);
+    void externUpdateUser(QString &hash, int typeHash, int userID);
 
     void registerNewUser(Persona &persona, QString &hash);
     void receiveError(int error);
-    void endProcess();
 
 signals:
     void sendToScreen(const QString &m);
-    void endReadFingerprint(QString &id);
+    void dataReady(QString &id);
     void sucessRegister(int idUser);
     void responseRegister(const QString &status, const QString &response);
     void setTypeEvent(int event);
-    void cancel();
-    void finished();
-
 };
 
 #endif // FINGERPRINT_H

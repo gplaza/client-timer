@@ -19,9 +19,8 @@ signals:
     void sendToScreen(const QString &m);
 
 public slots:
-    void getInfoTag(MifareTag *tags);
+    void getInfoTag(const QString tag);
     void errorReader(const QString &error);
-
 };
 
 #endif // CREDENCIAL_H

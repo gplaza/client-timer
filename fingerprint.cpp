@@ -3,14 +3,16 @@
 
 Fingerprint::Fingerprint(QString serialport) : SecugenSda04(serialport)
 {
-    wiringPiSetup();
-    pinMode(7, INPUT);
+    if(!error)
+    {
+        wiringPiSetup();
+        pinMode(7, INPUT);
 
-    waitForFinger();
-    cancelerTimer = new QTimer(this);
+        waitForFinger();
+        cancelerTimer = new QTimer(this);
 
-    QObject::connect(this, &Fingerprint::cancel, this, &Fingerprint::endProcess);
-    QObject::connect(this, &Fingerprint::sendError, this, &Fingerprint::receiveError);
+        QObject::connect(this, &Fingerprint::sendError, this, &Fingerprint::receiveError);
+    }
 }
 
 void Fingerprint::receiveError(int error)
@@ -50,8 +52,8 @@ void Fingerprint::checkFingerTouch()
 {
     if(digitalRead(7) == LOW)
     {
-        emit fingerDetected();
         timerFinger->stop();
+        emit fingerDetected();
     }
 }
 
@@ -60,73 +62,57 @@ void Fingerprint::processDataFingerprint()
     QVariant scanResult = scanFinger();
     int id = scanResult.toInt();
 
-    if(id > -1)
-    {
-        qDebug() << "Fingerprint finded";
-        qDebug() << "User ID : " << id;
+    qDebug() << "Fingerprint finded";
+    qDebug() << "User ID : " << id;
 
+    if(id > 0)
+    {
         QString ident = QString::number(id);
         Buzzer::instance()->good();
-        emit endReadFingerprint(ident);
-        endProcess();
+        emit dataReady(ident);
 
     } else {
 
         emit sendToScreen("Huella          desconocida");
         Buzzer::instance()->bad();
-        emit cancel();
+        emit unknownFinger();
     }
 }
 
-void Fingerprint::endProcess()
+void Fingerprint::externInsertUser(QString &hash, int typeHash)
 {
-    // Wait for finger + Wait for tag + Home screen
+    int userID = getuserIDavailable();
 
-    QTimer *timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &Fingerprint::finished);
-    connect(timer, &QTimer::timeout, this, &Fingerprint::waitForFinger);
-    connect(timer, &QTimer::timeout, timer, &QTimer::deleteLater);
-    timer->start(1500);
-}
-
-void Fingerprint::externInsertUser(QString &hash)
-{
-    int idUser = getuserIDavailable();
-
-    if(registerUser(hash,idUser) == 0)
-        emit responseRegister("success", QString::number(idUser));
+    if(registerUser(hash,userID,false,typeHash) == 0)
+        emit responseRegister("success", QString::number(userID));
     else
         emit responseRegister("error", "Unable to create new user.");
 }
 
-void Fingerprint::externUpdateUser(QString &hash, int userID)
+void Fingerprint::externUpdateUser(QString &hash, int typeHash, int userID)
 {
-    if(deleteUser(userID) == 0)
-    {
-        int newID = getuserIDavailable();
-        if(registerUser(hash,newID) == 0)
-            emit responseRegister("success", QString::number(newID));
-        else
-            emit responseRegister("error", "Unable to create new user.");
-    }
+    if(registerUser(hash,userID,true,typeHash) == 0)
+        emit responseRegister("success", QString::number(userID));
+    else
+        emit responseRegister("error", "Unable to update user.");
 }
 
 void Fingerprint::externDeleteUser(int userID)
 {
     if(deleteUser(userID) == 0)
         emit responseRegister("success", QString::number(userID));
+    else
+        emit responseRegister("error", "Unable to delete user.");
 }
 
 void Fingerprint::registerNewUser(Persona &persona, QString &hash)
 {
-    int newID = getuserIDavailable();
+    bool userExist = persona.fingerprintID() != 0;
+    int userID = userExist? persona.fingerprintID() : getuserIDavailable(); //TODO : verif si ok ...
 
-    if(persona.fingerprintID() != 0)
-        deleteUser(persona.fingerprintID());
-
-    if(registerUser(hash,newID) == 0)
+    if(registerUser(hash,userID,userExist) == 0)
     {
-        persona.setFingerprintID(newID);
+        persona.setFingerprintID(userID);
         persona.setHash(hash);
         Bdd::updatePersona(persona);
     }

@@ -1,6 +1,4 @@
 #include "configuratoradapter.h"
-#include <QUrl>
-#include <QUrlQuery>
 
 ConfiguratorAdapter::ConfiguratorAdapter(QObject *parent) : QObject(parent)
 {
@@ -48,6 +46,9 @@ void ConfiguratorAdapter::response(const QString &status, const QString &respons
     QString json = (status == "success")? "{" + jsonState + ",\"id_huella\":" + response + "}" : "{" + jsonState + ",\"msg\":\"" + response + "\"}";
     QByteArray body = json.toLocal8Bit();
 
+    if(status == "success")
+        emit userChanged();
+
     if(resp)
     {
         qDebug() << "Emit response : " << json;
@@ -68,7 +69,9 @@ void ConfiguratorAdapter::addPersona(const QByteArray &jsonValue)
     QJsonObject qJsonObject = json.object();
 
     QString hash = qJsonObject["hash"].toString();
-    emit registerFingerPrint(hash);
+    int typeHash = qJsonObject["typeHash"].toInt();
+
+    emit registerFingerPrint(hash,typeHash);
 }
 
 void ConfiguratorAdapter::updatePersona(const QByteArray &jsonValue)
@@ -78,6 +81,8 @@ void ConfiguratorAdapter::updatePersona(const QByteArray &jsonValue)
 
     QString hash = qJsonObject["hash"].toString();
     QString id = qJsonObject["userID"].toString();
+    int typeHash = qJsonObject["typeHash"].toInt();
+
     int userID = id.toInt();
-    emit updateFingerPrint(hash,userID);
+    emit updateFingerPrint(hash,typeHash,userID);
 }

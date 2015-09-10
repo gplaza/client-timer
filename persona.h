@@ -11,6 +11,7 @@ class Persona : public QObject
     Q_PROPERTY(QString hash READ hash WRITE setHash)
     Q_PROPERTY(int tipoMarca READ tipoMarca WRITE setTipoMarca)
     Q_PROPERTY(QByteArray foto READ foto WRITE setFoto)
+    Q_PROPERTY(bool existFoto READ existFoto WRITE setExistFoto)
     Q_PROPERTY(int fingerprintID READ fingerprintID WRITE setFingerprintID)
 
 public:
@@ -30,6 +31,10 @@ public:
     void setFoto(QByteArray foto);
     QByteArray foto();
 
+    void setExistFoto(bool b);
+    bool existFoto();
+
+    QString rutFormated();
     friend QTextStream & operator<<(QTextStream &stream, const Persona& persona);
     friend QTextStream & operator>>(QTextStream &stream, Persona& persona);
 
@@ -44,8 +49,10 @@ private:
     QString m_uuid;
     QString m_hash;
     QByteArray m_foto;
+    bool m_existFoto;
     int m_tipoMarca;
     int m_fingerprintID;
+
 };
 
 #endif // PERSONA_H

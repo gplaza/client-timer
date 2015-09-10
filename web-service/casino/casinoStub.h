@@ -11,7 +11,7 @@ compiling, linking, and/or using OpenSSL is allowed.
 #ifndef casinoStub_H
 #define casinoStub_H
 #include <vector>
-#define SOAP_NAMESPACE_OF_ns1	"http://Principal/"
+#define SOAP_NAMESPACE_OF_casino1	"http://Principal/"
 #ifndef WITH_NONAMESPACES
 #define WITH_NONAMESPACES
 #endif
@@ -51,134 +51,274 @@ namespace casino {
 
 #endif
 
+#ifndef SOAP_TYPE_casino_xsd__base64Binary
+#define SOAP_TYPE_casino_xsd__base64Binary (8)
+/* Base64 schema type: */
+class SOAP_CMAC xsd__base64Binary
+{
+public:
+	unsigned char *__ptr;
+	int __size;
+	char *id;	/* optional element of type xsd:string */
+	char *type;	/* optional element of type xsd:string */
+	char *options;	/* optional element of type xsd:string */
+	struct soap *soap;	/* transient */
+public:
+	virtual int soap_type() const { return 8; } /* = unique type id SOAP_TYPE_casino_xsd__base64Binary */
+	virtual void soap_default(struct soap*);
+	virtual void soap_serialize(struct soap*) const;
+	virtual int soap_put(struct soap*, const char*, const char*) const;
+	virtual int soap_out(struct soap*, const char*, int, const char*) const;
+	virtual void *soap_get(struct soap*, const char*, const char*);
+	virtual void *soap_in(struct soap*, const char*, const char*);
+	         xsd__base64Binary() { xsd__base64Binary::soap_default(NULL); }
+	virtual ~xsd__base64Binary() { }
+};
+#endif
+
 #if 0 /* volatile type: do not declare here, declared elsewhere */
 
 #endif
 
-#ifndef SOAP_TYPE_casino_ns1__Transacciones
-#define SOAP_TYPE_casino_ns1__Transacciones (8)
-/* ns1:Transacciones */
-class SOAP_CMAC ns1__Transacciones
+#ifndef SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia
+#define SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia (13)
+/* casino1:Modulo_Asistencia */
+class SOAP_CMAC casino1__Modulo_USCOREAsistencia
 {
 public:
 	std::string *rut;	/* optional element of type xsd:string */
-	std::string *casino;	/* optional element of type xsd:string */
-	int mes;	/* required element of type xsd:int */
-	int a_x00f1o;	/* required element of type xsd:int */
-	struct soap *soap;	/* transient */
-public:
-	virtual int soap_type() const { return 8; } /* = unique type id SOAP_TYPE_casino_ns1__Transacciones */
-	virtual void soap_default(struct soap*);
-	virtual void soap_serialize(struct soap*) const;
-	virtual int soap_put(struct soap*, const char*, const char*) const;
-	virtual int soap_out(struct soap*, const char*, int, const char*) const;
-	virtual void *soap_get(struct soap*, const char*, const char*);
-	virtual void *soap_in(struct soap*, const char*, const char*);
-	         ns1__Transacciones() { ns1__Transacciones::soap_default(NULL); }
-	virtual ~ns1__Transacciones() { }
-};
-#endif
-
-#ifndef SOAP_TYPE_casino_ns1__TransaccionesResponse
-#define SOAP_TYPE_casino_ns1__TransaccionesResponse (9)
-/* ns1:TransaccionesResponse */
-class SOAP_CMAC ns1__TransaccionesResponse
-{
-public:
-	std::vector<std::string >return_;	/* SOAP 1.2 RPC return element (when namespace qualified) */	/* optional element of type xsd:string */
-	struct soap *soap;	/* transient */
-public:
-	virtual int soap_type() const { return 9; } /* = unique type id SOAP_TYPE_casino_ns1__TransaccionesResponse */
-	virtual void soap_default(struct soap*);
-	virtual void soap_serialize(struct soap*) const;
-	virtual int soap_put(struct soap*, const char*, const char*) const;
-	virtual int soap_out(struct soap*, const char*, int, const char*) const;
-	virtual void *soap_get(struct soap*, const char*, const char*);
-	virtual void *soap_in(struct soap*, const char*, const char*);
-	         ns1__TransaccionesResponse() { ns1__TransaccionesResponse::soap_default(NULL); }
-	virtual ~ns1__TransaccionesResponse() { }
-};
-#endif
-
-#ifndef SOAP_TYPE_casino_ns1__validar_USCOREcasino
-#define SOAP_TYPE_casino_ns1__validar_USCOREcasino (10)
-/* ns1:validar_casino */
-class SOAP_CMAC ns1__validar_USCOREcasino
-{
-public:
-	std::string *rut;	/* optional element of type xsd:string */
-	time_t *fecha;	/* optional element of type xsd:dateTime */
-	std::string *dispo;	/* optional element of type xsd:string */
 	std::string *dato_USCORErecibido;	/* optional element of type xsd:string */
+	std::string *hash_USCOREalternativo;	/* optional element of type xsd:string */
+	time_t *fecha;	/* optional element of type xsd:dateTime */
+	std::string *numerodispositivo;	/* optional element of type xsd:string */
 	int tipomarca;	/* required element of type xsd:int */
+	xsd__base64Binary *foto;	/* optional element of type xsd:base64Binary */
 	struct soap *soap;	/* transient */
 public:
-	virtual int soap_type() const { return 10; } /* = unique type id SOAP_TYPE_casino_ns1__validar_USCOREcasino */
+	virtual int soap_type() const { return 13; } /* = unique type id SOAP_TYPE_casino_casino1__Modulo_USCOREAsistencia */
 	virtual void soap_default(struct soap*);
 	virtual void soap_serialize(struct soap*) const;
 	virtual int soap_put(struct soap*, const char*, const char*) const;
 	virtual int soap_out(struct soap*, const char*, int, const char*) const;
 	virtual void *soap_get(struct soap*, const char*, const char*);
 	virtual void *soap_in(struct soap*, const char*, const char*);
-	         ns1__validar_USCOREcasino() { ns1__validar_USCOREcasino::soap_default(NULL); }
-	virtual ~ns1__validar_USCOREcasino() { }
+	         casino1__Modulo_USCOREAsistencia() { casino1__Modulo_USCOREAsistencia::soap_default(NULL); }
+	virtual ~casino1__Modulo_USCOREAsistencia() { }
 };
 #endif
 
-#ifndef SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse
-#define SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse (11)
-/* ns1:validar_casinoResponse */
-class SOAP_CMAC ns1__validar_USCOREcasinoResponse
+#ifndef SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse
+#define SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse (14)
+/* casino1:Modulo_AsistenciaResponse */
+class SOAP_CMAC casino1__Modulo_USCOREAsistenciaResponse
 {
 public:
 	std::string *return_;	/* SOAP 1.2 RPC return element (when namespace qualified) */	/* optional element of type xsd:string */
 	struct soap *soap;	/* transient */
 public:
-	virtual int soap_type() const { return 11; } /* = unique type id SOAP_TYPE_casino_ns1__validar_USCOREcasinoResponse */
+	virtual int soap_type() const { return 14; } /* = unique type id SOAP_TYPE_casino_casino1__Modulo_USCOREAsistenciaResponse */
 	virtual void soap_default(struct soap*);
 	virtual void soap_serialize(struct soap*) const;
 	virtual int soap_put(struct soap*, const char*, const char*) const;
 	virtual int soap_out(struct soap*, const char*, int, const char*) const;
 	virtual void *soap_get(struct soap*, const char*, const char*);
 	virtual void *soap_in(struct soap*, const char*, const char*);
-	         ns1__validar_USCOREcasinoResponse() { ns1__validar_USCOREcasinoResponse::soap_default(NULL); }
-	virtual ~ns1__validar_USCOREcasinoResponse() { }
+	         casino1__Modulo_USCOREAsistenciaResponse() { casino1__Modulo_USCOREAsistenciaResponse::soap_default(NULL); }
+	virtual ~casino1__Modulo_USCOREAsistenciaResponse() { }
 };
 #endif
 
-#ifndef SOAP_TYPE_casino___ns1__validar_USCOREcasino
-#define SOAP_TYPE_casino___ns1__validar_USCOREcasino (21)
-/* Operation wrapper: */
-struct __ns1__validar_USCOREcasino
+#ifndef SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora
+#define SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora (15)
+/* casino1:Modulo_obtener_hora */
+class SOAP_CMAC casino1__Modulo_USCOREobtener_USCOREhora
 {
 public:
-	ns1__validar_USCOREcasino *ns1__validar_USCOREcasino_;	/* optional element of type ns1:validar_casino */
+	struct soap *soap;	/* transient */
 public:
-	int soap_type() const { return 21; } /* = unique type id SOAP_TYPE_casino___ns1__validar_USCOREcasino */
+	virtual int soap_type() const { return 15; } /* = unique type id SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhora */
+	virtual void soap_default(struct soap*);
+	virtual void soap_serialize(struct soap*) const;
+	virtual int soap_put(struct soap*, const char*, const char*) const;
+	virtual int soap_out(struct soap*, const char*, int, const char*) const;
+	virtual void *soap_get(struct soap*, const char*, const char*);
+	virtual void *soap_in(struct soap*, const char*, const char*);
+	         casino1__Modulo_USCOREobtener_USCOREhora() { casino1__Modulo_USCOREobtener_USCOREhora::soap_default(NULL); }
+	virtual ~casino1__Modulo_USCOREobtener_USCOREhora() { }
 };
 #endif
 
-#ifndef SOAP_TYPE_casino___ns1__Transacciones
-#define SOAP_TYPE_casino___ns1__Transacciones (25)
-/* Operation wrapper: */
-struct __ns1__Transacciones
+#ifndef SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse
+#define SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse (16)
+/* casino1:Modulo_obtener_horaResponse */
+class SOAP_CMAC casino1__Modulo_USCOREobtener_USCOREhoraResponse
 {
 public:
-	ns1__Transacciones *ns1__Transacciones_;	/* optional element of type ns1:Transacciones */
+	time_t *return_;	/* SOAP 1.2 RPC return element (when namespace qualified) */	/* optional element of type xsd:dateTime */
+	struct soap *soap;	/* transient */
 public:
-	int soap_type() const { return 25; } /* = unique type id SOAP_TYPE_casino___ns1__Transacciones */
+	virtual int soap_type() const { return 16; } /* = unique type id SOAP_TYPE_casino_casino1__Modulo_USCOREobtener_USCOREhoraResponse */
+	virtual void soap_default(struct soap*);
+	virtual void soap_serialize(struct soap*) const;
+	virtual int soap_put(struct soap*, const char*, const char*) const;
+	virtual int soap_out(struct soap*, const char*, int, const char*) const;
+	virtual void *soap_get(struct soap*, const char*, const char*);
+	virtual void *soap_in(struct soap*, const char*, const char*);
+	         casino1__Modulo_USCOREobtener_USCOREhoraResponse() { casino1__Modulo_USCOREobtener_USCOREhoraResponse::soap_default(NULL); }
+	virtual ~casino1__Modulo_USCOREobtener_USCOREhoraResponse() { }
+};
+#endif
+
+#ifndef SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta
+#define SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta (17)
+/* casino1:Modulo_Acceso_Puerta */
+class SOAP_CMAC casino1__Modulo_USCOREAcceso_USCOREPuerta
+{
+public:
+	std::string *rut;	/* optional element of type xsd:string */
+	std::string *dato_USCORErecibido;	/* optional element of type xsd:string */
+	time_t *fecha;	/* optional element of type xsd:dateTime */
+	std::string *numerodispositivo;	/* optional element of type xsd:string */
+	int tipomarca;	/* required element of type xsd:int */
+	xsd__base64Binary *foto;	/* optional element of type xsd:base64Binary */
+	struct soap *soap;	/* transient */
+public:
+	virtual int soap_type() const { return 17; } /* = unique type id SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuerta */
+	virtual void soap_default(struct soap*);
+	virtual void soap_serialize(struct soap*) const;
+	virtual int soap_put(struct soap*, const char*, const char*) const;
+	virtual int soap_out(struct soap*, const char*, int, const char*) const;
+	virtual void *soap_get(struct soap*, const char*, const char*);
+	virtual void *soap_in(struct soap*, const char*, const char*);
+	         casino1__Modulo_USCOREAcceso_USCOREPuerta() { casino1__Modulo_USCOREAcceso_USCOREPuerta::soap_default(NULL); }
+	virtual ~casino1__Modulo_USCOREAcceso_USCOREPuerta() { }
+};
+#endif
+
+#ifndef SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse
+#define SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse (18)
+/* casino1:Modulo_Acceso_PuertaResponse */
+class SOAP_CMAC casino1__Modulo_USCOREAcceso_USCOREPuertaResponse
+{
+public:
+	std::string *return_;	/* SOAP 1.2 RPC return element (when namespace qualified) */	/* optional element of type xsd:string */
+	struct soap *soap;	/* transient */
+public:
+	virtual int soap_type() const { return 18; } /* = unique type id SOAP_TYPE_casino_casino1__Modulo_USCOREAcceso_USCOREPuertaResponse */
+	virtual void soap_default(struct soap*);
+	virtual void soap_serialize(struct soap*) const;
+	virtual int soap_put(struct soap*, const char*, const char*) const;
+	virtual int soap_out(struct soap*, const char*, int, const char*) const;
+	virtual void *soap_get(struct soap*, const char*, const char*);
+	virtual void *soap_in(struct soap*, const char*, const char*);
+	         casino1__Modulo_USCOREAcceso_USCOREPuertaResponse() { casino1__Modulo_USCOREAcceso_USCOREPuertaResponse::soap_default(NULL); }
+	virtual ~casino1__Modulo_USCOREAcceso_USCOREPuertaResponse() { }
+};
+#endif
+
+#ifndef SOAP_TYPE_casino_casino1__Modulo_USCORECasino
+#define SOAP_TYPE_casino_casino1__Modulo_USCORECasino (19)
+/* casino1:Modulo_Casino */
+class SOAP_CMAC casino1__Modulo_USCORECasino
+{
+public:
+	std::string *rut;	/* optional element of type xsd:string */
+	time_t *fecha;	/* optional element of type xsd:dateTime */
+	std::string *numerodispositivo;	/* optional element of type xsd:string */
+	std::string *dato_USCORErecibido;	/* optional element of type xsd:string */
+	int tipomarca;	/* required element of type xsd:int */
+	struct soap *soap;	/* transient */
+public:
+	virtual int soap_type() const { return 19; } /* = unique type id SOAP_TYPE_casino_casino1__Modulo_USCORECasino */
+	virtual void soap_default(struct soap*);
+	virtual void soap_serialize(struct soap*) const;
+	virtual int soap_put(struct soap*, const char*, const char*) const;
+	virtual int soap_out(struct soap*, const char*, int, const char*) const;
+	virtual void *soap_get(struct soap*, const char*, const char*);
+	virtual void *soap_in(struct soap*, const char*, const char*);
+	         casino1__Modulo_USCORECasino() { casino1__Modulo_USCORECasino::soap_default(NULL); }
+	virtual ~casino1__Modulo_USCORECasino() { }
+};
+#endif
+
+#ifndef SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse
+#define SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse (20)
+/* casino1:Modulo_CasinoResponse */
+class SOAP_CMAC casino1__Modulo_USCORECasinoResponse
+{
+public:
+	std::string *return_;	/* SOAP 1.2 RPC return element (when namespace qualified) */	/* optional element of type xsd:string */
+	struct soap *soap;	/* transient */
+public:
+	virtual int soap_type() const { return 20; } /* = unique type id SOAP_TYPE_casino_casino1__Modulo_USCORECasinoResponse */
+	virtual void soap_default(struct soap*);
+	virtual void soap_serialize(struct soap*) const;
+	virtual int soap_put(struct soap*, const char*, const char*) const;
+	virtual int soap_out(struct soap*, const char*, int, const char*) const;
+	virtual void *soap_get(struct soap*, const char*, const char*);
+	virtual void *soap_in(struct soap*, const char*, const char*);
+	         casino1__Modulo_USCORECasinoResponse() { casino1__Modulo_USCORECasinoResponse::soap_default(NULL); }
+	virtual ~casino1__Modulo_USCORECasinoResponse() { }
+};
+#endif
+
+#ifndef SOAP_TYPE_casino___casino1__Modulo_USCOREAcceso_USCOREPuerta
+#define SOAP_TYPE_casino___casino1__Modulo_USCOREAcceso_USCOREPuerta (29)
+/* Operation wrapper: */
+struct __casino1__Modulo_USCOREAcceso_USCOREPuerta
+{
+public:
+	casino1__Modulo_USCOREAcceso_USCOREPuerta *casino1__Modulo_USCOREAcceso_USCOREPuerta_;	/* optional element of type casino1:Modulo_Acceso_Puerta */
+public:
+	int soap_type() const { return 29; } /* = unique type id SOAP_TYPE_casino___casino1__Modulo_USCOREAcceso_USCOREPuerta */
+};
+#endif
+
+#ifndef SOAP_TYPE_casino___casino1__Modulo_USCOREobtener_USCOREhora
+#define SOAP_TYPE_casino___casino1__Modulo_USCOREobtener_USCOREhora (33)
+/* Operation wrapper: */
+struct __casino1__Modulo_USCOREobtener_USCOREhora
+{
+public:
+	casino1__Modulo_USCOREobtener_USCOREhora *casino1__Modulo_USCOREobtener_USCOREhora_;	/* optional element of type casino1:Modulo_obtener_hora */
+public:
+	int soap_type() const { return 33; } /* = unique type id SOAP_TYPE_casino___casino1__Modulo_USCOREobtener_USCOREhora */
+};
+#endif
+
+#ifndef SOAP_TYPE_casino___casino1__Modulo_USCOREAsistencia
+#define SOAP_TYPE_casino___casino1__Modulo_USCOREAsistencia (37)
+/* Operation wrapper: */
+struct __casino1__Modulo_USCOREAsistencia
+{
+public:
+	casino1__Modulo_USCOREAsistencia *casino1__Modulo_USCOREAsistencia_;	/* optional element of type casino1:Modulo_Asistencia */
+public:
+	int soap_type() const { return 37; } /* = unique type id SOAP_TYPE_casino___casino1__Modulo_USCOREAsistencia */
+};
+#endif
+
+#ifndef SOAP_TYPE_casino___casino1__Modulo_USCORECasino
+#define SOAP_TYPE_casino___casino1__Modulo_USCORECasino (41)
+/* Operation wrapper: */
+struct __casino1__Modulo_USCORECasino
+{
+public:
+	casino1__Modulo_USCORECasino *casino1__Modulo_USCORECasino_;	/* optional element of type casino1:Modulo_Casino */
+public:
+	int soap_type() const { return 41; } /* = unique type id SOAP_TYPE_casino___casino1__Modulo_USCORECasino */
 };
 #endif
 
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_casino_SOAP_ENV__Header
-#define SOAP_TYPE_casino_SOAP_ENV__Header (26)
+#define SOAP_TYPE_casino_SOAP_ENV__Header (42)
 /* SOAP Header: */
 struct SOAP_ENV__Header
 {
 public:
-	int soap_type() const { return 26; } /* = unique type id SOAP_TYPE_casino_SOAP_ENV__Header */
+	int soap_type() const { return 42; } /* = unique type id SOAP_TYPE_casino_SOAP_ENV__Header */
 };
 #endif
 
@@ -187,7 +327,7 @@ public:
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_casino_SOAP_ENV__Code
-#define SOAP_TYPE_casino_SOAP_ENV__Code (27)
+#define SOAP_TYPE_casino_SOAP_ENV__Code (43)
 /* SOAP Fault Code: */
 struct SOAP_ENV__Code
 {
@@ -195,7 +335,7 @@ public:
 	char *SOAP_ENV__Value;	/* optional element of type xsd:QName */
 	struct SOAP_ENV__Code *SOAP_ENV__Subcode;	/* optional element of type SOAP-ENV:Code */
 public:
-	int soap_type() const { return 27; } /* = unique type id SOAP_TYPE_casino_SOAP_ENV__Code */
+	int soap_type() const { return 43; } /* = unique type id SOAP_TYPE_casino_SOAP_ENV__Code */
 };
 #endif
 
@@ -204,7 +344,7 @@ public:
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_casino_SOAP_ENV__Detail
-#define SOAP_TYPE_casino_SOAP_ENV__Detail (29)
+#define SOAP_TYPE_casino_SOAP_ENV__Detail (45)
 /* SOAP-ENV:Detail */
 struct SOAP_ENV__Detail
 {
@@ -213,7 +353,7 @@ public:
 	int __type;	/* any type of element <fault> (defined below) */
 	void *fault;	/* transient */
 public:
-	int soap_type() const { return 29; } /* = unique type id SOAP_TYPE_casino_SOAP_ENV__Detail */
+	int soap_type() const { return 45; } /* = unique type id SOAP_TYPE_casino_SOAP_ENV__Detail */
 };
 #endif
 
@@ -222,14 +362,14 @@ public:
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_casino_SOAP_ENV__Reason
-#define SOAP_TYPE_casino_SOAP_ENV__Reason (32)
+#define SOAP_TYPE_casino_SOAP_ENV__Reason (48)
 /* SOAP-ENV:Reason */
 struct SOAP_ENV__Reason
 {
 public:
 	char *SOAP_ENV__Text;	/* optional element of type xsd:string */
 public:
-	int soap_type() const { return 32; } /* = unique type id SOAP_TYPE_casino_SOAP_ENV__Reason */
+	int soap_type() const { return 48; } /* = unique type id SOAP_TYPE_casino_SOAP_ENV__Reason */
 };
 #endif
 
@@ -238,7 +378,7 @@ public:
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_casino_SOAP_ENV__Fault
-#define SOAP_TYPE_casino_SOAP_ENV__Fault (33)
+#define SOAP_TYPE_casino_SOAP_ENV__Fault (49)
 /* SOAP Fault: */
 struct SOAP_ENV__Fault
 {
@@ -253,7 +393,7 @@ public:
 	char *SOAP_ENV__Role;	/* optional element of type xsd:string */
 	struct SOAP_ENV__Detail *SOAP_ENV__Detail;	/* optional element of type SOAP-ENV:Detail */
 public:
-	int soap_type() const { return 33; } /* = unique type id SOAP_TYPE_casino_SOAP_ENV__Fault */
+	int soap_type() const { return 49; } /* = unique type id SOAP_TYPE_casino_SOAP_ENV__Fault */
 };
 #endif
 
@@ -290,9 +430,13 @@ typedef char *_XML;
 \******************************************************************************/
 
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_call___ns1__validar_USCOREcasino(struct soap *soap, const char *soap_endpoint, const char *soap_action, ns1__validar_USCOREcasino *ns1__validar_USCOREcasino_, ns1__validar_USCOREcasinoResponse &ns1__validar_USCOREcasinoResponse_);
+SOAP_FMAC5 int SOAP_FMAC6 soap_call___casino1__Modulo_USCOREAcceso_USCOREPuerta(struct soap *soap, const char *soap_endpoint, const char *soap_action, casino1__Modulo_USCOREAcceso_USCOREPuerta *casino1__Modulo_USCOREAcceso_USCOREPuerta_, casino1__Modulo_USCOREAcceso_USCOREPuertaResponse &casino1__Modulo_USCOREAcceso_USCOREPuertaResponse_);
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_call___ns1__Transacciones(struct soap *soap, const char *soap_endpoint, const char *soap_action, ns1__Transacciones *ns1__Transacciones_, ns1__TransaccionesResponse &ns1__TransaccionesResponse_);
+SOAP_FMAC5 int SOAP_FMAC6 soap_call___casino1__Modulo_USCOREobtener_USCOREhora(struct soap *soap, const char *soap_endpoint, const char *soap_action, casino1__Modulo_USCOREobtener_USCOREhora *casino1__Modulo_USCOREobtener_USCOREhora_, casino1__Modulo_USCOREobtener_USCOREhoraResponse &casino1__Modulo_USCOREobtener_USCOREhoraResponse_);
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_call___casino1__Modulo_USCOREAsistencia(struct soap *soap, const char *soap_endpoint, const char *soap_action, casino1__Modulo_USCOREAsistencia *casino1__Modulo_USCOREAsistencia_, casino1__Modulo_USCOREAsistenciaResponse &casino1__Modulo_USCOREAsistenciaResponse_);
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_call___casino1__Modulo_USCORECasino(struct soap *soap, const char *soap_endpoint, const char *soap_action, casino1__Modulo_USCORECasino *casino1__Modulo_USCORECasino_, casino1__Modulo_USCORECasinoResponse &casino1__Modulo_USCORECasinoResponse_);
 
 } // namespace casino
 

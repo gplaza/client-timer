@@ -5,7 +5,7 @@ Synchroniser::Synchroniser(SoapClient *soapClient, QObject *parent) : QObject(pa
     this->soapClient = soapClient;
 }
 
-void Synchroniser::onLine(Acceso &acceso, Persona &persona)
+void Synchroniser::onLine(Acceso *acceso, Persona &persona)
 {
     qDebug() << "Online Synchroniser";
 
@@ -29,19 +29,29 @@ void Synchroniser::onLine(Acceso &acceso, Persona &persona)
     }
 
     bool personExist = (persona.tipoMarca() == Persona::MARCA_FINGER)? true : Bdd::checkPersona(acceso);
-    bool stateCreate = (acceso.idAuth() == Acceso::PERSON_OK || acceso.idAuth() == Acceso::PERSON_NO_LUNCH || acceso.idAuth() == Acceso::PERSON_SERVICE_USED);
+    bool stateCreate = (acceso->idAuth() == Acceso::PERSON_OK || acceso->idAuth() == Acceso::OUT_OF_HOURS || acceso->idAuth() == Acceso::PERSON_NO_LUNCH || acceso->idAuth() == Acceso::PERSON_SERVICE_USED) && !personExist;
+
+    qDebug() << "User exist in local database : " << personExist;
+    qDebug() << "Create user in local database : " << stateCreate;
 
     if(personExist) {
         Bdd::updatePersonaByAcceso(acceso);
-
         checkFingerPrint(persona);
     }
 
-    if(!personExist && stateCreate) //TODO : create with a valid counter of lunch and dinner.
+    if(stateCreate) {
+        //TODO : create with a valid counter of lunch and dinner.
         Bdd::createPersona(acceso);
+
+        persona.setFingerprintID(0);
+        persona.setRut(acceso->rut());
+        checkFingerPrint(persona);
+    }
+
+    Bdd::updateCasinoService(acceso);
 }
 
-void Synchroniser::offLine(Acceso &acceso, Persona &persona)
+void Synchroniser::offLine(Acceso *acceso, Persona &persona)
 {
     qDebug() << "Save offline access";
     Bdd::saveAccess(acceso, persona);
@@ -52,13 +62,15 @@ void Synchroniser::checkFingerPrint(Persona &persona)
 {
     if(persona.fingerprintID() == 0)
     {
-        qDebug() << "Check for fingerPrint";
+        qDebug() << "Search for valid hash";
 
         Acceso resultFingerPrint;
         persona.setTipoMarca(Persona::MARCA_INFO);
 
         soapClient->actionInfoAcceso(&persona,resultFingerPrint);
         QString hash = resultFingerPrint.hash();
+
+        qDebug() << "Hash found : " << hash;
 
         if(!hash.isEmpty() && hash != "No" && hash != "default")
             emit registerFingerPrint(persona,hash);

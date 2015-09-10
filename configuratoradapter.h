@@ -1,8 +1,9 @@
 #ifndef CONFIGURATORADAPTER_H
 #define CONFIGURATORADAPTER_H
 #include <configurator.h>
-#include <fingerprint.h>
-#include <bdd.h>
+#include <QObject>
+#include <QUrlQuery>
+#include <Logger.h>
 
 class ConfiguratorAdapter: public QObject
 {
@@ -18,8 +19,9 @@ public slots:
 
 signals:
     void deleteFingerPrint(int userID);
-    void registerFingerPrint(QString &hash);
-    void updateFingerPrint(QString &hash, int userID);
+    void registerFingerPrint(QString &hash, int typeHash);
+    void updateFingerPrint(QString &hash, int typeHash, int userID);
+    void userChanged();
 
 private:
     QHttpResponse *resp;

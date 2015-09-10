@@ -2,33 +2,22 @@
 #include <rfid-utils.h>
 
 Credencial::Credencial(QString conn): Rfid(conn) {
-    WaitForTag();
+    waitForTag();
 }
 
-void Credencial::getInfoTag(MifareTag *tags)
+void Credencial::getInfoTag(const QString tag)
 {
     qDebug() << "Info Mifare";
 
-    MifareTag tag = tags[0];
-
-    if(tag)
+    if(!tag.isEmpty())
     {
-        char* cardId = freefare_get_tag_uid(tag);
-        QString uuid = QString::fromLocal8Bit(cardId).toUpper();
-
-        //uuid = "6046A4F9";
-        uuid = "64D9703F";
-        qDebug() << "UUID : " << uuid;
-
-        mifare_classic_disconnect(tag);
-        freefare_free_tags(tags);
+        qDebug() << "UUID : " << tag;
         Buzzer::instance()->good();
-
-        emit endReadRFID(uuid);
+        emit dataReady(tag.toUpper());
 
     } else {
 
-        QTimer::singleShot(1000, this, SLOT(WaitForTag()));
+        QTimer::singleShot(1500, this, SLOT(waitForTag()));
     }
 }
 

@@ -6,6 +6,11 @@ Persona::Persona(QObject *parent) : QObject(parent)
     m_rut = "";
 }
 
+QString Persona::rutFormated()
+{
+    return m_rut.mid(0,m_rut.length() - 7) + '.' + m_rut.mid(m_rut.length() - 7,3) + '.' + m_rut.mid(m_rut.length() - 4,3) +  "-" + m_rut.right(1);
+}
+
 QString Persona::rut() const
 {
     return m_rut;
@@ -65,6 +70,17 @@ QByteArray Persona::foto()
 {
     return m_foto;
 }
+
+void Persona::setExistFoto(bool b)
+{
+    m_existFoto = b;
+}
+
+bool Persona::existFoto()
+{
+    return m_existFoto;
+}
+
 
 QTextStream& operator<< (QTextStream &stream, const Persona &persona)
 {

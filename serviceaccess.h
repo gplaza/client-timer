@@ -10,36 +10,38 @@
 #include <soapclient.h>
 #include <acceso.h>
 #include <bdd.h>
+#include <buzzer.h>
 #include <printer.h>
+#include <QScopedPointer>
 
 class ServiceAccess : public QObject
 {
     Q_OBJECT
-
 public:
-    ServiceAccess(SoapClient *soapClient, QObject *objectView, QObject *parent = 0);
+    ServiceAccess(SoapClient *soapClient, Acceso *acceso, QObject *parent = 0);
 
 signals:
     void sendToScreen(const QString &m);
     void offLine();
     void onLine();
     void finished();
-    void synchroniseOnLine(Acceso &acceso, Persona &persona);
-    void synchroniseOffLine(Acceso &acceso, Persona &persona);
+    void synchroniseOnLine(Acceso *acceso, Persona &persona);
+    void synchroniseOffLine(Acceso *acceso, Persona &persona);
     void hashResponse(Acceso &acceso);
+    void fotoChanged();
     void changeStatus();
 
 public slots:
-    void check(QString &id);
-    void initUi();
+    void check(const QString id);
+    // void syncRequestFinished();
 
 private:
-    void finalizeResponse(Acceso &acceso);
+    void finalizeResponse();
     void on_online();
     void on_offline();
-    SoapClient *soapClient;
-    QObject *objectView;
-    QTcpSocket service;
+    bool usePrinter;
+    QScopedPointer<SoapClient> soapClient;
+    Acceso *acceso;
     Persona persona;
     Printer *printer;
 };
