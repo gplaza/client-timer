@@ -4,13 +4,10 @@
 #
 #-------------------------------------------------
 
-QT += quick gui core sql network
+QT += core sql network
 
 TARGET = client-timer
 target.path = /home/pi/client-timer
-
-#CONFIG   += qtestlib
-#CONFIG   -= app_bundle
 
 TEMPLATE = app
 TARGET = client-timer
@@ -19,9 +16,7 @@ INSTALLS += target
 DEPENDPATH += .
 INCLUDEPATH += .
 
-include(addon-printer-qt/printer.pri)
 include(addon-protector-qt/protector.pri)
-include(addon-display-qt/display.pri)
 include(addon-rfid-qt/rfid.pri)
 include(addon-soap-qt/soap.pri)
 include(addon-buzzer-qt/buzzer.pri)
@@ -31,33 +26,28 @@ include(addon-configurator-qt/configurator.pri)
 
 INCLUDEPATH += /mnt/rpi-rootfs/opt/qt5-rpi/include/ /mnt/rpi-rootfs/usr/local/include/ /mnt/rpi-rootfs/usr/include
 LIBS += -lsqlite3
-#QML_IMPORT_PATH = qml qml/jbQuick/Charts
 
 SOURCES += main.cpp \
     credencial.cpp \
     acceso.cpp \
     persona.cpp \
-    screen.cpp \
     bdd.cpp \
     synchroniser.cpp \
     serviceaccess.cpp \
     soapclient.cpp \
     fingerprint.cpp \
-    configuratoradapter.cpp \
-    fotoprovider.cpp
+    configuratoradapter.cpp
 
 HEADERS += \
     credencial.h \
     acceso.h \
     persona.h \
-    screen.h \
     bdd.h \
     synchroniser.h \
     serviceaccess.h \
     soapclient.h \
     fingerprint.h \
-    configuratoradapter.h \
-    fotoprovider.h
+    configuratoradapter.h
 
 #-------------
 # Web Service
@@ -120,9 +110,6 @@ for(deploymentfolder, DEPLOYMENTFOLDERS) {
     export($$itempath)
     INSTALLS += $$item
 }
-
-RESOURCES += \
-    interfaz.qrc
 
 
 

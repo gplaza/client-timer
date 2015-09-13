@@ -1,11 +1,3 @@
 <RCC>
-    <qresource prefix="/">
-        <file>qml/ToolBar.qml</file>
-        <file>qml/main.qml</file>
-        <file>qml/images/logo_federico.jpeg</file>
-        <file>qml/images/printer_KO.png</file>
-        <file>qml/images/saver.jpg</file>
-        <file>qml/images/printer_OK.png</file>
-        <file>qml/images/unknown.jpg</file>
-    </qresource>
+    <qresource prefix="/"/>
 </RCC>

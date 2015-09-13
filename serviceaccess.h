@@ -11,7 +11,6 @@
 #include <acceso.h>
 #include <bdd.h>
 #include <buzzer.h>
-#include <printer.h>
 #include <QScopedPointer>
 
 class ServiceAccess : public QObject
@@ -39,11 +38,9 @@ private:
     void finalizeResponse();
     void on_online();
     void on_offline();
-    bool usePrinter;
     QScopedPointer<SoapClient> soapClient;
     Acceso *acceso;
     Persona persona;
-    Printer *printer;
 };
 
 #endif // SERVICEACCESS_H

@@ -4,85 +4,56 @@ ServiceAccess::ServiceAccess(SoapClient *soapClient, Acceso *acceso, QObject *pa
 {
     connect(this, &ServiceAccess::onLine,this, &ServiceAccess::on_online);
     connect(this, &ServiceAccess::offLine,this, &ServiceAccess::on_offline);
-
-    printer = new Printer("1d90","2060");
 }
 
 void ServiceAccess::check(const QString id)
 {
-    usePrinter = Configurator::instance()->getConfig("printer").toLower() == "si";
-
     QObject* obj = sender();
     const QMetaObject *meta = obj->metaObject();
     QString caller = QString::fromUtf8(meta->className());
 
-    // Check Paper & state of printer
-    bool status = usePrinter? printer->checkStatus() : true;
-    // QMetaObject::invokeMethod(objectView, "changeStatusPrinter", Q_ARG(QVariant, status));
-
-    if(!status)
+    if(caller == "Credencial")
     {
-        emit sendToScreen("Error impresora");
-        Buzzer::instance()->bad();
+        persona.setUuid(id);
+        persona.setRut(""); // TODO : change to pointer the object Persona.
+        persona.setTipoMarca(Persona::MARCA_RFID);
 
-        qCritical() << "Printer error ...";
+        QSqlRecord record = Bdd::identificationCredencial(id);
 
-        QTimer *timer = new QTimer(this);
-        connect(timer, &QTimer::timeout, this, &ServiceAccess::finished);
-        connect(this, &ServiceAccess::finished, timer, &QTimer::deleteLater);
-        timer->start(1000);
+        if(!record.isEmpty()) {
 
-        QStringList parameter;
-
-        parameter << Configurator::instance()->getConfig("emailPrinterError");
-
-        if (!QProcess::startDetached("/var/lib/QProcess/emailPrinter.sh", parameter))
-            qDebug() << "Error to send email";
-
-    } else {
-
-        if(caller == "Credencial")
-        {
-            persona.setUuid(id);
-            persona.setRut(""); // TODO : change to pointer the object Persona.
-            persona.setTipoMarca(Persona::MARCA_RFID);
-
-            QSqlRecord record = Bdd::identificationCredencial(id);
-
-            if(!record.isEmpty()) {
-
-                qDebug() << "User finded in local database ...";
-                persona.setRut(record.value("rut").toString());
-                persona.setExistFoto(!record.value("foto").toString().isEmpty());
-                persona.setFingerprintID(record.value("id_huella").toInt());
-            }
-
+            qDebug() << "User finded in local database ...";
+            persona.setRut(record.value("rut").toString());
+            persona.setExistFoto(!record.value("foto").toString().isEmpty());
+            persona.setFingerprintID(record.value("id_huella").toInt());
         }
 
-        if(caller == "Fingerprint")
-        {
-            QSqlRecord fingerprint = Bdd::identificationFingerprint(id);
-
-            persona.setRut(fingerprint.value("rut").toString());
-            persona.setUuid(fingerprint.value("hash").toString());
-            persona.setExistFoto(!fingerprint.value("foto").toString().isEmpty());
-            persona.setFingerprintID(id.toInt());
-
-            persona.setTipoMarca(Persona::MARCA_FINGER);
-        }
-
-        if(persona.tipoMarca() == Persona::MARCA_RFID)
-            LOG_INFO("Intento Acceso     : ID tarjeta : " + persona.uuid() + " Tipo marca : " + QString::number(persona.tipoMarca()));
-        if(persona.tipoMarca() == Persona::MARCA_FINGER)
-            LOG_INFO("Intento Acceso     : " + persona.rut() + " Hash size : " + QString::number(persona.uuid().size()) + " Tipo marca : " + QString::number(persona.tipoMarca()));
-
-        bool result  = soapClient->init();
-
-        if(result)
-            emit onLine();
-        else
-            emit offLine();
     }
+
+    if(caller == "Fingerprint")
+    {
+        QSqlRecord fingerprint = Bdd::identificationFingerprint(id);
+
+        persona.setRut(fingerprint.value("rut").toString());
+        persona.setUuid(fingerprint.value("hash").toString());
+        persona.setExistFoto(!fingerprint.value("foto").toString().isEmpty());
+        persona.setFingerprintID(id.toInt());
+
+        persona.setTipoMarca(Persona::MARCA_FINGER);
+    }
+
+    if(persona.tipoMarca() == Persona::MARCA_RFID)
+        LOG_INFO("Intento Acceso     : ID tarjeta : " + persona.uuid() + " Tipo marca : " + QString::number(persona.tipoMarca()));
+    if(persona.tipoMarca() == Persona::MARCA_FINGER)
+        LOG_INFO("Intento Acceso     : " + persona.rut() + " Hash size : " + QString::number(persona.uuid().size()) + " Tipo marca : " + QString::number(persona.tipoMarca()));
+
+    bool result  = soapClient->init();
+
+    if(result)
+        emit onLine();
+    else
+        emit offLine();
+
 }
 
 void ServiceAccess::on_online()
@@ -158,18 +129,10 @@ void ServiceAccess::finalizeResponse()
     tUser.toInt(&ok);
     acceso->setTimeShow((ok == false)? 1000 : tUser.toInt() * 1000);
 
-    if(acceso->idAuth() == Acceso::PERSON_OK && usePrinter)
+    if(acceso->idAuth() == Acceso::PERSON_OK)
     {
         QString formatedDate = QDateTime::currentDateTime().toString("dd/MM/yy - hh:mm:ss");
         QString name = acceso->name();
-
-        printer->setLine("*** UTFSM USM:" + Configurator::instance()->getConfig("usm") + ' ' + acceso->casinoName() + " ***");
-        printer->setLine("Fecha    : " + formatedDate);
-        printer->setLine("Nombre   : " + name.leftJustified(31, ' ', true));
-        printer->setLine("RUT/Tip. : " + acceso->rutFormat() + ' ' + acceso->info_print());
-        printer->setLine("Beca : " + acceso->beca_print());
-
-        printer->print();
     }
 
     emit finished();
