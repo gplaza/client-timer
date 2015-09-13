@@ -87,9 +87,8 @@ int main(int argc, char *argv[])
     QObject::connect(&fingerprint, &Fingerprint::dataReady, &serviceAccess, &ServiceAccess::check);
 
     // End process :
-    // QObject::connect(&serviceAccess, &ServiceAccess::finished, acceso, &Acceso::dataChanged);
-    QObject::connect(acceso, &Acceso::finishedProcess, &credencial, &Credencial::waitForTag);
-    QObject::connect(acceso, &Acceso::finishedProcess, &fingerprint, &Fingerprint::waitForFinger);
+    QObject::connect(&serviceAccess, &ServiceAccess::finished, &credencial, &Credencial::waitForTag);
+    QObject::connect(&serviceAccess, &ServiceAccess::finished, &fingerprint, &Fingerprint::waitForFinger);
 
     // Syncro process
     QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOffLine, &sync, &Synchroniser::offLine);

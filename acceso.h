@@ -10,24 +10,17 @@ class Acceso : public QObject
     Q_PROPERTY(QString textAuth READ textAuth WRITE setTextAuth NOTIFY textAuthChanged)
     Q_PROPERTY(QString rut READ rut WRITE setRut NOTIFY rutChanged)
     Q_PROPERTY(QString rutFormat READ rutFormat WRITE setRutFormat NOTIFY rutFormatChanged)
-    Q_PROPERTY(QString fotoSrc READ fotoSrc WRITE setFotoSrc NOTIFY fotoSrcChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(QString hash READ hash WRITE setHash)
     Q_PROPERTY(int count_casino READ count_casino WRITE setCount_casino NOTIFY count_casinoChanged)
     Q_PROPERTY(int count_lunch READ count_lunch WRITE setCount_lunch NOTIFY count_lunchChanged)
     Q_PROPERTY(int count_dinner READ count_dinner WRITE setCount_dinner NOTIFY count_dinnerChanged)
-    Q_PROPERTY(int timeShow READ timeShow WRITE setTimeShow NOTIFY timeShowChanged)
     Q_PROPERTY(QString casinoName READ casinoName WRITE setCasinoName NOTIFY casinoNameChanged)
-    Q_PROPERTY(QString info_print READ info_print WRITE setInfo_print)
-    Q_PROPERTY(QString beca_print READ beca_print WRITE setBeca_print)
-
-    // Q_PROPERTY(bool printerIcon READ printerIcon WRITE setPrinterIcon NOTIFY printerIconChanged)
 
 public:
     explicit Acceso(const QString &casinoName = "", QObject *parent = 0);
 
     QString dateFormated(const QString &format);
-    Q_INVOKABLE void endAnim();
     QString toString() const;
 
     QDateTime date() const;
@@ -38,8 +31,6 @@ public:
     void setTextAuth(const QString &);
     QString name() const;
     void setName(const QString &);
-    QString fotoSrc() const;
-    void setFotoSrc(const QString &f);
     QString rut() const;
     void setRut(const QString &r);
     QString rutFormat() const;
@@ -63,34 +54,6 @@ public:
     QString beca_print() const;
     void setBeca_print(const QString &);
 
-    /*
-      0 : Registro correcto
-      1 : Persona ya enrolada
-      2 : Persona no enrolada
-      3 : Error en base de datos CA
-      4 : Error en base de datos Tempo
-      5 : Registra evento
-      6 : Formato invalido (Hash | Credencial | RFID)
-      7 : Persona no existe
-      8 : Persona no ingresada en Tempo
-      9 : Persona no ingresada en CA
-     10 : Contrato vencido
-     11 : No registrado en punto control
-     12 : Fuera del horario
-     13 : Credencial /huella Inhabilitada
-     14 : Formato tipo marca inválida
-     15 : Sin imagen huella
-     16 : No quedan almuerzos
-     17 : No quedan cenas
-     18 : Fuera de horario
-     19 : No tiene acceso
-     20 : No le quedan almuerzo
-     21 : No registra asistencia
-     22 : Error en base de datos As400
-     23 : Ya uso el servicio de alimentación
-     24 : Persona no existe en AS400
-    */
-
     enum ResponseType{
         PERSON_OK = 0,
         PERSON_NO_EXIST = 7,
@@ -110,13 +73,8 @@ signals:
     void count_lunchChanged();
     void count_dinnerChanged();
     void timeShowChanged();
-    void fotoSrcChanged();
     void casinoNameChanged();
-    void dataChanged();
     void finishedProcess();
-
-public slots:
-    void fotoChanged();
 
 private:
     QDateTime m_date;
@@ -127,14 +85,11 @@ private:
     QString m_uuid;
     QString m_name;
     QString m_hash;
-    QString m_fotoSrc;
     QString m_casinoName;
     int m_count_casino;
     int m_count_lunch;
     int m_count_dinner;
-    int m_timeShow;
-    QString m_info_print;
-    QString m_beca_print;
+
 };
 
 #endif // ACCESO_H

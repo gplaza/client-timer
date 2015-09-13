@@ -11,18 +11,16 @@ Acceso::Acceso(const QString &casinoName, QObject *parent) : m_casinoName(casino
     this->m_date = now;
     this->m_name = "";
     this->m_hash = ";";
-    this->m_info_print = "";
     this->m_count_casino = 0;
     this->m_count_lunch = 0;
     this->m_count_dinner = 0;
-    this->m_timeShow = 1000;
 }
 
 QString Acceso::toString() const
 {
     return QString::number(m_idAuth) + ";" + textAuth() + ";" +
             QString::number(m_count_casino) +  ";" + QString::number(m_count_lunch) + ";" + QString::number(m_count_dinner) + ";" +
-            m_rut + ";" + m_name + ";" + m_info_print;
+            m_rut + ";" + m_name;
 }
 
 QDateTime Acceso::date() const
@@ -76,24 +74,6 @@ void Acceso::setName(const QString &n)
     }
 }
 
-void Acceso::fotoChanged()
-{
-    m_fotoSrc = m_rut + ".new";
-    emit fotoSrcChanged();
-}
-
-void Acceso::setFotoSrc(const QString &f)
-{
-    if (f != m_fotoSrc) {
-        m_fotoSrc = f;
-        emit fotoSrcChanged();
-    }
-}
-
-QString Acceso::fotoSrc() const
-{
-    return m_fotoSrc;
-}
 
 QString Acceso::casinoName() const
 {
@@ -118,7 +98,6 @@ void Acceso::setRut(const QString &r)
     if (r != m_rut) {
         m_rut = r;
         this->setRutFormat(r);
-        this->setFotoSrc(r);
         emit rutChanged();
     }
 }
@@ -195,42 +174,4 @@ void Acceso::setCount_dinner(int i)
         m_count_dinner = i;
         emit count_dinnerChanged();
     }
-}
-
-int Acceso::timeShow()
-{
-    return m_timeShow;
-}
-
-void Acceso::setTimeShow(int t)
-{
-    if (t != m_timeShow) {
-        m_timeShow = t;
-        emit timeShowChanged();
-    }
-}
-
-QString Acceso::info_print() const
-{
-    return m_info_print;
-}
-
-void Acceso::setInfo_print(const QString &ip)
-{
-    m_info_print = ip;
-}
-
-QString Acceso::beca_print() const
-{
-    return m_beca_print;
-}
-
-void Acceso::setBeca_print(const QString &bp)
-{
-    m_beca_print = bp;
-}
-
-void Acceso::endAnim()
-{
-    emit finishedProcess();
 }

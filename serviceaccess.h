@@ -20,7 +20,6 @@ public:
     ServiceAccess(SoapClient *soapClient, Acceso *acceso, QObject *parent = 0);
 
 signals:
-    void sendToScreen(const QString &m);
     void offLine();
     void onLine();
     void finished();
@@ -32,7 +31,6 @@ signals:
 
 public slots:
     void check(const QString id);
-    // void syncRequestFinished();
 
 private:
     void finalizeResponse();

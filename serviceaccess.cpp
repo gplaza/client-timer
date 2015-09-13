@@ -122,12 +122,6 @@ void ServiceAccess::on_offline()
 void ServiceAccess::finalizeResponse()
 {
     LOG_INFO("Resultado Local : " + acceso->toString());
-    emit sendToScreen(acceso->textAuth());
-
-    bool ok;
-    QString tUser = Configurator::instance()->getConfig("timeShowUser");
-    tUser.toInt(&ok);
-    acceso->setTimeShow((ok == false)? 1000 : tUser.toInt() * 1000);
 
     if(acceso->idAuth() == Acceso::PERSON_OK)
     {

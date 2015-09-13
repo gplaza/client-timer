@@ -207,8 +207,6 @@ void SoapClient::actionValidarCasino(Persona *persona,Acceso *acceso, QDateTime 
             acceso->setCount_casino(count_casino);
             acceso->setCount_lunch(count_lunch);
             acceso->setCount_dinner(count_dinner);
-            acceso->setInfo_print(info_print);
-            acceso->setBeca_print(beca_print);
             acceso->setCasinoName(casinoName);
 
             if(!convertIdAuth) {
