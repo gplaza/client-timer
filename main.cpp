@@ -2,15 +2,10 @@
 #include <QDebug>
 #include <QSettings>
 #include <ConsoleAppender.h>
-#include <QtQuick>
-#include <QtGui>
-
-#include <fotoprovider.h>
 #include <protector.h>
 #include <synchroniser.h>
 #include <soapclient.h>
 #include <credencial.h>
-#include <screen.h>
 #include <Logger.h>
 #include <serviceaccess.h>
 #include <fingerprint.h>
@@ -19,25 +14,16 @@
 #include <configuratoradapter.h>
 #include <stdsoap2.h>
 
-//#include <QtTest/QTest>
-//#include <test/testbdd.h>
-//#include <test/testserviceaccess.h>
-//#include <test/testfingerprint.h>
-
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
-    QQuickView view;
-
-    app.setOverrideCursor(Qt::BlankCursor);
-    view.setResizeMode(QQuickView::SizeRootObjectToView);
+    QCoreApplication app(argc, argv);
 
     ConsoleAppender* consoleAppender = new ConsoleAppender();
     consoleAppender->setFormat("[%-7l] %t{dd/MM/yyyy HH:mm:ss} %m\n");
     consoleAppender->setDetailsLevel("debug");
     Logger::registerAppender(consoleAppender);
 
-    ConfiguratorAdapter *configAdapt = new ConfiguratorAdapter(&view);
+    ConfiguratorAdapter *configAdapt = new ConfiguratorAdapter();
     Configurator::instance()->init("/usr/share/nginx/www/protected/data/config.db");
 
     QSet<QString> confs;
@@ -73,18 +59,12 @@ int main(int argc, char *argv[])
     Bdd bdd;
     bdd.openDatabase();
     QString casinoName = config["casinoName"];
-    Acceso *acceso = new Acceso(casinoName, &view);
-
-    //Init UI (warning : order !!)
-    view.engine()->addImageProvider(QLatin1String("getimagebyrut"), new FotoProvider);
-    view.rootContext()->setContextProperty("accesoData", acceso);
-    view.setSource(QUrl(QStringLiteral("qrc:///qml/main.qml")));
+    Acceso *acceso = new Acceso(casinoName);
 
     //Init Web service component
-    SoapClient *soapClient = new SoapClient(&view);
+    SoapClient *soapClient = new SoapClient();
     ServiceAccess serviceAccess(soapClient, acceso);
     Synchroniser sync(soapClient);
-    Screen display;
 
     //Physical Access object :
     Credencial credencial("pn532_spi:/dev/spidev0.0:500000");
@@ -95,13 +75,6 @@ int main(int argc, char *argv[])
     QObject::connect(&fingerprint, &Fingerprint::fingerDetected, &fingerprint, &Fingerprint::processDataFingerprint);
     // ** detected unknown **
     QObject::connect(&fingerprint, &Fingerprint::unknownFinger, &fingerprint, &Fingerprint::waitForFinger);
-
-    QObject::connect(&serviceAccess, &ServiceAccess::fotoChanged, acceso, &Acceso::fotoChanged);
-
-    // Manage display message
-    QObject::connect(&credencial, &Credencial::sendToScreen, &display, &Screen::showMessage);
-    QObject::connect(&serviceAccess, &ServiceAccess::sendToScreen, &display, &Screen::showMessage);
-    QObject::connect(&fingerprint, &Fingerprint::sendToScreen, &display, &Screen::showMessage);
 
     // Data ready on device
     // ** data on rfid **
@@ -114,13 +87,11 @@ int main(int argc, char *argv[])
     QObject::connect(&fingerprint, &Fingerprint::dataReady, &serviceAccess, &ServiceAccess::check);
 
     // End process :
-    QObject::connect(&serviceAccess, &ServiceAccess::finished, acceso, &Acceso::dataChanged);
+    // QObject::connect(&serviceAccess, &ServiceAccess::finished, acceso, &Acceso::dataChanged);
     QObject::connect(acceso, &Acceso::finishedProcess, &credencial, &Credencial::waitForTag);
     QObject::connect(acceso, &Acceso::finishedProcess, &fingerprint, &Fingerprint::waitForFinger);
 
     // Syncro process
-    QObject::connect(&serviceAccess, &ServiceAccess::onLine, &display, &Screen::onLine);
-    QObject::connect(&serviceAccess, &ServiceAccess::offLine, &display, &Screen::offLine);
     QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOffLine, &sync, &Synchroniser::offLine);
     QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOnLine, &sync, &Synchroniser::onLine);
     QObject::connect(&sync, &Synchroniser::registerFingerPrint, &fingerprint, &Fingerprint::registerNewUser);
@@ -135,6 +106,5 @@ int main(int argc, char *argv[])
     QObject::connect(Configurator::instance(),&Configurator::configurationChanged,&bdd,&Bdd::dataBaseChanged);
     QObject::connect(configAdapt,&ConfiguratorAdapter::userChanged,&bdd,&Bdd::dataBaseChanged);
 
-    view.show();
     return app.exec();
 }
