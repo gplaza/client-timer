@@ -1,5 +1,4 @@
 #include "fingerprint.h"
-#include "soapclient.h"
 
 Fingerprint::Fingerprint(QString serialport) : SecugenSda04(serialport)
 {

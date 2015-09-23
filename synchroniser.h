@@ -6,16 +6,13 @@
 
 #include <bdd.h>
 #include <acceso.h>
-#include <soapclient.h>
 
 class SynchroWorker : public QObject
 {
     Q_OBJECT
 public:
-    SynchroWorker(SoapClient *soapClient)
+    SynchroWorker()
     {
-        this->soapClient = soapClient;
-        this->soapClient->init();
     }
 
     ~SynchroWorker()
@@ -32,7 +29,7 @@ public slots:
         while(!date.isNull())
         {
             Acceso *acceso = new Acceso();
-            bool result = soapClient->syncro(&persona,acceso,date);
+            bool result = false;
 
             if(!result)
                 break;
@@ -49,23 +46,19 @@ signals:
     void finished();
     void error(QString err);
 
-private:
-    SoapClient *soapClient;
-
 };
 
 class Synchroniser : public QObject
 {
     Q_OBJECT
 public:
-    Synchroniser(SoapClient *soapClient, QObject *parent = 0);
+    Synchroniser(QObject *parent = 0);
 
 signals:
     void registerFingerPrint(Persona &persona, QString &hash);
 
 private:
     void checkFingerPrint(Persona &persona);
-    SoapClient *soapClient;
 
 public slots:
     void onLine(Acceso *acceso, Persona &persona);

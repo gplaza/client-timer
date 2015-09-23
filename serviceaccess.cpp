@@ -1,8 +1,7 @@
 #include "serviceaccess.h"
 
-ServiceAccess::ServiceAccess(SoapClient *soapClient, Acceso *acceso, QObject *parent) : soapClient(soapClient), acceso(acceso), QObject(parent)
+ServiceAccess::ServiceAccess(Acceso *acceso, QObject *parent) : acceso(acceso), QObject(parent)
 {
-    connect(this, &ServiceAccess::onLine,this, &ServiceAccess::on_online);
     connect(this, &ServiceAccess::offLine,this, &ServiceAccess::on_offline);
 }
 
@@ -47,42 +46,7 @@ void ServiceAccess::check(const QString id)
     if(persona.tipoMarca() == Persona::MARCA_FINGER)
         LOG_INFO("Intento Acceso     : " + persona.rut() + " Hash size : " + QString::number(persona.uuid().size()) + " Tipo marca : " + QString::number(persona.tipoMarca()));
 
-    bool result  = soapClient->init();
-
-    if(result)
-        emit onLine();
-    else
-        emit offLine();
-
-}
-
-void ServiceAccess::on_online()
-{
-    qDebug() << "Online WebService";
-    soapClient->actionValidarCasino(&persona,acceso);
-
-    if(acceso->idAuth() == -1)
-    {
-        qCritical() << "Synchronise for retry request (WebService Error)";
-        emit offLine();
-        return;
-
-    } else {
-
-        qDebug() << "Synchronise BDD with web service data";
-        emit synchroniseOnLine(acceso,persona);
-    }
-
-    if(persona.existFoto() == false && acceso->idAuth() != Acceso::PERSON_NO_EXIST && acceso->idAuth() != Acceso::PERSON_CRED_NO_EXIST) {
-        QByteArray foto = soapClient->actionGetFoto(acceso->rut());
-        if(!foto.isEmpty())
-        {
-            Bdd::setImage(acceso->rut(),foto);
-            emit fotoChanged();
-        }
-    }
-
-    finalizeResponse();
+    emit offLine();
 }
 
 void ServiceAccess::on_offline()

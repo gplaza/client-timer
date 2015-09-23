@@ -18,7 +18,6 @@ INCLUDEPATH += .
 
 include(addon-protector-qt/protector.pri)
 include(addon-rfid-qt/rfid.pri)
-include(addon-soap-qt/soap.pri)
 include(addon-buzzer-qt/buzzer.pri)
 include(addon-logger-qt/logger.pri)
 include(addon-fingerprint-qt/fingerprint.pri)
@@ -34,7 +33,6 @@ SOURCES += main.cpp \
     bdd.cpp \
     synchroniser.cpp \
     serviceaccess.cpp \
-    soapclient.cpp \
     fingerprint.cpp \
     configuratoradapter.cpp
 
@@ -45,7 +43,6 @@ HEADERS += \
     bdd.h \
     synchroniser.h \
     serviceaccess.h \
-    soapclient.h \
     fingerprint.h \
     configuratoradapter.h
 
@@ -53,25 +50,11 @@ HEADERS += \
 # Web Service
 #-------------
 
-SOURCES += \
-    web-service/casino/casinoC.cpp \
-    web-service/casino/casinoClient.cpp \
-    web-service/foto/fotoC.cpp \
-    web-service/foto/fotoClient.cpp \
-    web-service/acceso/accesoC.cpp \
-    web-service/acceso/accesoClient.cpp
+SOURCES +=
 
-HEADERS += \
-    web-service/casino/casinoH.h \
-    web-service/casino/casinoStub.h \
-    web-service/foto/fotoH.h \
-    web-service/foto/fotoStub.h \
-    web-service/acceso/accesoH.h \
-    web-service/acceso/accesoStub.h
+HEADERS +=
 
-OTHER_FILES += web-service/foto/foto.nsmap \
-               web-service/casino/casino.nsmap \
-               web-service/acceso/acceso.nsmap
+OTHER_FILES +=
 
 #-------------
 # Test Class

@@ -1,8 +1,7 @@
 #include "synchroniser.h"
 
-Synchroniser::Synchroniser(SoapClient *soapClient, QObject *parent) : QObject(parent)
+Synchroniser::Synchroniser(QObject *parent) : QObject(parent)
 {
-    this->soapClient = soapClient;
 }
 
 void Synchroniser::onLine(Acceso *acceso, Persona &persona)
@@ -16,8 +15,9 @@ void Synchroniser::onLine(Acceso *acceso, Persona &persona)
     {
         qDebug() << "Fire syncro thread";
 
+        /*
         QThread* thread = new QThread;
-        SynchroWorker* synchroWorker = new SynchroWorker(soapClient);
+         SynchroWorker* synchroWorker = new SynchroWorker(soapClient);
         synchroWorker->moveToThread(thread);
 
         connect(thread, &QThread::started , synchroWorker, &SynchroWorker::process);
@@ -26,6 +26,7 @@ void Synchroniser::onLine(Acceso *acceso, Persona &persona)
         connect(thread, &QThread::finished, thread, &QThread::deleteLater);
 
         thread->start();
+        */
     }
 
     bool personExist = (persona.tipoMarca() == Persona::MARCA_FINGER)? true : Bdd::checkPersona(acceso);
@@ -55,7 +56,6 @@ void Synchroniser::offLine(Acceso *acceso, Persona &persona)
 {
     qDebug() << "Save offline access";
     Bdd::saveAccess(acceso, persona);
-    Bdd::registerAccess(Bdd::WEBSERVICE_ERROR);
 }
 
 void Synchroniser::checkFingerPrint(Persona &persona)
@@ -64,11 +64,9 @@ void Synchroniser::checkFingerPrint(Persona &persona)
     {
         qDebug() << "Search for valid hash";
 
-        Acceso resultFingerPrint;
-        persona.setTipoMarca(Persona::MARCA_INFO);
-
-        soapClient->actionInfoAcceso(&persona,resultFingerPrint);
-        QString hash = resultFingerPrint.hash();
+        // Acceso resultFingerPrint;
+        //soapClient->actionInfoAcceso(&persona,resultFingerPrint);
+        QString hash = ""; //resultFingerPrint.hash();
 
         qDebug() << "Hash found : " << hash;
 

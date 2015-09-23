@@ -4,7 +4,6 @@
 #include <ConsoleAppender.h>
 #include <protector.h>
 #include <synchroniser.h>
-#include <soapclient.h>
 #include <credencial.h>
 #include <Logger.h>
 #include <serviceaccess.h>
@@ -12,7 +11,6 @@
 #include <bdd.h>
 #include <configurator.h>
 #include <configuratoradapter.h>
-#include <stdsoap2.h>
 
 int main(int argc, char *argv[])
 {
@@ -62,9 +60,8 @@ int main(int argc, char *argv[])
     Acceso *acceso = new Acceso(casinoName);
 
     //Init Web service component
-    SoapClient *soapClient = new SoapClient();
-    ServiceAccess serviceAccess(soapClient, acceso);
-    Synchroniser sync(soapClient);
+    ServiceAccess serviceAccess(acceso);
+    Synchroniser sync();
 
     //Physical Access object :
     Credencial credencial("pn532_spi:/dev/spidev0.0:500000");
@@ -91,9 +88,9 @@ int main(int argc, char *argv[])
     QObject::connect(&serviceAccess, &ServiceAccess::finished, &fingerprint, &Fingerprint::waitForFinger);
 
     // Syncro process
-    QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOffLine, &sync, &Synchroniser::offLine);
-    QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOnLine, &sync, &Synchroniser::onLine);
-    QObject::connect(&sync, &Synchroniser::registerFingerPrint, &fingerprint, &Fingerprint::registerNewUser);
+    // QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOffLine, &sync, &Synchroniser::offLine);
+    // QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOnLine, &sync, &Synchroniser::onLine);
+    // QObject::connect(&sync, &Synchroniser::registerFingerPrint, &fingerprint, &Fingerprint::registerNewUser);
 
     // Adapter connection
     QObject::connect(configAdapt,&ConfiguratorAdapter::deleteFingerPrint,&fingerprint,&Fingerprint::externDeleteUser);
