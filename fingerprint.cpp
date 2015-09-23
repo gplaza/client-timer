@@ -108,9 +108,9 @@ void Fingerprint::externDeleteUser(int userID)
 void Fingerprint::registerNewUser(Persona &persona, QString &hash)
 {
     bool userExist = persona.fingerprintID() != 0;
-    int userID = userExist? persona.fingerprintID() : getuserIDavailable(); //TODO : verif si ok ...
+    int userID = userExist? persona.fingerprintID() : getuserIDavailable();
 
-    if(registerUser(hash,userID,userExist) == 0)
+    if(registerUser(hash,userID,userExist,SecugenSda04::SG400) == 0)
     {
         persona.setFingerprintID(userID);
         persona.setHash(hash);
