@@ -18,9 +18,7 @@ Acceso::Acceso(const QString &casinoName, QObject *parent) : m_casinoName(casino
 
 QString Acceso::toString() const
 {
-    return QString::number(m_idAuth) + ";" + textAuth() + ";" +
-            QString::number(m_count_casino) +  ";" + QString::number(m_count_lunch) + ";" + QString::number(m_count_dinner) + ";" +
-            m_rut + ";" + m_name;
+    return QString::number(m_idAuth)  + ";" + m_rut + ";" + m_name;
 }
 
 QDateTime Acceso::date() const

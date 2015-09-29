@@ -185,21 +185,14 @@ void Bdd::saveAccess(Acceso *acceso, Persona &persona)
 {
     QSqlQuery query(QSqlDatabase::database("syncro"));
 
-    QString sql = "";
-
-    if(persona.tipoMarca() == Persona::MARCA_FINGER)
-        sql += "INSERT INTO acceso(uuid, rut, tipoMarca, fecha) VALUES (:uuid, :rut, :tipoMarca, :fecha);";
-    if(persona.tipoMarca() == Persona::MARCA_RFID)
-        sql += "INSERT INTO acceso(uuid, tipoMarca, fecha) VALUES (:uuid, :tipoMarca, :fecha);";
+    QString sql = "INSERT INTO acceso(uuid, rut, tipoMarca, fecha) VALUES (:uuid, :rut, :tipoMarca, :fecha);";
 
     query.prepare(sql);
 
     query.bindValue(":uuid", persona.uuid());
     query.bindValue(":fecha", acceso->dateFormated("yyyy-MM-dd hh:mm:ss"));
     query.bindValue(":tipoMarca", persona.tipoMarca());
-
-    if(persona.tipoMarca() == Persona::MARCA_FINGER)
-        query.bindValue(":rut", persona.rut());
+    query.bindValue(":rut", persona.rut());
 
     if (!query.exec())
         qCritical() << "Query Error (SaveAccess) : " << query.lastError();

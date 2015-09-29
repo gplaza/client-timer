@@ -46,30 +46,6 @@ HEADERS += \
     fingerprint.h \
     configuratoradapter.h
 
-#-------------
-# Web Service
-#-------------
-
-SOURCES +=
-
-HEADERS +=
-
-OTHER_FILES +=
-
-#-------------
-# Test Class
-#-------------
-#
-#SOURCES += \
-#    test/testserviceaccess.cpp \
-#    test/testfingerprint.cpp \
-#    test/testbdd.cpp
-
-#HEADERS += \
-#    test/testfingerprint.h \
-#    test/testserviceaccess.h \
-#    test/testbdd.h
-
 for(deploymentfolder, DEPLOYMENTFOLDERS) {
     item = item$${deploymentfolder}
     itemsources = $${item}.sources

@@ -7,47 +7,6 @@
 #include <bdd.h>
 #include <acceso.h>
 
-class SynchroWorker : public QObject
-{
-    Q_OBJECT
-public:
-    SynchroWorker()
-    {
-    }
-
-    ~SynchroWorker()
-    {
-        qDebug() << "Desctructor SynchroWorker";
-    }
-
-public slots:
-    void process()
-    {
-        Persona persona;
-        QDateTime date = Bdd::syncAccess(persona);
-
-        while(!date.isNull())
-        {
-            Acceso *acceso = new Acceso();
-            bool result = false;
-
-            if(!result)
-                break;
-
-            Bdd::updatePersonaByAcceso(acceso);
-            Bdd::deleteAccess(persona, date);
-            date = Bdd::syncAccess(persona);
-        }
-
-        emit finished();
-    }
-
-signals:
-    void finished();
-    void error(QString err);
-
-};
-
 class Synchroniser : public QObject
 {
     Q_OBJECT

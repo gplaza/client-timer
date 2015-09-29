@@ -54,7 +54,7 @@ void Synchroniser::onLine(Acceso *acceso, Persona &persona)
 
 void Synchroniser::offLine(Acceso *acceso, Persona &persona)
 {
-    qDebug() << "Save offline access";
+    qDebug() << "Save Access";
     Bdd::saveAccess(acceso, persona);
 }
 

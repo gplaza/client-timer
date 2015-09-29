@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 
     //Init Web service component
     ServiceAccess serviceAccess(acceso);
-    Synchroniser sync();
+    Synchroniser sync;
 
     //Physical Access object :
     Credencial credencial("pn532_spi:/dev/spidev0.0:500000");
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
     QObject::connect(&serviceAccess, &ServiceAccess::finished, &fingerprint, &Fingerprint::waitForFinger);
 
     // Syncro process
-    // QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOffLine, &sync, &Synchroniser::offLine);
+     QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOffLine, &sync, &Synchroniser::offLine);
     // QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOnLine, &sync, &Synchroniser::onLine);
     // QObject::connect(&sync, &Synchroniser::registerFingerPrint, &fingerprint, &Fingerprint::registerNewUser);
 
