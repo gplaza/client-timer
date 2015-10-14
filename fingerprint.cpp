@@ -31,7 +31,7 @@ void Fingerprint::receiveError(int error)
     if(error == Fingerprint::ERROR_USER_NOT_FOUND)
     {
         qCritical() << "Error : User not found";
-        emit responseRegister("error","User not found in hardware reader");
+        //emit responseRegister("error","User not found in hardware reader");
     }
 
     if(error == Fingerprint::ERROR_FLASH_WRITE_ERROR)
@@ -72,7 +72,6 @@ void Fingerprint::processDataFingerprint()
 
     } else {
 
-        emit sendToScreen("Huella          desconocida");
         Buzzer::instance()->bad();
         emit unknownFinger();
     }

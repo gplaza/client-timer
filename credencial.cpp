@@ -12,7 +12,6 @@ void Credencial::getInfoTag(const QString tag)
     if(!tag.isEmpty())
     {
         qDebug() << "UUID : " << tag;
-        Buzzer::instance()->good();
         emit dataReady(tag.toUpper());
 
     } else {

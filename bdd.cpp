@@ -138,39 +138,6 @@ QString Bdd::textAuthentication(Acceso *acceso)
     return result;
 }
 
-void Bdd::setImage(QString rut, QByteArray img)
-{
-    QSqlQuery query(QSqlDatabase::database("acceso"));
-
-    QString sql = "INSERT INTO foto(rut,foto) VALUES (:rut,:foto);";
-    query.prepare(sql);
-
-    query.bindValue(":foto", img);
-    query.bindValue(":rut", rut);
-
-    if (!query.exec())
-        qCritical() << "Query Error (setImage) : " << query.lastError();
-}
-
-QByteArray Bdd::getImage(QString rut)
-{
-    QSqlDatabase db = QSqlDatabase::database("acceso");
-    QByteArray result;
-    QSqlQuery query(db);
-
-    QString sql = "SELECT foto FROM foto WHERE rut=:rut";
-    query.prepare(sql);
-    query.bindValue(":rut", rut);
-
-    if (!query.exec())
-        qCritical() << "Query Error (getImage) : " << query.lastError();
-
-    if(query.first())
-        result = query.record().value("foto").toByteArray();
-
-    return result;
-}
-
 bool Bdd::checkOfflineData()
 {
     QSqlQuery query(QSqlDatabase::database("syncro"));

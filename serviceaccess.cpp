@@ -14,7 +14,7 @@ void ServiceAccess::check(const QString id)
     if(caller == "Credencial")
     {
         persona.setUuid(id);
-        persona.setRut(""); // TODO : change to pointer the object Persona.
+        persona.setRut("");
         persona.setTipoMarca(Persona::MARCA_RFID);
 
         QSqlRecord record = Bdd::identificationCredencial(id);
@@ -50,8 +50,6 @@ void ServiceAccess::check(const QString id)
 
 void ServiceAccess::on_offline()
 {
-
-
     /*
     // Check valid credencial
     if(!credenci.isEmpty()) {
@@ -154,11 +152,12 @@ void ServiceAccess::on_offline()
     acceso->setDate(QDateTime::currentDateTime());
     acceso->setCasinoName(casinoName);
 
-    if(persona.rut().isEmpty() && persona.uuid().isEmpty()) {
+    if(persona.rut().isEmpty()) {
 
         acceso->setIdAuth(Acceso::PERSON_NO_EXIST);
         acceso->setName("No existe");
         acceso->setCount_casino(0);
+        acceso->setRut("000000000");
 
     } else {
 
@@ -183,9 +182,7 @@ void ServiceAccess::finalizeResponse()
 
     if(acceso->idAuth() == Acceso::PERSON_OK)
     {
-       // QString formatedDate = QDateTime::currentDateTime().toString("dd/MM/yy - hh:mm:ss");
-       // QString name = acceso->name();
-
+       Buzzer::instance()->good();
        // TODO open door ...
 
     } else {

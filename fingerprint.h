@@ -27,7 +27,6 @@ public slots:
     void receiveError(int error);
 
 signals:
-    void sendToScreen(const QString &m);
     void dataReady(QString &id);
     void sucessRegister(int idUser);
     void responseRegister(const QString &status, const QString &response);

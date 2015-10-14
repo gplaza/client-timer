@@ -8,7 +8,6 @@ void Synchroniser::onLine(Acceso *acceso, Persona &persona)
 {
     qDebug() << "Online Synchroniser";
 
-    Bdd::registerAccess();
     bool dataSync = Bdd::checkOfflineData();
 
     if(dataSync)
@@ -55,6 +54,7 @@ void Synchroniser::onLine(Acceso *acceso, Persona &persona)
 void Synchroniser::offLine(Acceso *acceso, Persona &persona)
 {
     qDebug() << "Save Access";
+    Bdd::registerAccess();
     Bdd::saveAccess(acceso, persona);
 }
 
