@@ -423,7 +423,7 @@ void Bdd::createTables(const QString &sqlLine, QSqlDatabase db)
 
 void Bdd::dataBaseChanged()
 {
-     QTimer::singleShot(3000, this, SLOT(saveDB()));
+    QTimer::singleShot(3000, this, SLOT(saveDB()));
 }
 
 void Bdd::saveDB()
@@ -435,16 +435,21 @@ void Bdd::saveDB()
 bool Bdd::saveDatabase(QString databaseName, QString fileName)
 {
     qDebug() << "Save database " + databaseName + "...";
-    bool state = true;
 
+    bool state = false;
     QSqlQuery qry(QSqlDatabase::database(databaseName));
-    qry.prepare("BEGIN IMMEDIATE;");
-    qry.exec();
 
-    QFile::copy("/usr/share/nginx/www/protected/data/" + databaseName + ".db", fileName);
+    qry.prepare("BEGIN IMMEDIATE;");
+    if (!qry.exec())
+        qCritical() << "Query Error (saveDatabase.begin) : " << qry.lastError();
+
+    if(QFile::remove(fileName))
+        state = QFile::copy("/usr/share/nginx/www/protected/data/" + databaseName + ".db", fileName);
 
     qry.prepare("ROLLBACK;");
-    qry.exec();
+    if (!qry.exec())
+        qCritical() << "Query Error (saveDatabase.rollback) : " << qry.lastError();
+
 
     /*
     bool state = false;
@@ -452,10 +457,14 @@ bool Bdd::saveDatabase(QString databaseName, QString fileName)
 
     if(v.isValid() && qstrcmp(v.typeName(),"sqlite3*") == 0)
     {
+        qDebug() << "Valid handle SQlite3";
+
         sqlite3 * handle = *static_cast<sqlite3 **>(v.data());
 
         if( handle != 0 ) // check that it is not NULL
         {
+            qDebug() << "Handle SQlite3 : OK";
+
             int rc;
             sqlite3 *pFile;
             sqlite3_backup *pBackup;
@@ -467,11 +476,18 @@ bool Bdd::saveDatabase(QString databaseName, QString fileName)
 
             if(rc==SQLITE_OK) {
 
+                qDebug() << "Open file " << fileName << " : OK";
                 pBackup = sqlite3_backup_init(pFile, "main", pDb, "main");
 
                 if(pBackup) {
 
+                    qDebug() << "Init backup : OK";
+
+                    (void)sqlite3_backup_step(pBackup, -1);
+
+
                     do {
+
                         rc = sqlite3_backup_step(pBackup, 1); //TODO : Fix error here.
 
                         qDebug() << "7";
@@ -480,6 +496,7 @@ bool Bdd::saveDatabase(QString databaseName, QString fileName)
                             sqlite3_sleep(250);
 
                     } while(rc==SQLITE_OK || rc==SQLITE_BUSY || rc==SQLITE_LOCKED);
+
                 }
 
                 rc = sqlite3_errcode(pFile);
@@ -490,9 +507,7 @@ bool Bdd::saveDatabase(QString databaseName, QString fileName)
         }
     }
 
-    */
-
-
+                */
     return state;
 }
 
