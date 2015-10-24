@@ -30,7 +30,6 @@ include(addon-fingerprint-qt/fingerprint.pri)
 include(addon-configurator-qt/configurator.pri)
 
 INCLUDEPATH += /mnt/rpi-rootfs/opt/qt5-rpi/include/ /mnt/rpi-rootfs/usr/local/include/ /mnt/rpi-rootfs/usr/include
-LIBS += -lsqlite3
 #QML_IMPORT_PATH = qml qml/jbQuick/Charts
 
 SOURCES += main.cpp \
