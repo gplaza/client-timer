@@ -17,6 +17,7 @@ private:
 
 public slots:
     void checkFingerTouch();
+    void verifFingerprint(int userID);
     void processDataFingerprint();
     // -- function for API --
     void externInsertUser(QString &hash, int typeHash);
@@ -28,6 +29,8 @@ public slots:
 
 signals:
     void dataReady(QString &id);
+    void compareOK();
+    void compareKO();
     void sucessRegister(int idUser);
     void responseRegister(const QString &status, const QString &response);
     void setTypeEvent(int event);

@@ -19,8 +19,10 @@ public:
     ServiceAccess(Acceso *acceso, QObject *parent = 0);
 
 signals:
+    void openDoor();
     void offLine();
     void finished();
+    void verifFingerprint(int userID);
     void synchroniseOnLine(Acceso *acceso, Persona &persona);
     void synchroniseOffLine(Acceso *acceso, Persona &persona);
     void hashResponse(Acceso &acceso);
@@ -28,11 +30,11 @@ signals:
 
 public slots:
     void check(const QString id);
+    void on_offline();
 
 private:
     void finalizeResponse();
     void on_online();
-    void on_offline();
     Acceso *acceso;
     Persona persona;
 };

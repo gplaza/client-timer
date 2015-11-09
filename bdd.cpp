@@ -48,7 +48,7 @@ QSqlRecord Bdd::identificationCredencial(QString uuid)
     QSqlQuery query(QSqlDatabase::database("acceso"));
     QSqlRecord result;
 
-    QString sql = "SELECT persona.rut,id_huella,foto.rut as foto FROM persona LEFT JOIN foto ON foto.rut = persona.rut WHERE uuid=:uuid";
+    QString sql = "SELECT rut,id_huella FROM persona WHERE uuid=:uuid";
 
     query.prepare(sql);
     query.bindValue(":uuid", uuid);
@@ -67,7 +67,7 @@ QSqlRecord Bdd::identificationFingerprint(QString id)
     QSqlQuery query(QSqlDatabase::database("acceso"));
     QSqlRecord result;
 
-    QString sql = "SELECT hash,persona.rut,foto.rut as foto FROM persona LEFT JOIN foto ON foto.rut = persona.rut WHERE id_huella=:id_huella";
+    QString sql = "SELECT hash,rut FROM persona WHERE id_huella=:id_huella";
 
     query.prepare(sql);
     query.bindValue(":id_huella", id);
@@ -86,13 +86,13 @@ QSqlRecord Bdd::identificationOfflineByRut(QString rut)
     QSqlQuery query(QSqlDatabase::database("acceso"));
     QSqlRecord result;
 
-    QString sql = "SELECT autorizado,nombre,count_lunch,count_dinner FROM persona WHERE rut=:rut";
+    QString sql = "SELECT id_huella,autorizado,nombre FROM persona WHERE rut=:rut";
 
     query.prepare(sql);
     query.bindValue(":rut", rut);
 
     if (!query.exec())
-        qCritical() << "Query Error (identificationOffline) : " << query.lastError();
+        qCritical() << "Query Error (identificationOfflineByRut) : " << query.lastError();
 
     if(query.first())
         result = query.record();
@@ -105,13 +105,13 @@ QSqlRecord Bdd::identificationOfflineByUuid(QString uuid)
     QSqlQuery query(QSqlDatabase::database("acceso"));
     QSqlRecord result;
 
-    QString sql = "SELECT autorizado,nombre,count_lunch,count_dinner FROM persona WHERE uuid=:uuid";
+    QString sql = "SELECT autorizado,nombre FROM persona WHERE uuid=:uuid";
 
     query.prepare(sql);
     query.bindValue(":uuid", uuid);
 
     if (!query.exec())
-        qCritical() << "Query Error (identificationOffline) : " << query.lastError();
+        qCritical() << "Query Error (identificationOfflineByUuid) : " << query.lastError();
 
     if(query.first())
         result = query.record();
@@ -152,13 +152,12 @@ void Bdd::saveAccess(Acceso *acceso, Persona &persona)
 {
     QSqlQuery query(QSqlDatabase::database("syncro"));
 
-    QString sql = "INSERT INTO acceso(uuid, rut, tipoMarca, fecha) VALUES (:uuid, :rut, :tipoMarca, :fecha);";
+    QString sql = "INSERT INTO acceso(uuid, rut, fecha) VALUES (:uuid, :rut, :fecha);";
 
     query.prepare(sql);
 
     query.bindValue(":uuid", persona.uuid());
     query.bindValue(":fecha", acceso->dateFormated("yyyy-MM-dd hh:mm:ss"));
-    query.bindValue(":tipoMarca", persona.tipoMarca());
     query.bindValue(":rut", persona.rut());
 
     if (!query.exec())
@@ -268,57 +267,21 @@ void Bdd::updatePersonaByAcceso(Acceso *acceso)
 {
     QSqlQuery query(QSqlDatabase::database("acceso"));
 
-    bool updateUUID = !acceso->uuid().isEmpty() && acceso->uuid().length() <= 10;
-
     qDebug() << "Update Data persona";
 
-    QString sql = "UPDATE persona SET autorizado=:autorizado, count_lunch=:count_lunch, count_dinner=:count_dinner";
-    sql += updateUUID? ", uuid=:uuid" : "";
+    QString sql = "UPDATE persona SET autorizado=:autorizado";
     sql += " WHERE rut=:rut;";
     query.prepare(sql);
 
-    if(updateUUID)
-        query.bindValue(":uuid", acceso->uuid());
-
     int idAuth = acceso->idAuth();
-    int count_lunch = acceso->count_lunch();
-    int count_dinner = acceso->count_dinner();
 
-    if(idAuth == Acceso::PERSON_OK) {
+   // if(idAuth == Acceso::PERSON_OK)
+   //     idAuth = Acceso::PERSON_SERVICE_USED;
 
-        QString format = "HH:mm";
-        QTime current = QTime::currentTime();
-        QTime startLunch = QTime::fromString(Configurator::instance()->getConfig("startLunch"),format);
-        QTime endLunch = QTime::fromString(Configurator::instance()->getConfig("endLunch"),format);
-        QTime startDinner = QTime::fromString(Configurator::instance()->getConfig("startDinner"),format);
-        QTime endDinner = QTime::fromString(Configurator::instance()->getConfig("endDinner"),format);
-
-        idAuth = Acceso::PERSON_SERVICE_USED;
-
-        if(startLunch <= current && current <= endLunch && count_lunch > 0) {
-            count_lunch--;
-            if(count_lunch == 0)
-                idAuth = Acceso::PERSON_NO_LUNCH;
-        }
-
-        if(startDinner <= current && current <= endDinner && count_dinner > 0) {
-            count_dinner--;
-            if(count_dinner == 0)
-                idAuth = Acceso::PERSON_NO_DINNER;
-        }
-
-        qDebug() << "Registro local grabado :";
-        qDebug() << "Almuerzo     ? " << (startLunch <= current && current <= endLunch);
-        qDebug() << "Cena         ? " << (startDinner <= current && current <= endDinner);
-        qDebug() << "state        : " << idAuth;
-        qDebug() << "count_lunch  : " << count_lunch;
-        qDebug() << "count_dinner : " << count_dinner;
-    }
+    qDebug() << "Registro local grabado :";
+    qDebug() << "state        : " << idAuth;
 
     query.bindValue(":autorizado", idAuth);
-    query.bindValue(":count_lunch", count_lunch);
-    query.bindValue(":count_dinner", count_dinner);
-
     query.bindValue(":rut", acceso->rut());
 
     if (!query.exec())
@@ -436,9 +399,9 @@ bool Bdd::saveDatabase(QString databaseName, QString fileName)
 {
     qDebug() << "Save database " + databaseName + "...";
 
-    bool state = false;
     QSqlQuery qry(QSqlDatabase::database(databaseName));
 
+    bool state = false;
     qry.prepare("BEGIN IMMEDIATE;");
     if (!qry.exec())
         qCritical() << "Query Error (saveDatabase.begin) : " << qry.lastError();
@@ -450,67 +413,5 @@ bool Bdd::saveDatabase(QString databaseName, QString fileName)
     if (!qry.exec())
         qCritical() << "Query Error (saveDatabase.rollback) : " << qry.lastError();
 
-
-    /*
-    bool state = false;
-    QVariant v = QSqlDatabase::database(databaseName).driver()->handle();
-
-    if(v.isValid() && qstrcmp(v.typeName(),"sqlite3*") == 0)
-    {
-        qDebug() << "Valid handle SQlite3";
-
-        sqlite3 * handle = *static_cast<sqlite3 **>(v.data());
-
-        if( handle != 0 ) // check that it is not NULL
-        {
-            qDebug() << "Handle SQlite3 : OK";
-
-            int rc;
-            sqlite3 *pFile;
-            sqlite3_backup *pBackup;
-            sqlite3 *pDb = handle;
-            QByteArray array = fileName.toLocal8Bit();
-            const char * zFilename = array.data();
-
-            rc = sqlite3_open(zFilename, &pFile);
-
-            if(rc==SQLITE_OK) {
-
-                qDebug() << "Open file " << fileName << " : OK";
-                pBackup = sqlite3_backup_init(pFile, "main", pDb, "main");
-
-                if(pBackup) {
-
-                    qDebug() << "Init backup : OK";
-
-                    (void)sqlite3_backup_step(pBackup, -1);
-
-
-                    do {
-
-                        rc = sqlite3_backup_step(pBackup, 1); //TODO : Fix error here.
-
-                        qDebug() << "7";
-
-                        if(rc==SQLITE_OK || rc==SQLITE_BUSY || rc==SQLITE_LOCKED)
-                            sqlite3_sleep(250);
-
-                    } while(rc==SQLITE_OK || rc==SQLITE_BUSY || rc==SQLITE_LOCKED);
-
-                }
-
-                rc = sqlite3_errcode(pFile);
-            }
-
-            (void)sqlite3_close(pFile);
-            if(rc == SQLITE_OK) state = true;
-        }
-    }
-
-                */
     return state;
 }
-
-//if (!QProcess::startDetached("/var/lib/QProcess/saveDatabase.sh"))
-//    qCritical() << "Error on save database";
-

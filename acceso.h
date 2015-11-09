@@ -54,7 +54,7 @@ public:
     QString beca_print() const;
     void setBeca_print(const QString &);
 
-    enum ResponseType{
+    enum ResponseType {
         PERSON_OK = 0,
         PERSON_NO_EXIST = 7,
         PERSON_CRED_NO_EXIST = 24,

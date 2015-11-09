@@ -9,6 +9,7 @@
 #include <serviceaccess.h>
 #include <fingerprint.h>
 #include <bdd.h>
+#include <door.h>
 #include <configurator.h>
 #include <configuratoradapter.h>
 
@@ -56,39 +57,35 @@ int main(int argc, char *argv[])
     //Init DAL;
     Bdd bdd;
     bdd.openDatabase();
-    QString casinoName = config["casinoName"];
-    Acceso *acceso = new Acceso(casinoName);
+    Acceso *acceso = new Acceso();
 
     //Init Web service component
     ServiceAccess serviceAccess(acceso);
     Synchroniser sync;
 
     //Physical Access object :
+    Door door(4);
     Credencial credencial("pn532_spi:/dev/spidev0.0:500000");
     Fingerprint fingerprint("/dev/ttyAMA0");
 
-    // Manage fingerPrintReader
-    // ** detected **
-    QObject::connect(&fingerprint, &Fingerprint::fingerDetected, &fingerprint, &Fingerprint::processDataFingerprint);
-    // ** detected unknown **
-    QObject::connect(&fingerprint, &Fingerprint::unknownFinger, &fingerprint, &Fingerprint::waitForFinger);
+    QObject::connect(&serviceAccess, &ServiceAccess::verifFingerprint, &fingerprint, &Fingerprint::verifFingerprint);
 
     // Data ready on device
     // ** data on rfid **
     QObject::connect(&credencial, &Credencial::dataReady, &fingerprint, &Fingerprint::stopWaitForFinger);
     QObject::connect(&credencial, &Credencial::dataReady, &credencial, &Credencial::stopWaitForTag);
     QObject::connect(&credencial, &Credencial::dataReady, &serviceAccess, &ServiceAccess::check);
-    // ** data on fingerPrintReader **
-    QObject::connect(&fingerprint, &Fingerprint::dataReady, &fingerprint, &Fingerprint::stopWaitForFinger);
-    QObject::connect(&fingerprint, &Fingerprint::dataReady, &credencial, &Credencial::stopWaitForTag);
-    QObject::connect(&fingerprint, &Fingerprint::dataReady, &serviceAccess, &ServiceAccess::check);
+
+    // Verif
+    QObject::connect(&fingerprint, &Fingerprint::compareOK, &serviceAccess, &ServiceAccess::on_offline);
+    QObject::connect(&fingerprint, &Fingerprint::compareKO, &credencial, &Credencial::waitForTag);
 
     // End process :
+    QObject::connect(&serviceAccess, &ServiceAccess::openDoor, &door, &Door::openDoor);
     QObject::connect(&serviceAccess, &ServiceAccess::finished, &credencial, &Credencial::waitForTag);
-    QObject::connect(&serviceAccess, &ServiceAccess::finished, &fingerprint, &Fingerprint::waitForFinger);
 
     // Syncro process
-     QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOffLine, &sync, &Synchroniser::offLine);
+    QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOffLine, &sync, &Synchroniser::offLine);
     // QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOnLine, &sync, &Synchroniser::onLine);
     // QObject::connect(&sync, &Synchroniser::registerFingerPrint, &fingerprint, &Fingerprint::registerNewUser);
 

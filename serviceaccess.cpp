@@ -2,7 +2,7 @@
 
 ServiceAccess::ServiceAccess(Acceso *acceso, QObject *parent) : acceso(acceso), QObject(parent)
 {
-    connect(this, &ServiceAccess::offLine,this, &ServiceAccess::on_offline);
+   // connect(this, &ServiceAccess::offLine,this, &ServiceAccess::on_offline);
 }
 
 void ServiceAccess::check(const QString id)
@@ -13,39 +13,30 @@ void ServiceAccess::check(const QString id)
 
     if(caller == "Credencial")
     {
-        persona.setUuid(id);
-        persona.setRut("");
+        persona.setRut(id);
         persona.setTipoMarca(Persona::MARCA_RFID);
 
-        QSqlRecord record = Bdd::identificationCredencial(id);
+        QSqlRecord record = Bdd::identificationOfflineByRut(id);
 
         if(!record.isEmpty()) {
 
-            qDebug() << "User finded in local database ...";
-            persona.setRut(record.value("rut").toString());
-            persona.setExistFoto(!record.value("foto").toString().isEmpty());
-            persona.setFingerprintID(record.value("id_huella").toInt());
+            qDebug() << "UserCard finded in local database ...";
+
+            int userID = record.value("id_huella").toInt();
+            persona.setFingerprintID(userID);
+            emit verifFingerprint(userID);
+
+        } else {
+
+            qDebug() << "UserCard not finded in local database ...";
+            Buzzer::instance()->bad();
+            emit finished();
+            return;
         }
     }
 
-    if(caller == "Fingerprint")
-    {
-        QSqlRecord fingerprint = Bdd::identificationFingerprint(id);
-
-        persona.setRut(fingerprint.value("rut").toString());
-        persona.setUuid(fingerprint.value("hash").toString());
-        persona.setExistFoto(!fingerprint.value("foto").toString().isEmpty());
-        persona.setFingerprintID(id.toInt());
-
-        persona.setTipoMarca(Persona::MARCA_FINGER);
-    }
-
     if(persona.tipoMarca() == Persona::MARCA_RFID)
-        LOG_INFO("Intento Acceso     : ID tarjeta : " + persona.uuid() + " Tipo marca : " + QString::number(persona.tipoMarca()));
-    if(persona.tipoMarca() == Persona::MARCA_FINGER)
-        LOG_INFO("Intento Acceso     : " + persona.rut() + " Hash size : " + QString::number(persona.uuid().size()) + " Tipo marca : " + QString::number(persona.tipoMarca()));
-
-    emit offLine();
+        LOG_INFO("Intento Acceso     : ID tarjeta : " + persona.rut() + " Tipo marca : " + QString::number(persona.tipoMarca()));
 }
 
 void ServiceAccess::on_offline()
@@ -145,34 +136,24 @@ void ServiceAccess::on_offline()
 
     */
 
-    QString casinoName = Configurator::instance()->getConfig("casinoName");
-
     acceso->setRut(persona.rut());
     acceso->setUuid(persona.uuid());
     acceso->setDate(QDateTime::currentDateTime());
-    acceso->setCasinoName(casinoName);
 
     if(persona.rut().isEmpty()) {
 
         acceso->setIdAuth(Acceso::PERSON_NO_EXIST);
         acceso->setName("No existe");
-        acceso->setCount_casino(0);
         acceso->setRut("000000000");
 
     } else {
 
-        QSqlRecord identity = (!persona.rut().isEmpty())? Bdd::identificationOfflineByRut(persona.rut()) : Bdd::identificationOfflineByUuid(persona.uuid());
-
+        QSqlRecord identity = Bdd::identificationOfflineByRut(persona.rut());
         acceso->setIdAuth(identity.value("autorizado").toInt());
         acceso->setName(identity.value("nombre").toString());
-        acceso->setCount_lunch(identity.value("count_lunch").toInt());
-        acceso->setCount_dinner(identity.value("count_dinner").toInt());
     }
 
-    acceso->setCount_casino(Bdd::casinoService());
-    acceso->setTextAuth(Bdd::textAuthentication(acceso));
-
-    emit synchroniseOffLine(acceso,persona);
+    Bdd::updatePersonaByAcceso(acceso);
     finalizeResponse();
 }
 
@@ -182,8 +163,11 @@ void ServiceAccess::finalizeResponse()
 
     if(acceso->idAuth() == Acceso::PERSON_OK)
     {
-       Buzzer::instance()->good();
-       // TODO open door ...
+        qDebug() << "Save Access";
+        Bdd::registerAccess();
+
+        Buzzer::instance()->good();
+        emit openDoor();
 
     } else {
 

@@ -7,7 +7,10 @@ Fingerprint::Fingerprint(QString serialport) : SecugenSda04(serialport)
         wiringPiSetup();
         pinMode(7, INPUT);
 
-        waitForFinger();
+        DataContainer dataContainer;
+        executeCommand(0x20,dataContainer,0x00,0x0C,0x00,0x64);
+        executeCommand(0x20,dataContainer,0x00,0x18,0x02,0x00);
+
         cancelerTimer = new QTimer(this);
 
         QObject::connect(this, &Fingerprint::sendError, this, &Fingerprint::receiveError);
@@ -56,6 +59,20 @@ void Fingerprint::checkFingerTouch()
     }
 }
 
+void Fingerprint::verifFingerprint(int userID)
+{
+    bool result = this->verifyFinger(userID);
+
+    if(result)
+        emit compareOK();
+    if(!result)
+    {
+        Buzzer::instance()->bad();
+        emit compareKO();
+    }
+
+}
+
 void Fingerprint::processDataFingerprint()
 {
     QVariant scanResult = scanFinger();
@@ -67,7 +84,6 @@ void Fingerprint::processDataFingerprint()
     if(id > 0)
     {
         QString ident = QString::number(id);
-        Buzzer::instance()->good();
         emit dataReady(ident);
 
     } else {

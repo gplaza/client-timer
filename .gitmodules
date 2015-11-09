@@ -16,3 +16,6 @@
 [submodule "addon-protector-qt"]
 	path = addon-protector-qt
 	url = git@gitlab.development:root/addon-protector-qt.git
+[submodule "addon-door-qt"]
+	path = addon-door-qt
+	url = http://git.gplaza.cl/root/addon-door-qt.git

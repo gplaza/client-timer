@@ -5,18 +5,19 @@ Credencial::Credencial(QString conn): Rfid(conn) {
     waitForTag();
 }
 
-void Credencial::getInfoTag(const QString tag)
+void Credencial::getInfoTag(const ResultRFID &result)
 {
     qDebug() << "Info Mifare";
 
-    if(!tag.isEmpty())
+    if(result.contains(Rfid::RUT))
     {
-        qDebug() << "UUID : " << tag;
-        emit dataReady(tag.toUpper());
+        qDebug() << "RUT : " << result.value(Rfid::RUT);
+        emit dataReady(result.value(Rfid::RUT));
 
     } else {
 
-        QTimer::singleShot(1500, this, SLOT(waitForTag()));
+        Buzzer::instance()->bad();
+        QTimer::singleShot(1000, this, SLOT(waitForTag()));
     }
 }
 

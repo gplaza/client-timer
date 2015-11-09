@@ -16,6 +16,7 @@ INSTALLS += target
 DEPENDPATH += .
 INCLUDEPATH += .
 
+include(addon-door-qt/door.pri)
 include(addon-protector-qt/protector.pri)
 include(addon-rfid-qt/rfid.pri)
 include(addon-buzzer-qt/buzzer.pri)

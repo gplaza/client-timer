@@ -8,11 +8,11 @@ void Synchroniser::onLine(Acceso *acceso, Persona &persona)
 {
     qDebug() << "Online Synchroniser";
 
-    bool dataSync = Bdd::checkOfflineData();
+    //bool dataSync = Bdd::checkOfflineData();
 
-    if(dataSync)
-    {
-        qDebug() << "Fire syncro thread";
+    //if(dataSync)
+    //{
+      //  qDebug() << "Fire syncro thread";
 
         /*
         QThread* thread = new QThread;
@@ -26,29 +26,33 @@ void Synchroniser::onLine(Acceso *acceso, Persona &persona)
 
         thread->start();
         */
-    }
+    //}
 
-    bool personExist = (persona.tipoMarca() == Persona::MARCA_FINGER)? true : Bdd::checkPersona(acceso);
-    bool stateCreate = (acceso->idAuth() == Acceso::PERSON_OK || acceso->idAuth() == Acceso::OUT_OF_HOURS || acceso->idAuth() == Acceso::PERSON_NO_LUNCH || acceso->idAuth() == Acceso::PERSON_SERVICE_USED) && !personExist;
+    //bool personExist = (persona.tipoMarca() == Persona::MARCA_FINGER)? true : Bdd::checkPersona(acceso);
+    //bool stateCreate = (acceso->idAuth() == Acceso::PERSON_OK || acceso->idAuth() == Acceso::OUT_OF_HOURS || acceso->idAuth() == Acceso::PERSON_NO_LUNCH || acceso->idAuth() == Acceso::PERSON_SERVICE_USED) && !personExist;
 
-    qDebug() << "User exist in local database : " << personExist;
-    qDebug() << "Create user in local database : " << stateCreate;
+    //qDebug() << "User exist in local database : " << personExist;
+    //qDebug() << "Create user in local database : " << stateCreate;
 
+
+
+    /*
     if(personExist) {
         Bdd::updatePersonaByAcceso(acceso);
         checkFingerPrint(persona);
     }
+    */
 
-    if(stateCreate) {
+    //if(stateCreate) {
         //TODO : create with a valid counter of lunch and dinner.
-        Bdd::createPersona(acceso);
+      //  Bdd::createPersona(acceso);
 
-        persona.setFingerprintID(0);
-        persona.setRut(acceso->rut());
-        checkFingerPrint(persona);
-    }
+        //persona.setFingerprintID(0);
+        //persona.setRut(acceso->rut());
+        //checkFingerPrint(persona);
+    //}
 
-    Bdd::updateCasinoService(acceso);
+   // Bdd::updateCasinoService(acceso);
 }
 
 void Synchroniser::offLine(Acceso *acceso, Persona &persona)
@@ -60,17 +64,17 @@ void Synchroniser::offLine(Acceso *acceso, Persona &persona)
 
 void Synchroniser::checkFingerPrint(Persona &persona)
 {
-    if(persona.fingerprintID() == 0)
-    {
-        qDebug() << "Search for valid hash";
+    // if(persona.fingerprintID() == 0)
+    // {
+    //     qDebug() << "Search for valid hash";
 
-        // Acceso resultFingerPrint;
-        //soapClient->actionInfoAcceso(&persona,resultFingerPrint);
-        QString hash = ""; //resultFingerPrint.hash();
+    // Acceso resultFingerPrint;
+    //soapClient->actionInfoAcceso(&persona,resultFingerPrint);
+    //   QString hash = ""; //resultFingerPrint.hash();
 
-        qDebug() << "Hash found : " << hash;
+    //   qDebug() << "Hash found : " << hash;
 
-        if(!hash.isEmpty() && hash != "No" && hash != "default")
-            emit registerFingerPrint(persona,hash);
-    }
+    //     if(!hash.isEmpty() && hash != "No" && hash != "default")
+    //       emit registerFingerPrint(persona,hash);
+    // }
 }
