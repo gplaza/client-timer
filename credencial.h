@@ -19,7 +19,7 @@ signals:
     void sendToScreen(const QString &m);
 
 public slots:
-    void getInfoTag(const QString tag);
+    void getInfoTag(const ResultRFID &result);
     void errorReader(const QString &error);
 };
 

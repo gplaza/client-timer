@@ -5,15 +5,15 @@ Credencial::Credencial(QString conn): Rfid(conn) {
     waitForTag();
 }
 
-void Credencial::getInfoTag(const QString tag)
+void Credencial::getInfoTag(const ResultRFID &result)
 {
     qDebug() << "Info Mifare";
 
-    if(!tag.isEmpty())
+    if(result.contains(Rfid::UUID))
     {
-        qDebug() << "UUID : " << tag;
+        qDebug() << "UUID : " << result.value(Rfid::UUID);
         Buzzer::instance()->good();
-        emit dataReady(tag.toUpper());
+        emit dataReady(result.value(Rfid::UUID).toUpper());
 
     } else {
 
