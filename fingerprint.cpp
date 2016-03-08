@@ -9,7 +9,7 @@ Fingerprint::Fingerprint(QString serialport) : SecugenSda04(serialport)
 
         DataContainer dataContainer;
         executeCommand(0x20,dataContainer,0x00,0x0C,0x00,0x64);
-        executeCommand(0x20,dataContainer,0x00,0x18,0x02,0x00);
+       // executeCommand(0x20,dataContainer,0x00,0x18,0x02,0x00);
 
         cancelerTimer = new QTimer(this);
 

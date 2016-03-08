@@ -2,7 +2,7 @@
 
 ServiceAccess::ServiceAccess(Acceso *acceso, QObject *parent) : acceso(acceso), QObject(parent)
 {
-   // connect(this, &ServiceAccess::offLine,this, &ServiceAccess::on_offline);
+    // connect(this, &ServiceAccess::offLine,this, &ServiceAccess::on_offline);
 }
 
 void ServiceAccess::check(const QString id)
@@ -41,6 +41,62 @@ void ServiceAccess::check(const QString id)
 
 void ServiceAccess::on_offline()
 {
+    acceso->setRut(persona.rut());
+    acceso->setUuid(persona.uuid());
+    acceso->setDate(QDateTime::currentDateTime());
+
+    if(persona.rut().isEmpty()) {
+
+        acceso->setIdAuth(Acceso::PERSON_NO_EXIST);
+        acceso->setName("No existe");
+        acceso->setRut("000000000");
+
+    } else {
+
+        QSqlRecord identity = Bdd::identificationOfflineByRut(persona.rut());
+        acceso->setIdAuth(identity.value("autorizado").toInt());
+        acceso->setName(identity.value("nombre").toString());
+    }
+
+    if(acceso->idAuth() == Acceso::PERSON_OK)
+    {
+        bool accepted = false;
+        QDate currentFecha = QDate::currentDate();
+        QTime currentHora = QTime::currentTime();
+        int day = currentFecha.dayOfWeek();
+
+        qDebug() << "Current time : " << currentHora;
+        qDebug() << "Current Day  : " << day;
+
+        QSqlQuery horarios = Bdd::getHorarios(day);
+
+        if(horarios.first())
+        {
+            qDebug() << "Day : ok";
+
+            QString hi = horarios.value("horario_inicio").toString();
+            QString hf = horarios.value("horario_fin").toString();
+            QTime rhi = QTime::fromString(hi, "hh:mm");
+            QTime rhf = QTime::fromString(hf, "hh:mm");
+
+            qDebug() << "Valid from " << hi << " to " << hf;
+
+            if (currentHora >= rhi && currentHora <= rhf)
+            {
+                qDebug() << "Hour : ok";
+                accepted = true;
+            }
+
+        } else {
+
+            qCritical() << "Error hour : Day not defined";
+        }
+
+        if(!accepted)
+            acceso->setIdAuth(Acceso::OUT_OF_HOURS);
+    }
+
+
     /*
     // Check valid credencial
     if(!credenci.isEmpty()) {
@@ -54,7 +110,7 @@ void ServiceAccess::on_offline()
 
         QDate currentFecha = QDate::currentDate();
         QTime currentHora = QTime::currentTime();
-        int dia = currentFecha.dayOfWeek();
+
 
         QString activacion = credenci.value("activacion").toString();
         QString expiracion = credenci.value("expiracion").toString();
@@ -135,23 +191,6 @@ void ServiceAccess::on_offline()
     }
 
     */
-
-    acceso->setRut(persona.rut());
-    acceso->setUuid(persona.uuid());
-    acceso->setDate(QDateTime::currentDateTime());
-
-    if(persona.rut().isEmpty()) {
-
-        acceso->setIdAuth(Acceso::PERSON_NO_EXIST);
-        acceso->setName("No existe");
-        acceso->setRut("000000000");
-
-    } else {
-
-        QSqlRecord identity = Bdd::identificationOfflineByRut(persona.rut());
-        acceso->setIdAuth(identity.value("autorizado").toInt());
-        acceso->setName(identity.value("nombre").toString());
-    }
 
     Bdd::updatePersonaByAcceso(acceso);
     finalizeResponse();

@@ -137,6 +137,8 @@ public:
     static QString textAuthentication(Acceso *acceso);
     static int casinoService();
 
+    static QSqlQuery getHorarios(int dia, int periodo = 1);
+
     // BDD control Syncro
     static void saveAccess(Acceso *acceso, Persona &persona);
     static void registerAccess(int ErrorType = 0);

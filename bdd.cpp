@@ -189,6 +189,23 @@ QDateTime Bdd::syncAccess(Persona &persona)
     return date;
 }
 
+QSqlQuery Bdd::getHorarios(int dia, int periodo)
+{
+    QSqlDatabase db = QSqlDatabase::database("config");
+    QSqlQuery query(db);
+
+    QString sql = "SELECT dia,horario_inicio,horario_fin FROM horario WHERE periodo_id=:periodo AND dia=:dia";
+
+    query.prepare(sql);
+    query.bindValue(":periodo", periodo);
+    query.bindValue(":dia", dia);
+
+    if (!query.exec())
+        qCritical() << "Query Error (getPeriodo) : " << query.lastError();
+
+    return query;
+}
+
 void Bdd::deleteAccess(Persona &persona, QDateTime date)
 {
     QSqlQuery query(QSqlDatabase::database("syncro"));
