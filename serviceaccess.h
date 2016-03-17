@@ -33,6 +33,7 @@ public slots:
     void on_offline();
 
 private:
+    bool checkMachineRules();
     void finalizeResponse();
     void on_online();
     Acceso *acceso;

@@ -12,7 +12,6 @@ Fingerprint::Fingerprint(QString serialport) : SecugenSda04(serialport)
        // executeCommand(0x20,dataContainer,0x00,0x18,0x02,0x00);
 
         cancelerTimer = new QTimer(this);
-
         QObject::connect(this, &Fingerprint::sendError, this, &Fingerprint::receiveError);
     }
 }
@@ -67,6 +66,7 @@ void Fingerprint::verifFingerprint(int userID)
         emit compareOK();
     if(!result)
     {
+        qWarning() << "Compare finger : Not match";
         Buzzer::instance()->bad();
         emit compareKO();
     }

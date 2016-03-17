@@ -86,8 +86,6 @@ int main(int argc, char *argv[])
 
     // Syncro process
     QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOffLine, &sync, &Synchroniser::offLine);
-    // QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOnLine, &sync, &Synchroniser::onLine);
-    // QObject::connect(&sync, &Synchroniser::registerFingerPrint, &fingerprint, &Fingerprint::registerNewUser);
 
     // Adapter connection
     QObject::connect(configAdapt,&ConfiguratorAdapter::deleteFingerPrint,&fingerprint,&Fingerprint::externDeleteUser);

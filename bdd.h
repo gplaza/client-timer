@@ -12,9 +12,10 @@ class AccessWorker : public QObject
 {
     Q_OBJECT
 public:
-    AccessWorker(int ErrorType = 0)
+    AccessWorker(int ErrorType = 0, Acceso *acceso = NULL)
     {
         this->ErrorType = ErrorType;
+        this->acceso = acceso;
     }
 
 public slots:
@@ -110,6 +111,24 @@ public slots:
                 qCritical() << "Query Error (AccessWorker.sql.process) : " << query.lastError();
             else
                 qDebug() << "Register access Error : " << "ErrorType : " << ErrorType;
+
+        }
+
+        if(this->acceso != NULL)
+        {
+
+            // TODO : change position after refactoring :
+
+            QDateTime dateTime = QDateTime::currentDateTime();
+
+            sql = "INSERT INTO access(rut,date) VALUES (:rut, :date)";
+
+            query.prepare(sql);
+            query.bindValue(":rut",this->acceso->rut());
+            query.bindValue(":date",dateTime.toString("yyyy-MM-dd hh:mm:ss"));
+
+            if (!query.exec())
+                qCritical() << "Query Error (AccessWorker.sql.process.acceso) : " << query.lastError();
         }
 
         emit finished();
@@ -120,6 +139,7 @@ signals:
 
 private:
     int ErrorType;
+    Acceso *acceso;
 
 };
 
@@ -141,7 +161,7 @@ public:
 
     // BDD control Syncro
     static void saveAccess(Acceso *acceso, Persona &persona);
-    static void registerAccess(int ErrorType = 0);
+    static void registerAccess(int ErrorType = 0, Acceso *acceso = NULL);
     static void deleteAccess(Persona &persona, QDateTime date);
     static QDateTime syncAccess(Persona &persona);
     static bool checkOfflineData();

@@ -191,7 +191,7 @@ QDateTime Bdd::syncAccess(Persona &persona)
 
 QSqlQuery Bdd::getHorarios(int dia, int periodo)
 {
-    QSqlDatabase db = QSqlDatabase::database("config");
+    QSqlDatabase db = QSqlDatabase::database("acceso");
     QSqlQuery query(db);
 
     QString sql = "SELECT dia,horario_inicio,horario_fin FROM horario WHERE periodo_id=:periodo AND dia=:dia";
@@ -265,10 +265,10 @@ void Bdd::updatePersona(Persona &persona)
         qCritical() << "Query Error (createPersona) : " << query.lastError();
 }
 
-void Bdd::registerAccess(int ErrorType)
+void Bdd::registerAccess(int ErrorType, Acceso *acceso)
 {
     QThread *thread = new QThread;
-    AccessWorker* accessWorker = new AccessWorker(ErrorType);
+    AccessWorker* accessWorker = new AccessWorker(ErrorType, acceso);
     accessWorker->moveToThread(thread);
 
     //Start Thread :
@@ -287,13 +287,13 @@ void Bdd::updatePersonaByAcceso(Acceso *acceso)
     qDebug() << "Update Data persona";
 
     QString sql = "UPDATE persona SET autorizado=:autorizado";
-    sql += " WHERE rut=:rut;";
+    sql += " WHERE rut=:rut and typeHash=0;";
     query.prepare(sql);
 
     int idAuth = acceso->idAuth();
 
-   // if(idAuth == Acceso::PERSON_OK)
-   //     idAuth = Acceso::PERSON_SERVICE_USED;
+    if(idAuth == Acceso::PERSON_OK)
+        idAuth = Acceso::PERSON_SERVICE_USED;
 
     qDebug() << "Registro local grabado :";
     qDebug() << "state        : " << idAuth;

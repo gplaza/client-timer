@@ -16,6 +16,7 @@ void Credencial::getInfoTag(const ResultRFID &result)
 
     } else {
 
+        qWarning() << "This card does not contain RUT";
         Buzzer::instance()->bad();
         QTimer::singleShot(1000, this, SLOT(waitForTag()));
     }

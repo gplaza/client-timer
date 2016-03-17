@@ -1,9 +1,7 @@
 #include "serviceaccess.h"
 
 ServiceAccess::ServiceAccess(Acceso *acceso, QObject *parent) : acceso(acceso), QObject(parent)
-{
-    // connect(this, &ServiceAccess::offLine,this, &ServiceAccess::on_offline);
-}
+{}
 
 void ServiceAccess::check(const QString id)
 {
@@ -11,92 +9,79 @@ void ServiceAccess::check(const QString id)
     const QMetaObject *meta = obj->metaObject();
     QString caller = QString::fromUtf8(meta->className());
 
-    if(caller == "Credencial")
+    if(checkMachineRules() == false)
     {
-        persona.setRut(id);
-        persona.setTipoMarca(Persona::MARCA_RFID);
+        qWarning() << "Rules not passed";
+        Buzzer::instance()->bad();
+        emit finished();
+        return;
 
-        QSqlRecord record = Bdd::identificationOfflineByRut(id);
+    } else {
 
-        if(!record.isEmpty()) {
+        if(caller == "Credencial")
+        {
+            QSqlRecord record = Bdd::identificationOfflineByRut(id);
 
-            qDebug() << "UserCard finded in local database ...";
+            if(!record.isEmpty()) {
 
-            int userID = record.value("id_huella").toInt();
-            persona.setFingerprintID(userID);
-            emit verifFingerprint(userID);
+                qDebug() << "UserCard finded in local database ...";
 
-        } else {
+                int userID = record.value("id_huella").toInt();
+                int autorizado = record.value("autorizado").toInt();
+                QString name = record.value("nombre").toString();
 
-            qDebug() << "UserCard not finded in local database ...";
-            Buzzer::instance()->bad();
-            emit finished();
-            return;
+                acceso->setRut(id);
+                acceso->setName(name);
+                acceso->setIdAuth(autorizado);
+                acceso->setDate(QDateTime::currentDateTime());
+
+                emit verifFingerprint(userID);
+
+            } else {
+
+                qWarning() << "UserCard not finded in local database ...";
+                Buzzer::instance()->bad();
+                emit finished();
+                return;
+            }
         }
     }
+}
 
-    if(persona.tipoMarca() == Persona::MARCA_RFID)
-        LOG_INFO("Intento Acceso     : ID tarjeta : " + persona.rut() + " Tipo marca : " + QString::number(persona.tipoMarca()));
+bool ServiceAccess::checkMachineRules()
+{
+    qDebug() << "Check machine's period ...";
+
+    QDate currentDate = QDate::currentDate();
+    QTime currentTime = QTime::currentTime();
+    int day = currentDate.dayOfWeek();
+
+    qDebug() << "Current date : "<< currentDate.toString("dddd d MMMM yyyy");
+
+    QSqlQuery horarios = Bdd::getHorarios(day);
+
+    if(horarios.first())
+    {
+        QString hi = horarios.value("horario_inicio").toString();
+        QString hf = horarios.value("horario_fin").toString();
+        QTime rhi = QTime::fromString(hi, "hh:mm:ss");
+        QTime rhf = QTime::fromString(hf, "hh:mm:ss");
+
+        qDebug() << "Current time : " << currentTime.toString("hh:mm:ss");
+        qDebug() << "Current Day  : " << day;
+        qDebug() << "Hour valid from " << rhi.toString("hh:mm") << " to " << rhf.toString("hh:mm");
+
+        return (currentTime >= rhi && currentTime <= rhf);
+
+    } else {
+
+        qWarning() << "Error hour : Day not defined";
+        return false;
+    }
 }
 
 void ServiceAccess::on_offline()
 {
-    acceso->setRut(persona.rut());
-    acceso->setUuid(persona.uuid());
-    acceso->setDate(QDateTime::currentDateTime());
-
-    if(persona.rut().isEmpty()) {
-
-        acceso->setIdAuth(Acceso::PERSON_NO_EXIST);
-        acceso->setName("No existe");
-        acceso->setRut("000000000");
-
-    } else {
-
-        QSqlRecord identity = Bdd::identificationOfflineByRut(persona.rut());
-        acceso->setIdAuth(identity.value("autorizado").toInt());
-        acceso->setName(identity.value("nombre").toString());
-    }
-
-    if(acceso->idAuth() == Acceso::PERSON_OK)
-    {
-        bool accepted = false;
-        QDate currentFecha = QDate::currentDate();
-        QTime currentHora = QTime::currentTime();
-        int day = currentFecha.dayOfWeek();
-
-        qDebug() << "Current time : " << currentHora;
-        qDebug() << "Current Day  : " << day;
-
-        QSqlQuery horarios = Bdd::getHorarios(day);
-
-        if(horarios.first())
-        {
-            qDebug() << "Day : ok";
-
-            QString hi = horarios.value("horario_inicio").toString();
-            QString hf = horarios.value("horario_fin").toString();
-            QTime rhi = QTime::fromString(hi, "hh:mm");
-            QTime rhf = QTime::fromString(hf, "hh:mm");
-
-            qDebug() << "Valid from " << hi << " to " << hf;
-
-            if (currentHora >= rhi && currentHora <= rhf)
-            {
-                qDebug() << "Hour : ok";
-                accepted = true;
-            }
-
-        } else {
-
-            qCritical() << "Error hour : Day not defined";
-        }
-
-        if(!accepted)
-            acceso->setIdAuth(Acceso::OUT_OF_HOURS);
-    }
-
-
     /*
     // Check valid credencial
     if(!credenci.isEmpty()) {
