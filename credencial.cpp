@@ -7,8 +7,6 @@ Credencial::Credencial(QString conn): Rfid(conn) {
 
 void Credencial::getInfoTag(const ResultRFID &result)
 {
-    qDebug() << "Info Mifare";
-
     if(result.contains(Rfid::RUT))
     {
         qDebug() << "RUT : " << result.value(Rfid::RUT);
@@ -17,8 +15,8 @@ void Credencial::getInfoTag(const ResultRFID &result)
     } else {
 
         qWarning() << "This card does not contain RUT";
-        Buzzer::instance()->bad();
-        QTimer::singleShot(1000, this, SLOT(waitForTag()));
+        readEnable = false;
+        waitForTag();
     }
 }
 
