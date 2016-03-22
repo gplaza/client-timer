@@ -80,9 +80,12 @@ void ConfiguratorAdapter::updatePersona(const QByteArray &jsonValue)
     QJsonObject qJsonObject = json.object();
 
     QString hash = qJsonObject["hash"].toString();
-    QString id = qJsonObject["userID"].toString();
+    int userID = qJsonObject["userID"].toInt();
     int typeHash = qJsonObject["typeHash"].toInt();
 
-    int userID = id.toInt();
-    emit updateFingerPrint(hash,typeHash,userID);
+    if(userID > 0)
+        emit updateFingerPrint(hash,typeHash,userID);
+
+    if(userID == 0)
+        emit registerFingerPrint(hash,typeHash);
 }

@@ -3,7 +3,6 @@
 #include <QSettings>
 #include <ConsoleAppender.h>
 #include <protector.h>
-#include <synchroniser.h>
 #include <credencial.h>
 #include <Logger.h>
 #include <serviceaccess.h>
@@ -61,7 +60,6 @@ int main(int argc, char *argv[])
 
     //Init Web service component
     ServiceAccess serviceAccess(acceso);
-    Synchroniser sync;
 
     //Physical Access object :
     Door door(4);
@@ -77,15 +75,12 @@ int main(int argc, char *argv[])
     QObject::connect(&credencial, &Credencial::dataReady, &serviceAccess, &ServiceAccess::check);
 
     // Verif
-    QObject::connect(&fingerprint, &Fingerprint::compareOK, &serviceAccess, &ServiceAccess::on_offline);
+    QObject::connect(&fingerprint, &Fingerprint::compareOK, &serviceAccess, &ServiceAccess::finalizeResponse);
     QObject::connect(&fingerprint, &Fingerprint::compareKO, &credencial, &Credencial::waitForTag);
 
     // End process :
     QObject::connect(&serviceAccess, &ServiceAccess::openDoor, &door, &Door::openDoor);
     QObject::connect(&serviceAccess, &ServiceAccess::finished, &credencial, &Credencial::waitForTag);
-
-    // Syncro process
-    QObject::connect(&serviceAccess, &ServiceAccess::synchroniseOffLine, &sync, &Synchroniser::offLine);
 
     // Adapter connection
     QObject::connect(configAdapt,&ConfiguratorAdapter::deleteFingerPrint,&fingerprint,&Fingerprint::externDeleteUser);

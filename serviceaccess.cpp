@@ -10,14 +10,12 @@ void ServiceAccess::check(const QString id)
     QString caller = QString::fromUtf8(meta->className());
 
     acceso->setDate(QDateTime::currentDateTime());
+    acceso->setRut(id);
 
     if(checkMachineRules() == false)
     {
         qWarning() << "Machine's Rules not passed";
-
-        acceso->setRut(id);
         acceso->setIdAuth(Acceso::OUT_OF_HOURS);
-        finalizeResponse();
 
     } else {
 
@@ -33,22 +31,23 @@ void ServiceAccess::check(const QString id)
                 int autorizado = record.value("autorizado").toInt();
                 QString name = record.value("nombre").toString();
 
-                acceso->setRut(id);
                 acceso->setName(name);
                 acceso->setIdAuth(autorizado);
 
-                if(fingerprintUserID > 0)
+                if(fingerprintUserID > 0) {
                     emit verifFingerprint(fingerprintUserID);
+                    return;
+                }
 
             } else {
 
                 qWarning() << "UserCard not finded in local database ...";
-                Buzzer::instance()->bad();
-                emit finished();
-                return;
+                acceso->setIdAuth(Acceso::PERSON_NO_EXIST);
             }
         }
     }
+
+    finalizeResponse();
 }
 
 bool ServiceAccess::checkMachineRules()
@@ -83,12 +82,6 @@ bool ServiceAccess::checkMachineRules()
     }
 }
 
-void ServiceAccess::on_offline()
-{
-    Bdd::updatePersonaByAcceso(acceso);
-    finalizeResponse();
-}
-
 void ServiceAccess::finalizeResponse()
 {
     LOG_INFO("Resultado Local : " + acceso->toString());
@@ -96,6 +89,7 @@ void ServiceAccess::finalizeResponse()
     if(acceso->idAuth() == Acceso::PERSON_OK)
     {
         qDebug() << "Save Access";
+        Bdd::updatePersonaByAcceso(acceso);
         Bdd::registerAccess();
         Buzzer::instance()->good();
         emit openDoor();
@@ -108,5 +102,5 @@ void ServiceAccess::finalizeResponse()
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &ServiceAccess::finished);
     connect(this, &ServiceAccess::finished, timer, &QTimer::deleteLater);
-    timer->start(1000);
+    timer->start(1500);
 }

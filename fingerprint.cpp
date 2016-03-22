@@ -61,6 +61,11 @@ void Fingerprint::verifFingerprint(int userID)
 {
     bool result = this->verifyFinger(userID);
 
+    if(!result)
+        qWarning() << "Compare finger : Not match";
+
+    emit compareOK();
+    /*
     if(result)
         emit compareOK();
     if(!result)
@@ -69,6 +74,7 @@ void Fingerprint::verifFingerprint(int userID)
         Buzzer::instance()->bad();
         emit compareKO();
     }
+    */
 
 }
 
