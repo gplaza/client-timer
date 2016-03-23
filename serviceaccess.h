@@ -17,8 +17,6 @@ signals:
     void openDoor();
     void finished();
     void verifFingerprint(int userID);
-    void hashResponse(Acceso &acceso);
-    void changeStatus();
 
 public slots:
     void check(const QString id);

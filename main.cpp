@@ -70,7 +70,6 @@ int main(int argc, char *argv[])
 
     // Data ready on device
     // ** data on rfid **
-    QObject::connect(&credencial, &Credencial::dataReady, &fingerprint, &Fingerprint::stopWaitForFinger);
     QObject::connect(&credencial, &Credencial::dataReady, &credencial, &Credencial::stopWaitForTag);
     QObject::connect(&credencial, &Credencial::dataReady, &serviceAccess, &ServiceAccess::check);
 

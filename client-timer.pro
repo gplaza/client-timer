@@ -32,7 +32,6 @@ SOURCES += main.cpp \
     acceso.cpp \
     persona.cpp \
     bdd.cpp \
-    synchroniser.cpp \
     serviceaccess.cpp \
     fingerprint.cpp \
     configuratoradapter.cpp
@@ -42,7 +41,6 @@ HEADERS += \
     acceso.h \
     persona.h \
     bdd.h \
-    synchroniser.h \
     serviceaccess.h \
     fingerprint.h \
     configuratoradapter.h
