@@ -34,7 +34,8 @@ void ServiceAccess::check(const QString id)
                 acceso->setName(name);
                 acceso->setIdAuth(autorizado);
 
-                if(fingerprintUserID > 0) {
+                // Test fingerprint only if the user is authorized
+                if(fingerprintUserID > 0 && autorizado == Acceso::PERSON_OK) {
                     emit verifFingerprint(fingerprintUserID);
                     return;
                 }
@@ -82,20 +83,31 @@ bool ServiceAccess::checkMachineRules()
     }
 }
 
+void ServiceAccess::checkfingerprint(bool result)
+{
+    int autorizado = result? Acceso::PERSON_OK : Acceso::FINGERPRINT_NOT_MATCH;
+    acceso->setIdAuth(autorizado);
+    finalizeResponse();
+}
+
 void ServiceAccess::finalizeResponse()
 {
     LOG_INFO("Resultado Local : " + acceso->toString());
 
     if(acceso->idAuth() == Acceso::PERSON_OK)
     {
-        qDebug() << "Save Access";
+        qDebug() << "Access correct (save)";
+        QString rut = acceso->rut();
+
         Bdd::updatePersonaByAcceso(acceso);
         Bdd::registerAccess();
+        Bdd::registerAccess2(rut);
         Buzzer::instance()->good();
         emit openDoor();
 
     } else {
 
+        qDebug() << "Access not correct";
         Buzzer::instance()->bad();
     }
 

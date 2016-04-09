@@ -61,21 +61,17 @@ void Fingerprint::verifFingerprint(int userID)
 {
     bool result = this->verifyFinger(userID);
 
-    if(!result)
-        qWarning() << "Compare finger : Not match";
+    //if(result)
+        emit compareResult(result);
 
-    emit compareOK();
     /*
-    if(result)
-        emit compareOK();
     if(!result)
     {
         qWarning() << "Compare finger : Not match";
         Buzzer::instance()->bad();
-        emit compareKO();
+         emit compareOK();
     }
     */
-
 }
 
 void Fingerprint::processDataFingerprint()

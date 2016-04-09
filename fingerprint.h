@@ -12,6 +12,13 @@ class Fingerprint : public SecugenSda04
     Q_OBJECT
 public:
     Fingerprint(QString serialPort);
+
+    enum resultCompare{
+        FINGER_ = 1,
+        MARCA_RFID = 2,
+        MARCA_INFO = 4
+    };
+
 private:
     QTimer *cancelerTimer;
 
@@ -29,8 +36,7 @@ public slots:
 
 signals:
     void dataReady(QString &id);
-    void compareOK();
-    void compareKO();
+    void compareResult(bool result);
     void sucessRegister(int idUser);
     void responseRegister(const QString &status, const QString &response);
     void setTypeEvent(int event);

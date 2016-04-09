@@ -73,9 +73,8 @@ int main(int argc, char *argv[])
     QObject::connect(&credencial, &Credencial::dataReady, &credencial, &Credencial::stopWaitForTag);
     QObject::connect(&credencial, &Credencial::dataReady, &serviceAccess, &ServiceAccess::check);
 
-    // Verif
-    QObject::connect(&fingerprint, &Fingerprint::compareOK, &serviceAccess, &ServiceAccess::finalizeResponse);
-    QObject::connect(&fingerprint, &Fingerprint::compareKO, &credencial, &Credencial::waitForTag);
+    // Verif Fingerprint
+    QObject::connect(&fingerprint, &Fingerprint::compareResult, &serviceAccess, &ServiceAccess::checkfingerprint);
 
     // End process :
     QObject::connect(&serviceAccess, &ServiceAccess::openDoor, &door, &Door::openDoor);

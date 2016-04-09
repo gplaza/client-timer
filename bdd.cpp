@@ -265,10 +265,25 @@ void Bdd::updatePersona(Persona &persona)
         qCritical() << "Query Error (createPersona) : " << query.lastError();
 }
 
-void Bdd::registerAccess(int ErrorType, Acceso *acceso)
+void Bdd::registerAccess2(QString rut)
 {
     QThread *thread = new QThread;
-    AccessWorker* accessWorker = new AccessWorker(ErrorType, acceso);
+    AccessWorker2* accessWorker2 = new AccessWorker2(rut);
+    accessWorker2->moveToThread(thread);
+
+    //Start Thread :
+    connect(thread, &QThread::started, accessWorker2, &AccessWorker2::process);
+    //End Thread :
+    connect(accessWorker2, &AccessWorker2::finished, thread, &QThread::quit);
+    connect(accessWorker2, &AccessWorker2::finished, accessWorker2, &AccessWorker2::deleteLater);
+
+    thread->start();
+}
+
+void Bdd::registerAccess(int ErrorType)
+{
+    QThread *thread = new QThread;
+    AccessWorker* accessWorker = new AccessWorker(ErrorType);
     accessWorker->moveToThread(thread);
 
     //Start Thread :

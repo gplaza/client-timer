@@ -12,10 +12,10 @@ class AccessWorker : public QObject
 {
     Q_OBJECT
 public:
-    AccessWorker(int ErrorType = 0, Acceso *acceso = NULL)
+    AccessWorker(int ErrorType = 0, QString rut = "")
     {
         this->ErrorType = ErrorType;
-        this->acceso = acceso;
+        this->rut = rut;
     }
 
 public slots:
@@ -114,9 +114,8 @@ public slots:
 
         }
 
-        if(this->acceso != NULL)
+        if(!rut.isEmpty())
         {
-
             // TODO : change position after refactoring :
 
             QDateTime dateTime = QDateTime::currentDateTime();
@@ -124,12 +123,13 @@ public slots:
             sql = "INSERT INTO access(rut,date) VALUES (:rut, :date)";
 
             query.prepare(sql);
-            query.bindValue(":rut",this->acceso->rut());
+            query.bindValue(":rut",rut);
             query.bindValue(":date",dateTime.toString("yyyy-MM-dd hh:mm:ss"));
 
             if (!query.exec())
                 qCritical() << "Query Error (AccessWorker.sql.process.acceso) : " << query.lastError();
         }
+
 
         emit finished();
     }
@@ -139,9 +139,48 @@ signals:
 
 private:
     int ErrorType;
-    Acceso *acceso;
+    QString rut;
 
 };
+
+
+class AccessWorker2 : public QObject
+{
+    Q_OBJECT
+public:
+    AccessWorker2(QString rut)
+    {
+        this->rut = rut;
+    }
+
+public slots:
+    void process()
+    {
+        // TODO : change position after refactoring :
+
+        QDateTime dateTime = QDateTime::currentDateTime();
+
+        QSqlQuery query(QSqlDatabase::database("acceso"));
+        QString sql = "INSERT INTO access(rut,date) VALUES (:rut, :date)";
+
+        query.prepare(sql);
+        query.bindValue(":rut",rut);
+        query.bindValue(":date",dateTime.toString("yyyy-MM-dd hh:mm:ss"));
+
+        if (!query.exec())
+            qCritical() << "Query Error (AccessWorker.sql.process.acceso) : " << query.lastError();
+
+        emit finished();
+    }
+
+signals:
+    void finished();
+
+private:
+    QString rut;
+
+};
+
 
 class Bdd : public QObject
 {
@@ -161,7 +200,10 @@ public:
 
     // BDD control Syncro
     static void saveAccess(Acceso *acceso, Persona &persona);
-    static void registerAccess(int ErrorType = 0, Acceso *acceso = NULL);
+
+    static void registerAccess2(QString rut);
+    static void registerAccess(int ErrorType = 0);
+
     static void deleteAccess(Persona &persona, QDateTime date);
     static QDateTime syncAccess(Persona &persona);
     static bool checkOfflineData();

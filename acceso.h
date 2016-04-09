@@ -61,7 +61,8 @@ public:
         PERSON_NO_LUNCH = 20,
         PERSON_NO_DINNER = 20,
         PERSON_SERVICE_USED = 23,
-        OUT_OF_HOURS = 18
+        OUT_OF_HOURS = 18,
+        FINGERPRINT_NOT_MATCH = 19
     };
 
 signals:

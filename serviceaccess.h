@@ -20,6 +20,7 @@ signals:
 
 public slots:
     void check(const QString id);
+    void checkfingerprint(bool result);
     void finalizeResponse();
 
 private:
