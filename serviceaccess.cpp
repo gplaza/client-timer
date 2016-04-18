@@ -56,7 +56,6 @@ void ServiceAccess::check(const QString id)
                 persona.setExistFoto(!record.value("foto").toString().isEmpty());
                 persona.setFingerprintID(record.value("id_huella").toInt());
             }
-
         }
 
         if(caller == "Fingerprint")
