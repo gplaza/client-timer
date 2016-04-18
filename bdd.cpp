@@ -1,5 +1,5 @@
 #include "bdd.h"
-#include <sqlite3.h>
+#include <sqlite3.h> //Here only for not compile wrong kernel version
 
 static QString dbFile = "";
 
