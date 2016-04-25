@@ -9,12 +9,12 @@ void Credencial::getInfoTag(const ResultRFID &result)
 {
     if(result.contains(Rfid::RUT))
     {
-        qDebug() << "RUT : " << result.value(Rfid::RUT);
         QString rut = result.value(Rfid::RUT);
 
         if(rut.startsWith("0"))
             rut = rut.right(rut.length() -1);
 
+        qDebug() << "RUT : " << rut;
         emit dataReady(rut);
 
     } else {

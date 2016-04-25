@@ -10,6 +10,7 @@ void ServiceAccess::check(const QString id)
     QString caller = QString::fromUtf8(meta->className());
 
     acceso->setDate(QDateTime::currentDateTime());
+    acceso->setTipoAcceso(Acceso::TYPE_TARJETA);
     acceso->setRut(id);
 
     if(checkMachineRules() == false)
@@ -36,6 +37,7 @@ void ServiceAccess::check(const QString id)
 
                 // Test fingerprint only if the user is authorized
                 if(fingerprintUserID > 0 && autorizado == Acceso::PERSON_OK) {
+                    acceso->setTipoAcceso(Acceso::TYPE_HUELLA_SG400);
                     emit verifFingerprint(fingerprintUserID);
                     return;
                 }
@@ -94,14 +96,17 @@ void ServiceAccess::finalizeResponse()
 {
     LOG_INFO("Resultado Local : " + acceso->toString());
 
+    QString rut = acceso->rut();
+    int estado = acceso->idAuth();
+    int tipoAcceso = acceso->tipoAcceso();
+    int tipoCredencial = 0;
+
+    Bdd::registerAccess3(rut, estado, tipoAcceso, tipoCredencial);
+
     if(acceso->idAuth() == Acceso::PERSON_OK)
     {
-        qDebug() << "Access correct (save)";
-        QString rut = acceso->rut();
-
+        qDebug() << "Access correct";
         Bdd::updatePersonaByAcceso(acceso);
-        Bdd::registerAccess();
-        Bdd::registerAccess2(rut);
         Buzzer::instance()->good();
         emit openDoor();
 

@@ -143,7 +143,7 @@ private:
 
 };
 
-
+/*
 class AccessWorker2 : public QObject
 {
     Q_OBJECT
@@ -180,7 +180,53 @@ private:
     QString rut;
 
 };
+*/
 
+class AccessWorker3 : public QObject
+{
+    Q_OBJECT
+public:
+    AccessWorker3(QString rut, int estado, int tipoAcceso, int tipoCredencial)
+    {
+        this->rut = rut;
+        this->estado = estado;
+        this->tipoAcceso = tipoAcceso;
+        this->tipoCredencial = tipoCredencial;
+    }
+
+public slots:
+    void process()
+    {
+        // TODO : change position after refactoring :
+
+        QDateTime dateTime = QDateTime::currentDateTime();
+
+        QSqlQuery query(QSqlDatabase::database("acceso"));
+        QString sql = "INSERT INTO access(rut, estado, tipoAcceso, tipoCredencial, date) VALUES (:rut, :estado, :tipoAcceso, :tipoCredencial, :date)";
+
+        query.prepare(sql);
+        query.bindValue(":rut",rut);
+        query.bindValue(":estado",estado);
+        query.bindValue(":tipoAcceso",tipoAcceso);
+        query.bindValue(":tipoCredencial",tipoCredencial);
+        query.bindValue(":date",dateTime.toString("yyyy-MM-dd hh:mm:ss"));
+
+        if (!query.exec())
+            qCritical() << "Query Error (AccessWorker.sql.process.acceso) : " << query.lastError();
+
+        emit finished();
+    }
+
+signals:
+    void finished();
+
+private:
+    QString rut;
+    int estado;
+    int tipoAcceso;
+    int tipoCredencial;
+
+};
 
 class Bdd : public QObject
 {
@@ -201,8 +247,9 @@ public:
     // BDD control Syncro
     static void saveAccess(Acceso *acceso, Persona &persona);
 
-    static void registerAccess2(QString rut);
+    //static void registerAccess2(QString rut);
     static void registerAccess(int ErrorType = 0);
+    static void registerAccess3(QString rut, int estado, int tipoAcceso, int tipoCredencial);
 
     static void deleteAccess(Persona &persona, QDateTime date);
     static QDateTime syncAccess(Persona &persona);

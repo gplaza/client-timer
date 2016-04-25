@@ -265,6 +265,7 @@ void Bdd::updatePersona(Persona &persona)
         qCritical() << "Query Error (createPersona) : " << query.lastError();
 }
 
+/*
 void Bdd::registerAccess2(QString rut)
 {
     QThread *thread = new QThread;
@@ -276,6 +277,22 @@ void Bdd::registerAccess2(QString rut)
     //End Thread :
     connect(accessWorker2, &AccessWorker2::finished, thread, &QThread::quit);
     connect(accessWorker2, &AccessWorker2::finished, accessWorker2, &AccessWorker2::deleteLater);
+
+    thread->start();
+}
+*/
+
+void Bdd::registerAccess3(QString rut, int estado, int tipoAcceso, int tipoCredencial)
+{
+    QThread *thread = new QThread;
+    AccessWorker3* accessWorker3 = new AccessWorker3(rut, estado, tipoAcceso, tipoCredencial);
+    accessWorker3->moveToThread(thread);
+
+    //Start Thread :
+    connect(thread, &QThread::started, accessWorker3, &AccessWorker3::process);
+    //End Thread :
+    connect(accessWorker3, &AccessWorker3::finished, thread, &QThread::quit);
+    connect(accessWorker3, &AccessWorker3::finished, accessWorker3, &AccessWorker3::deleteLater);
 
     thread->start();
 }
@@ -320,6 +337,7 @@ void Bdd::updatePersonaByAcceso(Acceso *acceso)
         qCritical() << "Query Error (updatePersonaByAcceso.update) : " << query.lastError();
 }
 
+/*
 void Bdd::updateCasinoService(Acceso *acceso) {
 
     QSqlQuery query(QSqlDatabase::database("acceso"));
@@ -353,6 +371,7 @@ int Bdd::casinoService() {
 
     return result;
 }
+*/
 
 bool Bdd::checkDatabaseFile(const QString &basePath)
 {
