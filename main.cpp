@@ -11,6 +11,10 @@
 #include <door.h>
 #include <configurator.h>
 #include <configuratoradapter.h>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <qnetworkaccessmanager.h>
+#include <stdlib.h>
 
 int main(int argc, char *argv[])
 {
@@ -26,15 +30,6 @@ int main(int argc, char *argv[])
 
     QSet<QString> confs;
     confs << "timeout";
-    confs << "timeShowUser";
-    confs << "casinoName";
-    confs << "emailPrinterError";
-    confs << "endPointCasino";
-    confs << "soapActionCasinoValidar";
-    confs << "soapActionCasinoTransaction";
-    confs << "endPointFoto";
-    confs << "soapActionFoto";
-    confs << "usm";
     confs << "serial";
     confs << "logLevel";
     confs << "logFormat";
@@ -53,6 +48,57 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    //Init Hour
+
+    QNetworkRequest timeRequest(QUrl("http://158.170.10.15/access-manager/api/system/time"));
+
+    // HTTP Basic authentication header value: base64(username:password)
+    QString username = "admin"; //config["usernameApiServer"];
+    QString password = "admin"; //config["passwordApiServer"];
+
+    QString concatenated = username + ":" + password;
+    QByteArray dataLogin = concatenated.toLocal8Bit().toBase64();
+    QString headerDataAccessManager = "Basic " + dataLogin;
+    QTimer *timeout = new QTimer();
+
+    timeRequest.setRawHeader("Authorization", headerDataAccessManager.toLocal8Bit());
+    QNetworkAccessManager *manager = new QNetworkAccessManager();
+    QEventLoop loopWait;
+
+    QObject::connect(timeout, &QTimer::timeout, &loopWait, &QEventLoop::quit);
+    QNetworkReply *timeReply = manager->get(timeRequest);
+    QObject::connect(timeReply, &QNetworkReply::finished, &loopWait, &QEventLoop::quit);
+
+    // 4s timeout for machine API
+    timeout->start(4000);
+    loopWait.exec();
+
+    if(timeout->isActive()){
+
+        QByteArray timeResponse = timeReply->readAll();
+
+        QJsonDocument timejson = QJsonDocument::fromJson(timeResponse);
+        QJsonObject qJsonObject = timejson.object();
+        int unixTime = qJsonObject["time"].toInt();
+
+        QDateTime timestamp;
+        timestamp.setTime_t(unixTime);
+
+        QString currentServerTime = timestamp.toString("yyyy-MM-dd hh:mm:ss");
+
+        QString command = "date -s '" + currentServerTime + "'";
+        popen(command.toStdString().c_str(),"r");
+
+        qDebug() << "Set Current DateTime from server : ";
+        qDebug() << timestamp.toString("dd/MM/yyyy hh:mm:ss");
+
+        timeout->stop();
+
+    } else {
+
+        //time out...
+    }
+
     //Init DAL;
     Bdd bdd;
     bdd.openDatabase();
@@ -64,7 +110,7 @@ int main(int argc, char *argv[])
     //Physical Access object :
     Door door(4);
     Credencial credencial("pn532_spi:/dev/spidev0.0:500000");
-    Fingerprint fingerprint("/dev/ttyAMA0");
+    Fingerprint fingerprint("/dev/ttyAMA0",7);
 
     QObject::connect(&serviceAccess, &ServiceAccess::verifFingerprint, &fingerprint, &Fingerprint::verifFingerprint);
 

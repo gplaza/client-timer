@@ -11,7 +11,7 @@ class Fingerprint : public SecugenSda04
 {
     Q_OBJECT
 public:
-    Fingerprint(QString serialPort);
+    Fingerprint(QString serialPort, int AutoOnPin);
 
     enum resultCompare{
         FINGER_ = 1,
@@ -19,13 +19,10 @@ public:
         MARCA_INFO = 4
     };
 
-private:
-    QTimer *cancelerTimer;
-
 public slots:
-    void checkFingerTouch();
+    //void checkFingerTouch();
     void verifFingerprint(int userID);
-    void processDataFingerprint();
+    //void processDataFingerprint();
     // -- function for API --
     void externInsertUser(QString &hash, int typeHash);
     void externDeleteUser(int userID);

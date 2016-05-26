@@ -21,7 +21,7 @@ void Credencial::getInfoTag(const ResultRFID &result)
 
         qWarning() << "This card does not contain RUT";
         readEnable = false;
-        waitForTag();
+        QTimer::singleShot(1500, this, SLOT(waitForTag()));
     }
 }
 

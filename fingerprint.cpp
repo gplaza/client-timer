@@ -1,16 +1,15 @@
 #include "fingerprint.h"
 
-Fingerprint::Fingerprint(QString serialport) : SecugenSda04(serialport)
+Fingerprint::Fingerprint(QString serialport, int AutoOnPin) : SecugenSda04(serialport, AutoOnPin)
 {
     if(!error)
     {
-        wiringPiSetup();
-        pinMode(7, INPUT);
-
+        // Set "Quality Verify" to 100
         DataContainer dataContainer;
         executeCommand(0x20,dataContainer,0x00,0x0C,0x00,0x64);
+        // Set "Reader Timeout" to 10
+        executeCommand(0x20,dataContainer,0x00,0x17,0x00,0x0A);
 
-        cancelerTimer = new QTimer(this);
         QObject::connect(this, &Fingerprint::sendError, this, &Fingerprint::receiveError);
     }
 }
@@ -20,13 +19,13 @@ void Fingerprint::receiveError(int error)
     if(error == Fingerprint::ERROR_TIMEOUT)
     {
         qCritical() << "Error : Fingerprint reader timeout";
-        Bdd::registerAccess(Bdd::TIMEOUT_FINGERPRINT);
+        // Bdd::registerAccess(Bdd::TIMEOUT_FINGERPRINT);
     }
 
     if(error == Fingerprint::ERROR_IDENTIFY_FAILED)
     {
         qCritical() << "Error : Fingerprint unknown";
-        Bdd::registerAccess(Bdd::UNKNOWN_FINGERPRINT);
+        // Bdd::registerAccess(Bdd::UNKNOWN_FINGERPRINT);
     }
 
     if(error == Fingerprint::ERROR_USER_NOT_FOUND)
@@ -48,50 +47,10 @@ void Fingerprint::receiveError(int error)
     }
 }
 
-void Fingerprint::checkFingerTouch()
-{
-    if(digitalRead(7) == LOW)
-    {
-        timerFinger->stop();
-        emit fingerDetected();
-    }
-}
-
 void Fingerprint::verifFingerprint(int userID)
 {
     bool result = this->verifyFinger(userID);
-
-    //if(result)
-        emit compareResult(result);
-
-    /*
-    if(!result)
-    {
-        qWarning() << "Compare finger : Not match";
-        Buzzer::instance()->bad();
-         emit compareOK();
-    }
-    */
-}
-
-void Fingerprint::processDataFingerprint()
-{
-    QVariant scanResult = scanFinger();
-    int id = scanResult.toInt();
-
-    qDebug() << "Fingerprint finded";
-    qDebug() << "User ID : " << id;
-
-    if(id > 0)
-    {
-        QString ident = QString::number(id);
-        emit dataReady(ident);
-
-    } else {
-
-        Buzzer::instance()->bad();
-        emit unknownFinger();
-    }
+    emit compareResult(result);
 }
 
 void Fingerprint::externInsertUser(QString &hash, int typeHash)

@@ -265,23 +265,6 @@ void Bdd::updatePersona(Persona &persona)
         qCritical() << "Query Error (createPersona) : " << query.lastError();
 }
 
-/*
-void Bdd::registerAccess2(QString rut)
-{
-    QThread *thread = new QThread;
-    AccessWorker2* accessWorker2 = new AccessWorker2(rut);
-    accessWorker2->moveToThread(thread);
-
-    //Start Thread :
-    connect(thread, &QThread::started, accessWorker2, &AccessWorker2::process);
-    //End Thread :
-    connect(accessWorker2, &AccessWorker2::finished, thread, &QThread::quit);
-    connect(accessWorker2, &AccessWorker2::finished, accessWorker2, &AccessWorker2::deleteLater);
-
-    thread->start();
-}
-*/
-
 void Bdd::registerAccess3(QString rut, int estado, int tipoAcceso, int tipoCredencial)
 {
     QThread *thread = new QThread;
@@ -297,6 +280,7 @@ void Bdd::registerAccess3(QString rut, int estado, int tipoAcceso, int tipoCrede
     thread->start();
 }
 
+/*
 void Bdd::registerAccess(int ErrorType)
 {
     QThread *thread = new QThread;
@@ -311,6 +295,7 @@ void Bdd::registerAccess(int ErrorType)
 
     thread->start();
 }
+*/
 
 void Bdd::updatePersonaByAcceso(Acceso *acceso)
 {
@@ -319,7 +304,7 @@ void Bdd::updatePersonaByAcceso(Acceso *acceso)
     qDebug() << "Update Data persona";
 
     QString sql = "UPDATE persona SET autorizado=:autorizado";
-    sql += " WHERE rut=:rut and typeHash=0;";
+    sql += " WHERE rut=:rut and typeCredencial=0;";
     query.prepare(sql);
 
     int idAuth = acceso->idAuth();
@@ -327,51 +312,12 @@ void Bdd::updatePersonaByAcceso(Acceso *acceso)
     if(idAuth == Acceso::PERSON_OK)
         idAuth = Acceso::PERSON_SERVICE_USED;
 
-    qDebug() << "Registro local grabado :";
-    qDebug() << "state        : " << idAuth;
-
     query.bindValue(":autorizado", idAuth);
     query.bindValue(":rut", acceso->rut());
 
     if (!query.exec())
         qCritical() << "Query Error (updatePersonaByAcceso.update) : " << query.lastError();
 }
-
-/*
-void Bdd::updateCasinoService(Acceso *acceso) {
-
-    QSqlQuery query(QSqlDatabase::database("acceso"));
-
-    if(acceso->count_casino() > 0) {
-
-        QString sql = "UPDATE service SET nb=:servicio WHERE type=:tipo";
-        query.prepare(sql);
-
-        query.bindValue(":servicio", QString::number(acceso->count_casino()));
-        query.bindValue(":tipo", "normal");
-
-        if (!query.exec())
-            qCritical() << "Query Error (updateCasinoService.update) : " << query.lastError();
-    }
-}
-
-int Bdd::casinoService() {
-
-    QSqlQuery query(QSqlDatabase::database("acceso"));
-    QString sql = "SELECT nb FROM service WHERE type='normal'";
-    int result = -1;
-
-    query.prepare(sql);
-
-    if (!query.exec())
-        qCritical() << "Query Error (updateCasinoService.update) : " << query.lastError();
-
-    if(query.first())
-        result = (query.value(0).toString() == "PD")? -1 :query.value(0).toInt();
-
-    return result;
-}
-*/
 
 bool Bdd::checkDatabaseFile(const QString &basePath)
 {

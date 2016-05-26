@@ -46,6 +46,7 @@ void ServiceAccess::check(const QString id)
 
                 qWarning() << "UserCard not finded in local database ...";
                 acceso->setIdAuth(Acceso::PERSON_NO_EXIST);
+                acceso->setName("Unknown user");
             }
         }
     }

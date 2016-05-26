@@ -8,6 +8,7 @@
 #include <acceso.h>
 #include <persona.h>
 
+/*
 class AccessWorker : public QObject
 {
     Q_OBJECT
@@ -142,44 +143,6 @@ private:
     QString rut;
 
 };
-
-/*
-class AccessWorker2 : public QObject
-{
-    Q_OBJECT
-public:
-    AccessWorker2(QString rut)
-    {
-        this->rut = rut;
-    }
-
-public slots:
-    void process()
-    {
-        // TODO : change position after refactoring :
-
-        QDateTime dateTime = QDateTime::currentDateTime();
-
-        QSqlQuery query(QSqlDatabase::database("acceso"));
-        QString sql = "INSERT INTO access(rut,date) VALUES (:rut, :date)";
-
-        query.prepare(sql);
-        query.bindValue(":rut",rut);
-        query.bindValue(":date",dateTime.toString("yyyy-MM-dd hh:mm:ss"));
-
-        if (!query.exec())
-            qCritical() << "Query Error (AccessWorker.sql.process.acceso) : " << query.lastError();
-
-        emit finished();
-    }
-
-signals:
-    void finished();
-
-private:
-    QString rut;
-
-};
 */
 
 class AccessWorker3 : public QObject
@@ -248,7 +211,7 @@ public:
     static void saveAccess(Acceso *acceso, Persona &persona);
 
     //static void registerAccess2(QString rut);
-    static void registerAccess(int ErrorType = 0);
+    // static void registerAccess(int ErrorType = 0);
     static void registerAccess3(QString rut, int estado, int tipoAcceso, int tipoCredencial);
 
     static void deleteAccess(Persona &persona, QDateTime date);
