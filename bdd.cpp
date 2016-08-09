@@ -86,7 +86,7 @@ QSqlRecord Bdd::identificationOfflineByRut(QString rut)
     QSqlQuery query(QSqlDatabase::database("acceso"));
     QSqlRecord result;
 
-    QString sql = "SELECT id_huella,autorizado,nombre FROM persona WHERE rut=:rut";
+    QString sql = "SELECT id,id_huella,autorizado,nombre FROM persona WHERE rut=:rut";
 
     query.prepare(sql);
     query.bindValue(":rut", rut);
@@ -280,23 +280,6 @@ void Bdd::registerAccess3(QString rut, int estado, int tipoAcceso, int tipoCrede
     thread->start();
 }
 
-/*
-void Bdd::registerAccess(int ErrorType)
-{
-    QThread *thread = new QThread;
-    AccessWorker* accessWorker = new AccessWorker(ErrorType);
-    accessWorker->moveToThread(thread);
-
-    //Start Thread :
-    connect(thread, &QThread::started, accessWorker, &AccessWorker::process);
-    //End Thread :
-    connect(accessWorker, &AccessWorker::finished, thread, &QThread::quit);
-    connect(accessWorker, &AccessWorker::finished, accessWorker, &AccessWorker::deleteLater);
-
-    thread->start();
-}
-*/
-
 void Bdd::updatePersonaByAcceso(Acceso *acceso)
 {
     QSqlQuery query(QSqlDatabase::database("acceso"));
@@ -317,6 +300,27 @@ void Bdd::updatePersonaByAcceso(Acceso *acceso)
 
     if (!query.exec())
         qCritical() << "Query Error (updatePersonaByAcceso.update) : " << query.lastError();
+}
+
+QMap<QString,QString> Bdd::getUserOption(int UserID)
+{
+    QSqlQuery query(QSqlDatabase::database("acceso"));
+    QMap <QString,QString> result;
+
+    QString sql = "select option.name, persona_option.value from persona_option, option where persona_option.id_option = option.id and persona_option.id_persona=:UserID;";
+    query.prepare(sql);
+    query.bindValue(":UserID", UserID);
+
+    if (!query.exec())
+        qCritical() << "Query Error (getUserOption) : " << query.lastError();
+
+    while(query.next()) {
+        QString key = query.value(0).toString();
+        QString value = query.value(1).toString();
+        result.insert(key,value);
+    }
+
+    return result;
 }
 
 bool Bdd::checkDatabaseFile(const QString &basePath)

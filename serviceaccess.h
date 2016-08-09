@@ -25,6 +25,7 @@ public slots:
 
 private:
     bool checkMachineRules();
+    bool checkUserRules(int UserID);
     Acceso *acceso;
 };
 

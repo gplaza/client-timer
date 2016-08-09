@@ -28,12 +28,19 @@ void ServiceAccess::check(const QString id)
 
                 qDebug() << "UserCard finded in local database ...";
 
+                int UserID = record.value("id").toInt();
                 int fingerprintUserID = record.value("id_huella").toInt();
                 int autorizado = record.value("autorizado").toInt();
                 QString name = record.value("nombre").toString();
 
                 acceso->setName(name);
                 acceso->setIdAuth(autorizado);
+
+                if(checkUserRules(UserID) == false)
+                {
+                    qWarning() << "User's Rules not passed";
+                    acceso->setIdAuth(Acceso::PERSON_OPTION_ERROR);
+                }
 
                 // Test fingerprint only if the user is authorized
                 if(fingerprintUserID > 0 && autorizado == Acceso::PERSON_OK) {
@@ -54,9 +61,42 @@ void ServiceAccess::check(const QString id)
     finalizeResponse();
 }
 
+bool ServiceAccess::checkUserRules(int UserID)
+{
+    qDebug() << "Check user's rules ...";
+
+    QMap<QString,QString> options =  Bdd::getUserOption(UserID);
+    QDate currentDate = QDate::currentDate();
+    QString option;
+
+    qDebug() << "Options user number : " << options.size();
+
+    // Check option 'dateEnd' :
+    if(options.contains("dateEnd"))
+    {
+        option = options["dateEnd"];
+        QDate dateEnd = QDate::fromString(option, "dd/MM/yyyy");
+
+        if(currentDate >= dateEnd)
+            return false;
+    }
+
+    // Check option 'dateStart' :
+    if(options.contains("dateStart"))
+    {
+        option = options["dateStart"];
+        QDate dateStart = QDate::fromString(option, "dd/MM/yyyy");
+
+        if(currentDate < dateStart)
+            return false;
+    }
+
+    return true;
+}
+
 bool ServiceAccess::checkMachineRules()
 {
-    qDebug() << "Check machine's period ...";
+    qDebug() << "Check machine's rules ...";
 
     QDate currentDate = QDate::currentDate();
     QTime currentTime = QTime::currentTime();
@@ -88,6 +128,8 @@ bool ServiceAccess::checkMachineRules()
 
 void ServiceAccess::checkfingerprint(bool result)
 {
+    qDebug() << "Check fingerprint ...";
+
     int autorizado = result? Acceso::PERSON_OK : Acceso::FINGERPRINT_NOT_MATCH;
     acceso->setIdAuth(autorizado);
     finalizeResponse();

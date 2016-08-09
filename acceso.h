@@ -40,6 +40,7 @@ public:
 
     enum ResponseType {
         PERSON_OK = 0,
+        PERSON_OPTION_ERROR = 1,
         PERSON_NO_EXIST = 7,
         PERSON_CRED_NO_EXIST = 24,
         PERSON_NO_LUNCH = 20,

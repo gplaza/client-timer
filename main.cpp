@@ -19,6 +19,7 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
+    wiringPiSetup();
 
     ConsoleAppender* consoleAppender = new ConsoleAppender();
     consoleAppender->setFormat("[%-7l] %t{dd/MM/yyyy HH:mm:ss} %m\n");
