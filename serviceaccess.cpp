@@ -43,7 +43,7 @@ void ServiceAccess::check(const QString id)
                 }
 
                 // Test fingerprint only if the user is authorized
-                if(fingerprintUserID > 0 && autorizado == Acceso::PERSON_OK) {
+                if(fingerprintUserID > 0 && acceso->idAuth() == Acceso::PERSON_OK) {
                     acceso->setTipoAcceso(Acceso::TYPE_HUELLA_SG400);
                     emit verifFingerprint(fingerprintUserID);
                     return;
