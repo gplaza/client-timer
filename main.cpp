@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 
     } else {
 
-        qFatal() << "Error timeout API date Access Manager";
+        qCritical() << "Error timeout API date Access Manager";
     }
 
     //Init DAL;
