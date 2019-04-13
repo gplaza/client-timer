@@ -80,24 +80,19 @@ int main(int argc, char *argv[])
 
         QJsonDocument timejson = QJsonDocument::fromJson(timeResponse);
         QJsonObject qJsonObject = timejson.object();
-        int unixTime = qJsonObject["time"].toInt();
+        QString dateJson =  qJsonObject["time"].toString();
 
-        QDateTime timestamp;
-        timestamp.setTime_t(unixTime);
-
-        QString currentServerTime = timestamp.toString("yyyy-MM-dd hh:mm:ss");
-
-        QString command = "date -s '" + currentServerTime + "'";
+        QString command = "date -s '" + dateJson + "'";
         popen(command.toStdString().c_str(),"r");
 
         qDebug() << "Set Current DateTime from server : ";
-        qDebug() << timestamp.toString("dd/MM/yyyy hh:mm:ss");
+        qDebug() << dateJson;
 
         timeout->stop();
 
     } else {
 
-        //time out...
+        qFatal() << "Error timeout API date Access Manager";
     }
 
     //Init DAL;
